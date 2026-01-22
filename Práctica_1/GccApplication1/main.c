@@ -3,99 +3,161 @@
  * Author: Juan Rodriguez
  * Description: Prelab4
  */
-//Librerias y variables
+
+// ===== Librerías =====
 #define F_CPU 16000000UL
 #include <avr/io.h>
 #include <avr/interrupt.h>
-volatile uint8_t pb=0;			//Estados de botones
+#include "display.h"
+
+// ===== Variables globales =====
+volatile uint8_t state = 0;        // Estado del botón
 volatile uint8_t ovf_count = 0;
-volatile uint8_t puntero=0;
+volatile uint8_t display = 5;
+volatile uint8_t contador1=0;
+volatile uint8_t contador2=0;
 
-//Prototipos
-void setup();
+// ===== Prototipos =====
+void setup(void);
+void setup_timer0(void);
 
-
-//Funcion principal
-int main()
+// ===== Función principal =====
+int main(void)
 {
     setup();
-    while (1) 
+
+    display7seg_init(&PORTD);      // Inicializar display con puntero
+    display7seg_write(display);    // Mostrar valor inicial
+
+    while (1)
     {
-		if (pb==1){
-			PORTB |= (1<<PORTB0);
+
+        display7seg_write(display);   // Mostrar valor actualizado
+		
+		if (state==2){
+			/*
+			0000 ? 0 décadas
+			0001 ? 1 década
+			0010 ? 2 décadas
+			0100 ? 3 décadas
+			1000 ? 4 décadas
+			*/
+			if (contador1==0)
+			{
+				PORTB &= ~0x0F; //Al iniciar las leds estan apagadas
+			}
+			else if (contador1>0){
+				PORTB = (PORTB & 0xF0) | (1 << (contador1- 1)); // por cada pulso se van sumando decadas al contador.
+				if (contador1==4){
+					state=3; //Jugador 1 gano
+				}
+			}
+			if (contador1==0)
+			{
+				PORTC &= ~0x0F //Al iniciar las leds estan apagadas
+			}
+			else if (contador2>0){
+				PORTC = (PORTC & 0xF0) | (1 << (contador2- 1)); // por cada pulso se van sumando decadas al contador.
+				if (contador2==4){
+					state=4; //Jugador 2 gano
+				}
+			}
+			
 		}
-		else {
-			PORTB &= ~(1<<PORTB0);
+		else if (state==3){
+			
 		}
-    }	
+		else if (state==4){
+			
+		}
+		
+    }
 }
 
-//Subrutinas NON Interrupt
-void setup () {
-	cli();				//Desactivar interrupciones globales
-	CLKPR = (1<< CLKPCE);
-	CLKPR |= (1<<CLKPS2);	//Configurar prescaler principal a 16
-	
-	DDRB |= (1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3); //salidas
-	DDRB &= ~(1<<PORTB4);	//entrada
-	PORTB |= (1<<PORTB4);	//Pullup
-	
-	 PCICR  |= (1 << PCIE0);
-	 PCMSK0 |= (1 << PCINT4);
+// ===== Subrutinas =====
+void setup(void)
+{
+    cli();
 
-	UCSR0B = 0x00;  // Desactiva transmisor y receptor
-	DDRD = 0xFF;     // PD7–PD0 como salidas
-	PORTD = 0x00;    // Todas las salidas en LOW
+    CLKPR = (1 << CLKPCE);
+    CLKPR = (1 << CLKPS2);          // Prescaler CPU = 16
+	//Puerto B
+    DDRB |= (1 << PORTB0) | (1 << PORTB1) | (1 << PORTB2) | (1 << PORTB3); //Salidas
+    DDRB &= ~((1 << PORTB4)|(1<<PORTB5));
+    PORTB |= (1 << PORTB4)|(1<<PORTB5);         // Pull-up botón
+	PORTB &= ~((1 << PORTB0) | (1 << PORTB1) | (1 << PORTB2) | (1 << PORTB3));
+	
+    PCICR  |= (1 << PCIE0);
+    PCMSK0 |= (1 << PCINT4)|(1<<PCINT5);
 
-	TCCR0A = 0x00;                       // Modo NORMAL
-	TCCR0B = (1<<CS02) | (1<<CS00);     // Prescaler 1024
-	TIMSK0 |= (1<<TOIE0);               // Habilita overflow Timer0
+    //Puerto C
+	DDRC &= ~((1 << DDC4) | (1 << DDC5));   // A4 y A5 como entrada
+	DDRC |= (1<<PORTC0)|(1<<PORTC1)|(1<<PORTC2)|(1<<PORTC3); //Salidas
+	PORTC |= (1 << PORTC4) | (1 << PORTC5); // Pull-up interno
+	PORTC &= ~((1<<PORTC0)|(1<<PORTC1)|(1<<PORTC2)|(1<<PORTC3));
+	PCICR |= (1 << PCIE1);   // Habilita PCINT[14:8] (Puerto C)
+	PCMSK1 |= (1 << PCINT12) | (1 << PCINT13);
 
 	
-	
-	sei();			//Activar interrupciones globales
+	//Puerto D
+    DDRD = 0xFF;                    // Display en PORTD
+    PORTD = 0x00;
+	UCSR0B = 0x00;					//Apagar comunicación serial
+    setup_timer0();
+
+    sei();
+}
+
+// ===== Timer0 =====
+void setup_timer0(void)
+{
+	TCCR0A = 0x00;                         // Modo NORMAL
+	TCCR0B = (1 << CS02) | (1 << CS00);    // Prescaler 1024
+	TCNT0  = 12;                           // Precarga
+	TIMSK0 |= (1 << TOIE0);                // Interrupción overflow
 }
 
 
-
-
-
-
-
-
-//Subrutinas de interrupciones
-
-
+// ===== ISRs =====
 ISR(TIMER0_OVF_vect)
 {
+	TCNT0 = 12;          // Recargar timer
+
 	ovf_count++;
 
-	if (ovf_count >= 61) {
+	if (ovf_count >= 4) // 4 overflows = 1 segundo
+	{
 		ovf_count = 0;
-		puntero++;
-		// ?? AQUÍ se ejecuta cada 1 segundo
+
+		if (display > 0 && state==1)
+		{
+			display--;
+			if (display==0){
+				state=2;	//El contador llego a cero inicia la carrera.
+			}
+		}
 	}
 }
 
 
-ISR(TIMER0_OVF_vect)
+
+ISR(PCINT0_vect)
 {
-	ovf_count++;
-
-	if (ovf_count >= 61) {
-		ovf_count = 0;
-		// ?? AQUÍ se ejecuta cada 1 segundo
+	if (!(PINB & (1 << PINB4)))   // Botón presionado
+	{
+		state=1; //Estado donde inicia la cuenta regresiva
 	}
 }
 
-
-ISR(PCINT0_vect){
-	if (!(PINB & (1<<PINB4))){
-		pb=1;
+ISR(PCINT1_vect)
+{
+	if (!(PINC & (1 << PINC4)))
+	{
+		contador1++; // Acción cuando A4 se presiona
 	}
-	else{
-		pb=0;
+
+	if (!(PINC & (1 << PINC5)))
+	{
+		contador2++; // Acción cuando A5 se presiona
 	}
-}
-
-
+}	
