@@ -58,7 +58,7 @@ ISR(PCINT0_vect)
 			if (!(PINB & (1 << PINB4)))   // Botón presionado
 			{
 				state=1; //Estado donde inicia la cuenta regresiva
-				 
+				display=5; 
 				
 			}
 		}
