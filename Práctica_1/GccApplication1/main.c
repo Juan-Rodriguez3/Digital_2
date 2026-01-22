@@ -54,11 +54,13 @@ ISR(PCINT0_vect)
 			{
 				state=1; //Estado donde inicia la cuenta regresiva
 				display=5;
+				display7seg_write(display);  
+				
 			}
 		}
 	}
 	
-	else if (state==5){ //este es para reiniciar el juego una vez ya acabado
+	else if (state==3 || state==4){ //este es para reiniciar el juego una vez ya acabado
 		if (!(PINB & (1 << PINB4)))   // Botón presionado
 		{
 			state=1; //Estado donde inicia la cuenta regresiva
