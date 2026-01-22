@@ -54,7 +54,7 @@ int main(void)
 				PORTB = (PORTB & 0xF0) | (1 << (contador1- 1)); // por cada pulso se van sumando decadas al contador.
 				if (contador1==4){
 					state=3; //Jugador 1 gano
-					PORTB = (PORTB & 0xF0) | (1 << (contador1- 1));
+
 				}
 			}
 			
@@ -65,7 +65,6 @@ int main(void)
 			else if (contador2>0){
 				PORTC = (PORTC & 0xF0) | (1 << (contador2- 1)); // por cada pulso se van sumando decadas al contador.
 				if (contador2==4){
-					PORTC = (PORTC & 0xF0) | (1 << (contador2- 1));
 					state=4; //Jugador 2 gano
 				}	
 			}
