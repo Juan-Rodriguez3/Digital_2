@@ -53,8 +53,7 @@ ISR(PCINT0_vect)
 			if (!(PINB & (1 << PINB4)))   // Botón presionado
 			{
 				state=1; //Estado donde inicia la cuenta regresiva
-				display=5;
-				display7seg_write(display);  
+				 
 				
 			}
 		}
@@ -63,7 +62,7 @@ ISR(PCINT0_vect)
 	else if (state==3 || state==4){ //este es para reiniciar el juego una vez ya acabado
 		if (!(PINB & (1 << PINB4)))   // Botón presionado
 		{
-			state=1; //Estado donde inicia la cuenta regresiva
+			state=0; //Estado donde inicia la cuenta regresiva
 		}
 	}
 	
@@ -139,11 +138,20 @@ int main(void)
     {
 		switch (state){
 			case 0:
+			//Reinicio de juego
+				display=5;
+				display7seg_write(display);
+				contador1=0;
+				contador2=0;
+				PORTC &= ~0x0F;
+				PORTB &= ~0x0F;
+				
 			case 1:
+			//Estado de conteo
 				display7seg_write(display);   // Mostrar valor actualizado
 				if (display == 0)
 				{
-					display7seg_write(display);
+					display7seg_write(display); //Por algún motivo no se actualiza el cero alla arriba.
 					state = 2;    // El contador llegó a cero ? inicia la carrera
 				}
 				break;
@@ -164,7 +172,7 @@ int main(void)
 				}
 				else
 				{
-					PORTB = (PORTB & 0xF0) | (1 << (contador1 - 1));
+					PORTB = (PORTB & 0xF0) | (1 << (contador1 - 1)); //avanza o incrementa una decada
 					if (contador1 == 4)
 						state = 3;   // Jugador 1 gana
 				}
@@ -176,7 +184,7 @@ int main(void)
 				}
 				else
 				{
-					PORTC = (PORTC & 0xF0) | (1 << (contador2 - 1));
+					PORTC = (PORTC & 0xF0) | (1 << (contador2 - 1)); //Avanza una decada
 					if (contador2 == 4)
 						state = 4;   // Jugador 2 gana
 				}
@@ -185,15 +193,15 @@ int main(void)
 			case 3:
 				PORTC &= ~0x0F;   // Apagar LEDs del perdedor
 				PORTB |= 0x0F;    // Encender LEDs del ganador
-				winner = 1;
+				winner = 1;		//Para desplegar el ganador en el display
 				display7seg_write(winner);
 				break;
 
 			case 4:
 				PORTB &= ~0x0F;   // Apagar LEDs del perdedor
 				PORTC |= 0x0F;    // Encender LEDs del ganador
-				winner = 2;
-				display7seg_write(winner);
+				winner = 2;			
+				display7seg_write(winner);	//Para desplegar el ganador en el display
 				break;
 
 			default:
