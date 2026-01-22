@@ -19,15 +19,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000746  00000000  00000000  00000de6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000004f4  00000000  00000000  0000152c  2**0
+  8 .debug_line   00000507  00000000  00000000  0000152c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000000d8  00000000  00000000  00001a20  2**2
+  9 .debug_frame  000000d8  00000000  00000000  00001a34  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000415  00000000  00000000  00001af8  2**0
+ 10 .debug_str    0000041b  00000000  00000000  00001b0c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000000d5  00000000  00000000  00001f0d  2**0
+ 11 .debug_loc    000000d5  00000000  00000000  00001f27  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000050  00000000  00000000  00001fe2  2**0
+ 12 .debug_ranges 00000050  00000000  00000000  00001ffc  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -461,6 +461,7 @@ int main(void)
  288:	85 b9       	out	0x05, r24	; 5
 				
 			case 1:
+			//Estado de conteo
 				display7seg_write(display);   // Mostrar valor actualizado
  28a:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
  28e:	0e 94 58 00 	call	0xb0	; 0xb0 <display7seg_write>
@@ -469,7 +470,7 @@ int main(void)
  296:	81 11       	cpse	r24, r1
  298:	d6 cf       	rjmp	.-84     	; 0x246 <main+0x14>
 				{
-					display7seg_write(display);
+					display7seg_write(display); //Por algún motivo no se actualiza el cero alla arriba.
  29a:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
  29e:	0e 94 58 00 	call	0xb0	; 0xb0 <display7seg_write>
 					state = 2;    // El contador llegó a cero ? inicia la carrera
@@ -494,7 +495,7 @@ int main(void)
 				}
 				else
 				{
-					PORTB = (PORTB & 0xF0) | (1 << (contador1 - 1));
+					PORTB = (PORTB & 0xF0) | (1 << (contador1 - 1)); //avanza o incrementa una decada
  2ba:	45 b1       	in	r20, 0x05	; 5
  2bc:	20 91 0c 01 	lds	r18, 0x010C	; 0x80010c <contador1>
  2c0:	30 e0       	ldi	r19, 0x00	; 0
@@ -534,7 +535,7 @@ int main(void)
 				}
 				else
 				{
-					PORTC = (PORTC & 0xF0) | (1 << (contador2 - 1));
+					PORTC = (PORTC & 0xF0) | (1 << (contador2 - 1)); //Avanza una decada
  2fa:	48 b1       	in	r20, 0x08	; 8
  2fc:	20 91 0b 01 	lds	r18, 0x010B	; 0x80010b <contador2>
  300:	30 e0       	ldi	r19, 0x00	; 0
@@ -571,7 +572,7 @@ int main(void)
  332:	85 b1       	in	r24, 0x05	; 5
  334:	8f 60       	ori	r24, 0x0F	; 15
  336:	85 b9       	out	0x05, r24	; 5
-				winner = 1;
+				winner = 1;		//Para desplegar el ganador en el display
  338:	81 e0       	ldi	r24, 0x01	; 1
  33a:	80 93 0a 01 	sts	0x010A, r24	; 0x80010a <winner>
 				display7seg_write(winner);
@@ -588,10 +589,10 @@ int main(void)
  34a:	88 b1       	in	r24, 0x08	; 8
  34c:	8f 60       	ori	r24, 0x0F	; 15
  34e:	88 b9       	out	0x08, r24	; 8
-				winner = 2;
+				winner = 2;			
  350:	82 e0       	ldi	r24, 0x02	; 2
  352:	80 93 0a 01 	sts	0x010A, r24	; 0x80010a <winner>
-				display7seg_write(winner);
+				display7seg_write(winner);	//Para desplegar el ganador en el display
  356:	0e 94 58 00 	call	0xb0	; 0xb0 <display7seg_write>
 				break;
  35a:	75 cf       	rjmp	.-278    	; 0x246 <main+0x14>

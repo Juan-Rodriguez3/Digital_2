@@ -8,7 +8,7 @@
 #define F_CPU 16000000UL
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "display.h"
+#include "display/display.h"
 
 // ===== Variables globales =====
 volatile uint8_t state = 0;        // Estado del botón
