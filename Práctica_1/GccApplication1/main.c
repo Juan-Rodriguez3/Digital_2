@@ -16,7 +16,7 @@ volatile uint8_t ovf_count = 0;
 volatile uint8_t display = 5;
 volatile uint8_t contador1=0;
 volatile uint8_t contador2=0;
-
+uint8_t winner=0;
 // ===== Prototipos =====
 void setup(void);
 void setup_timer0(void);
@@ -28,13 +28,17 @@ int main(void)
 
     display7seg_init(&PORTD);      // Inicializar display con puntero
     display7seg_write(display);    // Mostrar valor inicial
-
+	
     while (1)
     {
-
-        display7seg_write(display);   // Mostrar valor actualizado
-		
-		if (state==2){
+		if (state<=1){
+			display7seg_write(display);   // Mostrar valor actualizado
+			if (display==0){
+				
+				state=2;	//El contador llego a cero inicia la carrera.
+			}
+		}
+		else if (state==2){
 			/*
 			0000 ? 0 décadas
 			0001 ? 1 década
@@ -52,9 +56,10 @@ int main(void)
 					state=3; //Jugador 1 gano
 				}
 			}
+			
 			if (contador1==0)
 			{
-				PORTC &= ~0x0F //Al iniciar las leds estan apagadas
+				PORTB &= ~0x0F; //Al iniciar las leds estan apagadas
 			}
 			else if (contador2>0){
 				PORTC = (PORTC & 0xF0) | (1 << (contador2- 1)); // por cada pulso se van sumando decadas al contador.
@@ -65,10 +70,14 @@ int main(void)
 			
 		}
 		else if (state==3){
-			
+			PORTC &= ~0x0F; //Apagar las luces de quien perdio
+			winner=1;
+			display7seg_write(winner);
 		}
 		else if (state==4){
-			
+			PORTB &= ~0x0F; //Apagar las luces de quien perdio
+			winner=2;
+			display7seg_write(winner);
 		}
 		
     }
@@ -128,13 +137,9 @@ ISR(TIMER0_OVF_vect)
 	if (ovf_count >= 4) // 4 overflows = 1 segundo
 	{
 		ovf_count = 0;
-
-		if (display > 0 && state==1)
+		if (state==1)
 		{
 			display--;
-			if (display==0){
-				state=2;	//El contador llego a cero inicia la carrera.
-			}
 		}
 	}
 }
@@ -143,10 +148,30 @@ ISR(TIMER0_OVF_vect)
 
 ISR(PCINT0_vect)
 {
-	if (!(PINB & (1 << PINB4)))   // Botón presionado
-	{
-		state=1; //Estado donde inicia la cuenta regresiva
+	if (state==0){
+		if (!(PINB & (1 << PINB4)))   // Botón presionado
+		{
+			state=1; //Estado donde inicia la cuenta regresiva
+		}
 	}
+	else if (state==1){
+		//Reiniciar el contador de segundos mientras aun no llegue a cero
+		if (display>0){
+			if (!(PINB & (1 << PINB4)))   // Botón presionado
+			{
+				state=1; //Estado donde inicia la cuenta regresiva
+				display=5;
+			}
+		}
+	}
+	
+	else if (state==5){ //este es para reiniciar el juego una vez ya acabado
+		if (!(PINB & (1 << PINB4)))   // Botón presionado
+		{
+			state=1; //Estado donde inicia la cuenta regresiva
+		}
+	}
+	
 }
 
 ISR(PCINT1_vect)
