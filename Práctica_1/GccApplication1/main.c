@@ -34,7 +34,7 @@ int main(void)
 		if (state<=1){
 			display7seg_write(display);   // Mostrar valor actualizado
 			if (display==0){
-				
+				display7seg_write(display);
 				state=2;	//El contador llego a cero inicia la carrera.
 			}
 		}
@@ -54,6 +54,7 @@ int main(void)
 				PORTB = (PORTB & 0xF0) | (1 << (contador1- 1)); // por cada pulso se van sumando decadas al contador.
 				if (contador1==4){
 					state=3; //Jugador 1 gano
+					PORTB = (PORTB & 0xF0) | (1 << (contador1- 1));
 				}
 			}
 			
@@ -64,18 +65,21 @@ int main(void)
 			else if (contador2>0){
 				PORTC = (PORTC & 0xF0) | (1 << (contador2- 1)); // por cada pulso se van sumando decadas al contador.
 				if (contador2==4){
+					PORTC = (PORTC & 0xF0) | (1 << (contador2- 1));
 					state=4; //Jugador 2 gano
-				}
+				}	
 			}
 			
 		}
 		else if (state==3){
 			PORTC &= ~0x0F; //Apagar las luces de quien perdio
+			PORTB |= 0x0F; //Encender las luces de quien gano
 			winner=1;
 			display7seg_write(winner);
 		}
 		else if (state==4){
 			PORTB &= ~0x0F; //Apagar las luces de quien perdio
+			PORTC |= 0x0F; //Encender las luces de quien gano
 			winner=2;
 			display7seg_write(winner);
 		}
