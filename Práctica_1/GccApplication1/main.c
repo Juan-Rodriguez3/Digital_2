@@ -16,6 +16,11 @@ volatile uint8_t ovf_count = 0;
 volatile uint8_t display = 5;
 volatile uint8_t contador1=0;
 volatile uint8_t contador2=0;
+//Variables para el desarrollo del juego
+volatile uint8_t estadoanterior1=0;
+volatile uint8_t estadoanterior2=0;
+
+
 uint8_t winner=0;
 // ===== Prototipos =====
 void setup(void);
@@ -71,14 +76,24 @@ ISR(PCINT0_vect)
 ISR(PCINT1_vect)
 {
 	if (state==2){
-		if (!(PINC & (1 << PINC4)))
+		
+		if (!(PINC & (1 << PINC4))&&estadoanterior1==0)
 		{
+			estadoanterior1=1;
 			contador1++; // Acción cuando A4 se presiona
 		}
-
-		if (!(PINC & (1 << PINC5)))
+		else if (PINC&(1<<PINC4)&&estadoanterior1==1) // cuando A4 se suelta
 		{
+			estadoanterior1=0;
+		}
+		if (!(PINC & (1 << PINC5))&&estadoanterior2==0)
+		{
+			estadoanterior2=1;
 			contador2++; // Acción cuando A5 se presiona
+		}
+		else if (PINC&(1<<PINC5)&&estadoanterior2==1)
+		{
+			estadoanterior2=0;
 		}
 	}
 }
