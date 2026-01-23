@@ -5,7 +5,6 @@
  * Author : juana
  */ 
 
-
 //PINOUT
 /*
 	RS-->PORTC0
@@ -14,24 +13,23 @@
 	D0-D7 --> PORD0-PORTD7
 */
 
-//Librerías y definciones
+//Libreriías y definiciones
+#define F_CPU 16000000UL
 #include <avr/io.h>
-#include <avr/interrupt.h>
 #include <util/delay.h>
-#include <stdint.h>
+#include <avr/interrupt.h>
 #include "ADC_Library/ADC.h"
-
+#include "LCD/LCD8bits.h"
+	
 #define  Vref_5V 5
 #define ON 1
 #define OFF 0
 
 #define prescaler_ADC 128
-
-#define periodo 39999
 #define comparador 2
 
 /*** Variables globales ***/
-volatile uint8_t canal_ADC=0;	// =0 --> D10/OC1B - !=0 --> D9/OC1A
+volatile uint8_t canal_ADC=3;	// =0 --> D10/OC1B - !=0 --> D9/OC1A
 volatile uint8_t valorADC = 0;	//Lectura del adc
 volatile uint8_t POT1=0;
 volatile uint8_t POT2=0;
@@ -42,6 +40,7 @@ void setup();
 
 int main(void)
 {
+	setup();
     /* Replace with your application code */
     while (1) 
     {
@@ -65,9 +64,10 @@ void setup(){
 	   //Puerto C
 	   DDRC |= (1<<PORTC0)|(1<<PORTC1);		//Salidas
 	   PORTC &= ~((1<<PORTC0)|(1<<PORTC1));
+	   Lcd_Init8bits();
 	   
 	   ADC_init(ON, Vref_5V,canal_ADC,ON,prescaler_ADC);
-	   
+	   sei();
 	   
 }
 
@@ -91,8 +91,8 @@ ISR(ADC_vect){
 	}
 	
 	//Multiplexeo de canales de ADC para la proxuma lectura.
-	if (canal_ADC>=1){
-		canal_ADC=0;
+	if (canal_ADC>=4){
+		canal_ADC=3;
 	}
 	else {
 		canal_ADC++;	//pasamos al siguiente canal

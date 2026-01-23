@@ -10,7 +10,7 @@
 #define INCFILE1_H_
 #include <avr/io.h>
 #include <stdint.h>
-#define F_CPU 16000000
+#define F_CPU 16000000UL
 #include <util/delay.h>
 
 void Lcd_Init8bits();

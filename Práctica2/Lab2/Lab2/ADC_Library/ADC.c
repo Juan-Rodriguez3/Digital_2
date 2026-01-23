@@ -1,8 +1,8 @@
-#define F_CPU 16000000
 
+#define F_CPU 16000000UL
 #include <avr/io.h>
-#include <avr/interrupt.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 #include <stdint.h>
 
 void ADC_init(uint8_t justi, uint8_t V_ref, uint8_t canal, uint8_t interrupt, uint8_t prescaler){
