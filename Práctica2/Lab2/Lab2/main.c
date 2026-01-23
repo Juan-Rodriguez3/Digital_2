@@ -42,6 +42,10 @@ int main(void)
 {
 	setup();
     /* Replace with your application code */
+	
+	 // Posicionar cursor y escribir
+	 Lcd_Set_Cursor(0, 0);            // Línea 1, columna 0
+	 Lcd_Write_String("Hola");
     while (1) 
     {
     }
@@ -64,8 +68,12 @@ void setup(){
 	   //Puerto C
 	   DDRC |= (1<<PORTC0)|(1<<PORTC1);		//Salidas
 	   PORTC &= ~((1<<PORTC0)|(1<<PORTC1));
-	   Lcd_Init8bits();
 	   
+	   //Inicializar el LCD
+	   Lcd_Init8bits();
+	   Lcd_Clear();
+	   
+	   //Inicializar el ADC
 	   ADC_init(ON, Vref_5V,canal_ADC,ON,prescaler_ADC);
 	   sei();
 	   

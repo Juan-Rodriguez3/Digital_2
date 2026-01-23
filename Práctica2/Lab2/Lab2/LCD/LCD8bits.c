@@ -34,7 +34,47 @@ void Lcd_Init8bits()
 	inicio(0x06);  //Comando que indica el fabricante del LCD, comenzar a almacenar en DDRAM
 }
 
+void Lcd_Set_Cursor(char a, char b)
+{
+	if(a == 0)
+	inicio(0x80 + b);  //Posicionarse en la linea 1 y se suma la columna
+	
+	else if(a == 1)
+	inicio(0xC0 + b);  //Posicionarse en la linea 2  y se suma la columna
+}
 
+void Lcd_Clear()    //Limpia la pantalla LCD
+{
+	inicio(1);  //Comando dado por el fabricante de la LCD
+}
+
+void Lcd_Write_Char(char data)
+{
+	PORTC |= (1<<PORTC0);        // RS = 1, se le indica que esta en modo caracter
+	dato_a_mostrar(data);             //Escribir el caracter
+	PORTC |= (1<<PORTC1);       // E = 1, enviar el dato
+	_delay_ms(1);
+	PORTC &= ~(1<<PORTC1);    // E = 0
+	_delay_ms(1);
+}
+
+
+void Lcd_Write_String(char *a) //Usando punteros, ya que, estos almacenan por ejemplo *dato = hola\0, al final siempre llevan un caracter nulo
+{
+	int i;
+	for(i=0; a[i]!='\0'; i++)   //Se recorre todo el puntero, hasta que el valor sea nulo
+	Lcd_Write_Char(a[i]);
+}
+
+void Lcd_Shift_Right() //Activa el corrimiento hacia la derecha
+{
+	inicio(0x1C);    //Comando brindado por el fabricante de la LCD
+}
+
+void Lcd_Shift_Left()    //Activa el corrimiento hacia la izquierda
+{
+	inicio(0x18);  //Comando brindado por el fabricante de la LCD
+}
 
 
 
