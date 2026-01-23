@@ -48,15 +48,23 @@ int main(void)
 	setup();
     /* Replace with your application code */
 	
+	/*Prueba de escritura del LCD
 	 // Posicionar cursor y escribir
 	 Lcd_Set_Cursor(0, 0);            // Línea 1, columna 0
 	 Lcd_Write_String("Hola");
+	 */
+	actualizarLCD();
     while (1) 
     {
 		
-		actualizarVoltaje(lista1,POT1);
-		actualizarLista(lista1,POT1);
-		actualizarLCD();
+		 if (POT1 != prePOT1)
+		 {
+			 prePOT1 = POT1;
+			 actualizarVoltaje(lista1,POT1);
+			 actualizarLista(lista1,POT1);
+			 actualizarLCD();
+		 }
+		
 		_delay_ms(100);   // ?? delay al final del ciclo
 		
     }
