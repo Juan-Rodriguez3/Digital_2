@@ -10,7 +10,12 @@
 
 void dato_a_mostrar(char a)
 {
-	PORTD = a;
+	//PORTD = a;
+	// Bits D0 y D1 ? PORTB0 y PORTB1
+	PORTB = (PORTB & 0xFC) | (a & 0x03);
+
+	// Bits D2–D7 ? PORTD2–PORTD7
+	PORTD = (PORTD & 0x03) | (a & 0xFC);
 }
 
 void inicio(char a)

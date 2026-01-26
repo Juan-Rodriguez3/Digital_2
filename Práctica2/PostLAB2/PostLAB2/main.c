@@ -84,12 +84,15 @@ int main(void)
 
 void setup(){
 	 cli();
-	   UCSR0B = 0;                //Comunicaci?n serial
+	   //UCSR0B = 0;                //Comunicaci?n serial
 	   
 	   //Puerto D
 	   
-	   DDRD = 0xFF;		//Salidas
+	   DDRD |= (1<<PORTD2)|(1<<PORTD3)|(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7);		//Salidas
 	   PORTD =0x00;		//
+	   
+	   DDRB |= (1<<PORTB0)|(1<<PORTB1); //Salidas 
+	   PORTB &= ~((1<<PORTB0)|(1<<PORTB1)); //Setear en cero 
 	   
 	   //Puerto C
 	   DDRC |= (1<<PORTC0)|(1<<PORTC1);		//Salidas
