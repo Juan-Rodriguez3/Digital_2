@@ -41,6 +41,7 @@ char lista2[8] = {'0', '0', '0', '0'};
 /*** Prototipos ***/
 void setup();
 void actualizarVoltaje(char *lista, uint8_t valor);
+void actualizarVoltajeS2(char *lista, uint8_t valor);
 void actualizarLCD(void);
 void actualizarLista(char *lista, int valor);
 
@@ -128,6 +129,22 @@ void actualizarVoltaje(char *lista, uint8_t valor) {
 	}
 }
 
+void actualizarVoltajeS2(char *lista, uint8_t valor)
+{
+	uint16_t voltaje2;
+
+	// Convertir de 0–255 a 0–1023
+	voltaje2 = (valor * 1023UL) / 255UL;
+
+	// Convertir número a ASCII (4 dígitos)
+	lista[0] = '0' + ((voltaje2/1000));            // millares
+	lista[1] = '0' + ((voltaje2 / 100) % 10);      // centenas
+	lista[2] = '0' + ((voltaje2 / 10) % 10);       // decenas
+	lista[3] = '0' + (voltaje2 % 10);              // unidades
+	lista[4] = '\0';                               // fin de string
+}
+
+
 void actualizarLista(char *lista, int valor) {
 	lista[0] = '0' + (valor / 100);
 	lista[1] = '0' + ((valor / 10) % 10);
@@ -144,7 +161,7 @@ void actualizarLCD(void) {
 	
 	// Actualizar las cadenas con los valores actuales
 	actualizarVoltaje(lista1, POT1);
-	actualizarVoltaje(lista2,POT2);
+	actualizarVoltajeS2(lista2,POT2);
 
 	// Mostrar los valores en la LCD
 	Lcd_Set_Cursor(1, 1);
