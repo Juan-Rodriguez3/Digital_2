@@ -1,4 +1,4 @@
-/*
+/*/*
  * Lab2.c
  *
  * Created: 1/22/2026 4:12:06 PM
@@ -13,7 +13,7 @@
 	D0-D7 --> PORD0-PORTD7
 */
 
-//Libreriías y definiciones
+//Libreri?as y definiciones
 #define F_CPU 16000000UL
 #include <avr/io.h>
 #include <util/delay.h>
@@ -48,11 +48,11 @@ int main(void)
 	setup();
     /* Replace with your application code */
 	
-	/*Prueba de escritura del LCD
+	//Prueba de escritura del LCD
 	 // Posicionar cursor y escribir
-	 Lcd_Set_Cursor(0, 0);            // Línea 1, columna 0
+	 Lcd_Set_Cursor(0, 0);            // L?nea 1, columna 0
 	 Lcd_Write_String("Hola");
-	 */
+	 
 	actualizarLCD();
     while (1) 
     {
@@ -60,8 +60,7 @@ int main(void)
 		 if (POT1 != prePOT1)
 		 {
 			 prePOT1 = POT1;
-			 actualizarVoltaje(lista1,POT1);
-			 actualizarLista(lista1,POT1);
+			 
 			 actualizarLCD();
 		 }
 		
@@ -77,7 +76,7 @@ int main(void)
 
 void setup(){
 	 cli();
-	   UCSR0B = 0;                //Comunicación serial
+	   UCSR0B = 0;                //Comunicaci?n serial
 	   
 	   //Puerto D
 	   
@@ -110,7 +109,8 @@ void actualizarVoltaje(char *lista, uint8_t valor) {
 		lista[3] = '0' + (dec_part % 10);
 		lista[4] = 'V';
 		lista[5] = '\0';
-		} else {
+		} 
+		else {
 		lista[0] = '0' + (int_part / 10);
 		lista[1] = '0' + (int_part % 10);
 		lista[2] = '.';
@@ -146,7 +146,7 @@ void actualizarLCD(void) {
 ISR(ADC_vect){
 	
 	//Guardamos el valor de ADC
-	valorADC = ADCH;        // Leemos solo ADCH por justificación izquierda
+	valorADC = ADCH;        // Leemos solo ADCH por justificaci?n izquierda
 	
 	//Actualizamos el DutyCycle dependiendo de que canal se haya leido
 	switch(canal_ADC){
