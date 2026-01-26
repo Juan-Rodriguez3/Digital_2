@@ -29,7 +29,7 @@
 #define comparador 2
 
 /*** Variables globales ***/
-volatile uint8_t canal_ADC=3;	// =0 --> D10/OC1B - !=0 --> D9/OC1A
+volatile uint8_t canal_ADC=2;	// =0 --> D10/OC1B - !=0 --> D9/OC1A
 volatile uint8_t valorADC = 0;	//Lectura del adc
 volatile uint8_t POT1, prePOT1=0;
 volatile uint8_t POT2=0;
@@ -48,14 +48,16 @@ int main(void)
 	setup();
     /* Replace with your application code */
 	
-	//Prueba de escritura del LCD
+	/* 
+	  //Prueba de escritura del LCD
 	 // Posicionar cursor y escribir
 	 Lcd_Set_Cursor(0, 0);            // L?nea 1, columna 0
 	 Lcd_Write_String("Hola");
-	 
+	 */
 	actualizarLCD();
     while (1) 
     {
+	
 		
 		 if (POT1 != prePOT1)
 		 {
@@ -150,10 +152,10 @@ ISR(ADC_vect){
 	
 	//Actualizamos el DutyCycle dependiendo de que canal se haya leido
 	switch(canal_ADC){
-		case 3:   // ADC3 = PC3
+		case 2:   // ADC3 = PC3
 		POT1 = valorADC;
 		break;
-		case 4:   // si luego usas otro pot
+		case 3:   // si luego usas otro pot
 		POT2 = valorADC;
 		break;
 		default:
@@ -162,8 +164,8 @@ ISR(ADC_vect){
 
 	
 	//Multiplexeo de canales de ADC para la proxuma lectura.
-	if (canal_ADC>=4){
-		canal_ADC=3;
+	if (canal_ADC>=3){
+		canal_ADC=2;
 	}
 	else {
 		canal_ADC++;	//pasamos al siguiente canal

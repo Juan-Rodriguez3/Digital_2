@@ -8,6 +8,11 @@
 	D0-D7 --> PORD0-PORTD7
 */
 
+void dato_a_mostrar(char a)
+{
+	PORTD = a;
+}
+
 void inicio(char a)
 {
 	PORTC &= ~(1<<PORTC0);  //RS = 0, se le indica que es modo comando
@@ -18,10 +23,7 @@ void inicio(char a)
 	_delay_ms(1);
 }
 
-void dato_a_mostrar(char a)
-{
-	PORTD = a;
-}
+
 
 
 void Lcd_Init8bits()
