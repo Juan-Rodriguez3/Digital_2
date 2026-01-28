@@ -20,6 +20,7 @@
 #include <avr/interrupt.h>
 #include "ADC/ADC.h"
 #include "LCD/LCD8bits.h"
+#include "UART/UART_Library.h"
 	
 #define  Vref_5V 5
 #define ON 1
@@ -32,6 +33,9 @@
 volatile uint8_t canal_ADC=2;	// =0 --> D10/OC1B - !=0 --> D9/OC1A
 volatile uint8_t valorADC = 0;	//Lectura del adc
 volatile uint8_t POT1,POT2, prePOT1, prePOT2=0;
+volatile uint8_t contador=0;
+volatile char dato_CN;
+volatile uint8_t flag_envio;
 
 
 char lista1[8] = {'0', '0', '0', '0'};
@@ -64,7 +68,6 @@ int main(void)
 		 if (POT1 != prePOT1)
 		 {
 			 prePOT1 = POT1;	//Actualizar el valor actual de pot1 para futura comparación
-			 
 			 actualizarLCD();
 		 }
 		 else if (POT2 != prePOT2){
@@ -72,7 +75,7 @@ int main(void)
 			 actualizarLCD();
 		 }
 			
-		_delay_ms(100);   // ?? delay al final del ciclo
+		_delay_ms(50);   // ?? delay al final del ciclo
 		
     }
 }
@@ -104,6 +107,7 @@ void setup(){
 	   
 	   //Inicializar el ADC
 	   ADC_init(ON, Vref_5V,canal_ADC,ON,prescaler_ADC);
+	   initUART_9600();
 	   sei();
 	   
 }
@@ -157,21 +161,28 @@ void actualizarLista(char *lista, int valor) {
 
 void actualizarLCD(void) {
 	Lcd_Clear();  // Limpiar pantalla
-	Lcd_Set_Cursor(0, 1);
+	Lcd_Set_Cursor(0, 0);
 	Lcd_Write_String("S1:");  // Escribir etiqueta de Sensor 1
-	Lcd_Set_Cursor(0, 7);
+	Lcd_Set_Cursor(0, 6);
 	Lcd_Write_String("S2:");  // Escribir etiqueta de Sensor 1
+	Lcd_Set_Cursor(0, 11);
+	Lcd_Write_String("Conta");  // Escribir etiqueta de Sensor 1
 	
 	// Actualizar las cadenas con los valores actuales
 	actualizarVoltaje(lista1, POT1);
 	actualizarVoltajeS2(lista2,POT2);
+	
+	
 
 	// Mostrar los valores en la LCD
-	Lcd_Set_Cursor(1, 1);
+	Lcd_Set_Cursor(1, 0);
 	Lcd_Write_String(lista1);
-	Lcd_Set_Cursor(1, 7);
+	Lcd_Set_Cursor(1, 6);
 	Lcd_Write_String(lista2);
+	Lcd_Set_Cursor(1,11);
 }
+
+
 
 
 /***Subrutinas Interrupt***/
@@ -204,6 +215,23 @@ ISR(ADC_vect){
 	//Reconfiguracion del ADC
 	ADC_init(ON, Vref_5V,canal_ADC,ON,prescaler_ADC);
 }
+
+ISR(USART_RX_vect)
+{
+	//Recibimos el dato de la computadora
+	dato_CN=UDR0;
+	if (dato_CN == '+')
+	{
+		contador++;           // Acción "+"
+		flag_envio=1;
+	}
+	else if (dato_CN == '-')
+	{
+		contador--;           // Acción "-"
+		flag_envio=1;
+	}
+}
+
 
 
 

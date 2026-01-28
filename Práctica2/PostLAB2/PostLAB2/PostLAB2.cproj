@@ -135,10 +135,17 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="UART\UART_Library.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="UART\UART_Library.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LCD" />
     <Folder Include="ADC" />
+    <Folder Include="UART" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
