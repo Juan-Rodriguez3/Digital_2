@@ -40,6 +40,7 @@ volatile uint8_t flag_envio;
 
 char lista1[8] = {'0', '0', '0', '0'};
 char lista2[8] = {'0', '0', '0', '0'};
+char lista3[8] = {'0', '0', '0', '0'};
 
 
 /*** Prototipos ***/
@@ -47,7 +48,7 @@ void setup();
 void actualizarVoltaje(char *lista, uint8_t valor);
 void actualizarVoltajeS2(char *lista, uint8_t valor);
 void actualizarLCD(void);
-void actualizarLista(char *lista, int valor);
+void actualizarContador(char *lista, int valor);
 
 int main(void)
 {
@@ -74,13 +75,36 @@ int main(void)
 			 prePOT2 = POT2;	//Actualizar el valor actual de pot2 para futura comparación
 			 actualizarLCD();
 		 }
+		 
+		 switch (flag_envio) {
+			 case 1:
+			 // actualizar el contador en la pantalla
+			 actualizarLCD();
+			 flag_envio=0;
+			 break;
+			 case 2:
+			 // Imprimir en la terminal los valores de S1, S2 y S3
+			 writeString("S1: ");
+			 writeString(lista1);
+			 writeString("\n");
+			 writeString("S2: ");
+			 writeString(lista2);
+			 writeString("\n");
+			 writeString("S3: ");
+			 writeString(lista3);
+			 writeString("\n");
+			 flag_envio=0;
+			 break;
+
+			 default:
+			 // código si no coincide
+			 break;
+		 }
 			
 		_delay_ms(50);   // ?? delay al final del ciclo
 		
     }
 }
-
-
 
 
 /***Subrutinas NON-Interrupt***/
@@ -152,11 +176,11 @@ void actualizarVoltajeS2(char *lista, uint8_t valor)
 }
 
 
-void actualizarLista(char *lista, int valor) {
-	lista[0] = '0' + (valor / 100);
-	lista[1] = '0' + ((valor / 10) % 10);
-	lista[2] = '0' + (valor % 10);
-	lista[3] = '\0';
+void actualizarContador(char *lista, int valor) {
+	lista[0] = '0' + (valor / 100);		//centenas
+	lista[1] = '0' + ((valor / 10) % 10);	//decenas
+	lista[2] = '0' + (valor % 10);			//unidades
+	lista[3] = '\0';						// salto
 }
 
 void actualizarLCD(void) {
@@ -166,11 +190,12 @@ void actualizarLCD(void) {
 	Lcd_Set_Cursor(0, 6);
 	Lcd_Write_String("S2:");  // Escribir etiqueta de Sensor 1
 	Lcd_Set_Cursor(0, 11);
-	Lcd_Write_String("Conta");  // Escribir etiqueta de Sensor 1
+	Lcd_Write_String("S3:");  // Escribir etiqueta de Sensor 1
 	
 	// Actualizar las cadenas con los valores actuales
 	actualizarVoltaje(lista1, POT1);
 	actualizarVoltajeS2(lista2,POT2);
+	actualizarContador(lista3, contador);
 	
 	
 
@@ -180,9 +205,8 @@ void actualizarLCD(void) {
 	Lcd_Set_Cursor(1, 6);
 	Lcd_Write_String(lista2);
 	Lcd_Set_Cursor(1,11);
+	Lcd_Write_String(lista3);
 }
-
-
 
 
 /***Subrutinas Interrupt***/
@@ -227,12 +251,10 @@ ISR(USART_RX_vect)
 	}
 	else if (dato_CN == '-')
 	{
-		contador--;           // Acción "-"
+		contador--;			// Acción "-"
 		flag_envio=1;
 	}
+	else if (dato_CN == '1'){
+		flag_envio=2;
+	}
 }
-
-
-
-
-
