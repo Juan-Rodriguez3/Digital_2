@@ -1,3 +1,22 @@
+/* LAB3.c
+ *
+ * Created: 1/28/2026 11:21:06 PM
+ * Juan Rodriguez - 221593
+ * Gerardo Lopez -
+ * Programa para SPI
+ */
+
+/*
+    Para este laboratorio se utilizo el siguiente Pinout
+    Master:
+    LED0-LED1 --> PB0-PB1
+    LED2-LED7 --> PD2-PD7
+    Slave:
+    POT1,POT2 --> PC6-PC7
+    LED0-LED1 --> PB0-PB1
+    LED2-LED7 --> PD2-PD7
+*/
+
 /*
  * LAB3.c
  *
@@ -52,20 +71,20 @@ int main(void)
 		if(imprimir==1){
 			writeString("POT1: ");
 			UART_sendUint8(POT1); //Escribir en la terminal el valor del POT1
-			writeString("\n");
-			SPI_write('b');	//Pedir el valor del pot2
+			writeString("       ");
+			SPI_write('a');	//Pedir el valor del pot2
 			imprimir=0;		//Esperar dato para volver a imprimir
 		}
 		else if (imprimir==2){
 			writeString("POT2: ");
 			UART_sendUint8(POT2); //Escribir en la terminal el valor del POT1
 			writeString("\n");
-			SPI_write('a');	//Volver a pedir el valor del POT1
+			SPI_write('b');	//Volver a pedir el valor del POT1
 			imprimir=0;		//Esperar dato para volver a imprimir
 		}
 		
 		
-		_delay_ms(10);
+		_delay_ms(100);
     }
 }
 
@@ -87,7 +106,7 @@ void refresh_PORT(uint8_t bus_data){
 	// Bits D0 y D1 --> PORTB0 y PORTB1
 	PORTB = (PORTB & 0xFC) | (bus_data & 0x03);
 
-	// Bits D2–D7 ? PORTD2–PORTD7
+	// Bits D2?D7 ? PORTD2?PORTD7
 	PORTD = (PORTD & 0x03) | (bus_data & 0xFC);
 }
 
@@ -106,6 +125,4 @@ ISR(SPI_STC_vect){
 	}
 }
 
-ISR(USART_RX_vect){
-	
-}
+
