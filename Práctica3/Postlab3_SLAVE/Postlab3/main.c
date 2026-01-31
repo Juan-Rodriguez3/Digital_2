@@ -152,7 +152,7 @@ ISR(SPI_STC_vect)
 
 		SPDR = ADCDos;
 	}
-	
+		
 }
 
 ISR(USART_RX_vect)

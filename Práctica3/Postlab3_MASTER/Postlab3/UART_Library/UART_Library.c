@@ -47,3 +47,35 @@ void initUART_9600(){
 	UCSR0C |= (1<<UCSZ00)|(1<<UCSZ01);	//Asincrono, deshabilitado el bit de paridad, un stop bit, 8 bits de datos.
 	UBRR0=103;	//UBBRR0=103; -> 9600 con frecuencia de 16MHz
 }
+
+uint8_t str_len(char *str){
+	uint8_t len = 0;
+
+	while (str[len] != '\0')
+	len++;
+
+	return len;
+}
+
+uint8_t str_to_uint8(char *str, uint8_t len, uint8_t *result)
+{
+	uint16_t valor = 0;
+
+	if (len == 0 || len > 3)
+	return 0;
+
+	for (uint8_t i = 0; i < len; i++)
+	{
+		if (str[i] < '0' || str[i] > '9')
+		return 0;
+
+		valor = valor * 10 + (str[i] - '0');
+
+		if (valor > 255)
+		return 0;  // overflow detectado
+	}
+
+	*result = (uint8_t)valor;
+	return 1;
+}
+
