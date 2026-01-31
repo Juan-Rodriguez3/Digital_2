@@ -1,22 +1,3 @@
-/* LAB3.c
- *
- * Created: 1/28/2026 11:21:06 PM
- * Juan Rodriguez - 221593
- * Gerardo Lopez -
- * Programa para SPI
- */
-
-/*
-    Para este laboratorio se utilizo el siguiente Pinout
-    Master:
-    LED0-LED1 --> PB0-PB1
-    LED2-LED7 --> PD2-PD7
-    Slave:
-    POT1,POT2 --> PC6-PC7
-    LED0-LED1 --> PB0-PB1
-    LED2-LED7 --> PD2-PD7
-*/
-
 /*
  * LAB3.c
  *
@@ -124,5 +105,3 @@ ISR(SPI_STC_vect){
 		imprimir=2;		//Imprimir el valor del pot2
 	}
 }
-
-
