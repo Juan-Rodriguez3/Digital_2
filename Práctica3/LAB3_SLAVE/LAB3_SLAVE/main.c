@@ -22,6 +22,9 @@ uint8_t ADCUno;
 uint8_t ADCDos;
 static uint8_t descartar = 1;
 char bit2string_buffer[4];
+volatile uint8_t modos=0;
+
+//Variable modos me ayudar a ver el problema del a y b
 
 
 int main(void)
@@ -38,7 +41,7 @@ void setup()
 {
 	cli();
 	initADC();
-	initUART();
+	//initUART();
 	SPI_init(1,0,0,0b00000010);
 	
 	DDRD |= (1<<2);
@@ -92,6 +95,14 @@ void wStr(char* strng)
 	}
 }
 
+void refresh_PORT(uint8_t bus_data){
+	// Bits D0 y D1 --> PORTB0 y PORTB1
+	PORTB = (PORTB & 0xFC) | (bus_data & 0x03);
+
+	// Bits D2?D7 ? PORTD2?PORTD7
+	PORTD = (PORTD & 0x03) | (bus_data & 0xFC);
+}
+
 void bit8_a_string(uint8_t bit8, char *str)
 {
 	uint8_t cienes = bit8 / 100;
@@ -134,6 +145,7 @@ ISR(ADC_vect)
 ISR(SPI_STC_vect)
 {
 	uint8_t msgIn = SPDR;
+	/*
 	bit8_a_string(ADCUno, bit2string_buffer);
 	wStr(bit2string_buffer);
 	wChar(' ');
@@ -142,19 +154,28 @@ ISR(SPI_STC_vect)
 	wChar(' ');
 	wChar(msgIn);
 	wChar(' ');
-	if (msgIn == 'a')
-	{
-		
-		SPDR = ADCUno;
-	}
-	else if (msgIn == 'b')
-	{
-
-		SPDR = ADCDos;
+	*/
+	if (msgIn = 'c'){
+		modos=1;
 	}
 	
+	if (modos==0){
+		
+		if (msgIn == 'a')
+		{
+			SPDR = ADCUno;
+		}
+		else if (msgIn == 'b')
+		{
+			SPDR = ADCDos;
+		}
+	}
+	else if (modos==1){
+		
+	}
 }
 
+/*
 ISR(USART_RX_vect)
 {
 	char msgIn = UDR0;
@@ -168,3 +189,4 @@ ISR(USART_RX_vect)
 		wStr("\n");
 	}
 }
+*/

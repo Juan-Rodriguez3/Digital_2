@@ -37,13 +37,14 @@ volatile uint8_t POT2=0;
 volatile uint8_t imprimir=0;
 
 //variables para parte 2
-volatile uint8_t length=0;
-volatile uint8_t caracter=0;
-volatile uint8_t flag_char=0;
-uint8_t flag_str=0;
+volatile uint8_t length   =0;
+volatile uint8_t caracter =0;;
+volatile uint8_t flag_str=0;
+volatile char string_recieved[MAX_LEN + 1]; // +1 para '\0'
+
 uint8_t dato_aprrobed=0;
-//volatile char string_recieved[MAX_LEN + 1]; // +1 para '\0'
-char str_save[MAX_LEN];
+char str_save[MAX_LEN+1];
+uint8_t str_approbed[MAX_LEN+1];
 
 
 uint8_t str_to_int=0;
@@ -62,21 +63,26 @@ int main(void)
 	//UART_sendUint8(entero); Prueba de libreria
     while (1) 
     {
-		if (flag_char){
-			flag_char=0;
-			if (length<(MAX_LEN+1)){
-				write(caracter);
-				str_save[length]=caracter;		//Guardar hasta un maximo de tres caracteres
-				if (length==3){
-					flag_str=1;			//Cadena lista para ser procesada
-					//writeString(str_save);
-				}
+		if (flag_str) {
+			flag_str = 0;
+			
+			for (uint8_t i = 0; i < MAX_LEN+1; i++) {
+				str_save[i] = string_recieved[i];
+			}
+			
+			dato_aprrobed= str_to_uint8(str_save, str_approbed);
+			if (dato_aprrobed==1){
+				
+				/*writeString("Cadena completa: ");
+				writeString(str_save);
+				writeString("\n");
+				*/
+				refresh_PORT(*str_approbed);
+				//SPI_write(*str_approbed);
+				length = 0;
+			}
 		}
 		
-}
-			
-		
-			/*
 		if(imprimir==1){
 			writeString("POT1: ");
 			UART_sendUint8(POT1); //Escribir en la terminal el valor del POT1
@@ -91,9 +97,8 @@ int main(void)
 			SPI_write('a');	//Volver a pedir el valor del POT1
 			imprimir=0;		//Esperar dato para volver a imprimir
 		}
-		*/
-		_delay_ms(100);
-    }
+		_delay_ms(50);
+	}
 }
 
 //******* Subrutinas NO-INterrupt ******//7
@@ -143,8 +148,21 @@ ISR(SPI_STC_vect){
 
 ISR(USART_RX_vect){
 	caracter = UDR0;	// Leer caracter enviado desde la terminal
-	flag_char=1;
-	//write(caracter);
-	length++;			//contador de caracteres
+	// Si ya hay una cadena lista, ignorar nuevos datos
+	if (flag_str) return;
+	
+	// Guardar carácter si hay espacio
+	if (length<MAX_LEN) {
+		string_recieved[length] = caracter;
+		length++;
+	}
+	
+	// Detectar delimitadores: ENTER o espacio
+	if (length==MAX_LEN) {
+		string_recieved[length] = '\0';   // terminar string
+		flag_str = 1;        // avisar al main
+		length = 0;              // preparar siguiente cadena
+		return;
+	}
 }
 

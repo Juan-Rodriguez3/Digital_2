@@ -57,23 +57,33 @@ uint8_t str_len(char *str){
 	return len;
 }
 
-uint8_t str_to_uint8(char *str, uint8_t len, uint8_t *result)
+uint8_t str_to_uint8(char *str,  uint8_t *result)
 {
 	uint16_t valor = 0;
-
-	if (len == 0 || len > 3)
+	
+	//Validar primer digito
+	if (str[0] < '0' || str[0] > '2')
 	return 0;
 
-	for (uint8_t i = 0; i < len; i++)
-	{
-		if (str[i] < '0' || str[i] > '9')
+	// 2? Validar segundo y tercer dígito
+	if (str[1] < '0' || str[1] > '9')
+	return 0;
+
+	if (str[2] < '0' || str[2] > '9')
+	return 0;
+
+	// 3? Si el primer dígito es '2', limitar a 255
+	if (str[0] == '2') {
+		if (str[1] > '5')
 		return 0;
-
-		valor = valor * 10 + (str[i] - '0');
-
-		if (valor > 255)
-		return 0;  // overflow detectado
+		if (str[1] == '5' && str[2] > '5')
+		return 0;
 	}
+	
+	
+	valor  = (str[0] - '0') * 100;
+	valor += (str[1] - '0') * 10;
+	valor += (str[2] - '0');
 
 	*result = (uint8_t)valor;
 	return 1;
