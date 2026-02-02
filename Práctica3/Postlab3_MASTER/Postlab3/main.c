@@ -39,6 +39,7 @@ volatile uint8_t imprimir=0;
 //variables para parte 2
 volatile uint8_t length=0;
 volatile uint8_t caracter=0;
+volatile uint8_t flag_char=0;
 uint8_t flag_str=0;
 uint8_t dato_aprrobed=0;
 //volatile char string_recieved[MAX_LEN + 1]; // +1 para '\0'
@@ -61,14 +62,18 @@ int main(void)
 	//UART_sendUint8(entero); Prueba de libreria
     while (1) 
     {
-		if (length<=MAX_LEN){
-			write(caracter);
-			str_save[length-1]=caracter;		//Guardar hasta un maximo de tres caracteres
-			if (length==3){
-				flag_str=1;			//Cadena lista para ser procesada
-				writeString(str_save);
-			}
+		if (flag_char){
+			flag_char=0;
+			if (length<(MAX_LEN+1)){
+				write(caracter);
+				str_save[length]=caracter;		//Guardar hasta un maximo de tres caracteres
+				if (length==3){
+					flag_str=1;			//Cadena lista para ser procesada
+					//writeString(str_save);
+				}
 		}
+		
+}
 			
 		
 			/*
@@ -138,6 +143,8 @@ ISR(SPI_STC_vect){
 
 ISR(USART_RX_vect){
 	caracter = UDR0;	// Leer caracter enviado desde la terminal
+	flag_char=1;
+	//write(caracter);
 	length++;			//contador de caracteres
 }
 
