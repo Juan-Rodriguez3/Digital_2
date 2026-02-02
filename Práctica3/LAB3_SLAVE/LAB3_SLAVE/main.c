@@ -15,8 +15,10 @@ void setup();
 void initADC();
 void initUART();
 void bit8_a_string(uint8_t bit8, char *str);
+void refresh_PORT(uint8_t bus_data);
 void wChar(char character);
 void wStr(char *strng);
+uint8_t msgIn=0;
 uint8_t contador_ADC = 0;
 uint8_t ADCUno;
 uint8_t ADCDos;
@@ -33,7 +35,7 @@ int main(void)
     /* Replace with your application code */
     while (1) 
     {
-
+		
     }
 }
 
@@ -43,6 +45,14 @@ void setup()
 	initADC();
 	//initUART();
 	SPI_init(1,0,0,0b00000010);
+	
+	//Puerto D
+	DDRD |= (1<<PORTD2)|(1<<PORTD3)|(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7);		//Salidas
+	PORTD &= ~((1<<PORTD2)|(1<<PORTD3)|(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7));
+	
+	//PUERTO B
+	DDRB |= (1<<PORTB0)|(1<<PORTB1);
+	PORTB &= ~((1<<PORTB0)|(1<<PORTB1));
 	
 	DDRD |= (1<<2);
 	PORTD &= ~(1<<PORTD2);
@@ -144,7 +154,7 @@ ISR(ADC_vect)
 
 ISR(SPI_STC_vect)
 {
-	uint8_t msgIn = SPDR;
+	msgIn = SPDR;
 	/*
 	bit8_a_string(ADCUno, bit2string_buffer);
 	wStr(bit2string_buffer);
@@ -155,9 +165,6 @@ ISR(SPI_STC_vect)
 	wChar(msgIn);
 	wChar(' ');
 	*/
-	if (msgIn = 'c'){
-		modos=1;
-	}
 	
 	if (modos==0){
 		
@@ -169,10 +176,17 @@ ISR(SPI_STC_vect)
 		{
 			SPDR = ADCDos;
 		}
+	}else if(modos==1) {
+		 
+			refresh_PORT(msgIn);
+			modos=0;
 	}
-	else if (modos==1){
-		
+	
+	
+	if (msgIn == 'c'){
+		modos=1;
 	}
+	
 }
 
 /*

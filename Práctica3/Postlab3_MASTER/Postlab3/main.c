@@ -45,10 +45,7 @@ volatile char string_recieved[MAX_LEN + 1]; // +1 para '\0'
 uint8_t dato_aprrobed=0;
 char str_save[MAX_LEN+1];
 uint8_t str_approbed[MAX_LEN+1];
-
-
 uint8_t str_to_int=0;
-
 //Prototipos
 void refresh_PORT(uint8_t bus_data);
 void setup();
@@ -60,6 +57,7 @@ int main(void)
     /* Replace with your application code */
 	setup();
 	SPI_write('a');		//le pido al esclavo que me mando el dato del POT1
+	SPI_write('H');
 	//UART_sendUint8(entero); Prueba de libreria
     while (1) 
     {
@@ -78,26 +76,30 @@ int main(void)
 				writeString("\n");
 				*/
 				refresh_PORT(*str_approbed);
-				//SPI_write(*str_approbed);
+				
+				SPI_write('c');
+				_delay_ms(1);
+				SPI_write(*str_approbed);
 				length = 0;
 			}
 		}
 		
 		if(imprimir==1){
 			writeString("POT1: ");
-			UART_sendUint8(POT1); //Escribir en la terminal el valor del POT1
+			UART_sendUint8(POT2); //Escribir en la terminal el valor del POT1
 			writeString("       ");
 			SPI_write('b');	//Pedir el valor del pot2
 			imprimir=0;		//Esperar dato para volver a imprimir
 		}
 		else if (imprimir==2){
 			writeString("POT2: ");
-			UART_sendUint8(POT2); //Escribir en la terminal el valor del POT1
+			UART_sendUint8(POT1); //Escribir en la terminal el valor del POT1
 			writeString("\n");
 			SPI_write('a');	//Volver a pedir el valor del POT1
 			imprimir=0;		//Esperar dato para volver a imprimir
 		}
-		_delay_ms(50);
+		
+		_delay_ms(10);
 	}
 }
 
