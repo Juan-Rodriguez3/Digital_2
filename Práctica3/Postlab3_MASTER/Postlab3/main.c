@@ -39,13 +39,10 @@ volatile uint8_t imprimir=0;
 //variables para parte 2
 volatile uint8_t length=0;
 volatile uint8_t caracter=0;
-volatile uint8_t flag_char=0;
+uint8_t flag_str=0;
 uint8_t dato_aprrobed=0;
-volatile uint8_t status=0;
-
-volatile uint8_t flag_str=0;
 //volatile char string_recieved[MAX_LEN + 1]; // +1 para '\0'
-char str_save[MAX_LEN+1];
+char str_save[MAX_LEN];
 
 
 uint8_t str_to_int=0;
@@ -64,94 +61,32 @@ int main(void)
 	//UART_sendUint8(entero); Prueba de libreria
     while (1) 
     {
-		
-		
-		switch(status){
-			case 0:
-			writeString("Estado cero");
-			//Los simbolos '+' y '-' sirviran para movernos entre estados
-			if (caracter=='+'){
-				status=1;	
-				writeString("Cambio a estado 1");	
-			}else if (caracter=='-'){
-				status=2;
-				writeString("Cambio a estado 2");	
-			}
-			
-			break;
-			
-			//Modo de contador de datos
-			case 1:
-			//Los simbolos '+' y '-' sirviran para movernos entre estados
-			if (caracter=='+'){
-				status=2;
-			}else if (caracter=='-'){
-				status=0;
-			}
-			
-			if (flag_char==1){
-				flag_char=0;
-				
-				if (caracter=='.'){
-					flag_str=1;
-					writeString("cadena guardada");
-				} else {
-					str_save[length]=caracter;
-				}
-				
-			}
-			
-			if (flag_str==1){
-				flag_str=0;
+		if (length<=MAX_LEN){
+			write(caracter);
+			str_save[length-1]=caracter;		//Guardar hasta un maximo de tres caracteres
+			if (length==3){
+				flag_str=1;			//Cadena lista para ser procesada
 				writeString(str_save);
-				writeString("\n");
-				
-				dato_aprrobed= str_to_uint8(str_save,MAX_LEN, &str_to_int);
-				
 			}
-			
-			
-			if (dato_aprrobed==1){
-				dato_aprrobed = 0;
-				refresh_PORT(str_to_int);//Imprimir en los leds
-			}
-			
-			break;
-			
-			//Modo que muestra los potenciometros
-			case 2:
-			//Los simbolos '+' y '-' sirviran para movernos entre estados
-			if (caracter=='+'){
-				status=0;
-			}else if (caracter=='-'){
-				status=1;
-			}
-			
-				/*
-			if(imprimir==1){
-				writeString("POT1: ");
-				UART_sendUint8(POT1); //Escribir en la terminal el valor del POT1
-				writeString("       ");
-				SPI_write('b');	//Pedir el valor del pot2
-				imprimir=0;		//Esperar dato para volver a imprimir
-			}
-			else if (imprimir==2){
-				writeString("POT2: ");
-				UART_sendUint8(POT2); //Escribir en la terminal el valor del POT1
-				writeString("\n");
-				SPI_write('a');	//Volver a pedir el valor del POT1
-				imprimir=0;		//Esperar dato para volver a imprimir
-			}
-			*/
-			break;
-			
-			default:
-			break;
 		}
+			
 		
-		
-		
-		
+			/*
+		if(imprimir==1){
+			writeString("POT1: ");
+			UART_sendUint8(POT1); //Escribir en la terminal el valor del POT1
+			writeString("       ");
+			SPI_write('b');	//Pedir el valor del pot2
+			imprimir=0;		//Esperar dato para volver a imprimir
+		}
+		else if (imprimir==2){
+			writeString("POT2: ");
+			UART_sendUint8(POT2); //Escribir en la terminal el valor del POT1
+			writeString("\n");
+			SPI_write('a');	//Volver a pedir el valor del POT1
+			imprimir=0;		//Esperar dato para volver a imprimir
+		}
+		*/
 		_delay_ms(100);
     }
 }
@@ -203,7 +138,6 @@ ISR(SPI_STC_vect){
 
 ISR(USART_RX_vect){
 	caracter = UDR0;	// Leer caracter enviado desde la terminal
-	flag_char=1;
-	length++;			//será el indice este contara la cantidad de elementos de la cadena
+	length++;			//contador de caracteres
 }
 
