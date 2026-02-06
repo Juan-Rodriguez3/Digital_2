@@ -25,7 +25,6 @@
 #define  Vref_5V 5
 #define ON 1
 #define OFF 0
-
 #define prescaler_ADC 128
 #define comparador 2
 

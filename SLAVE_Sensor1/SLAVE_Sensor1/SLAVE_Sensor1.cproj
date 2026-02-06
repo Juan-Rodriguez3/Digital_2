@@ -12,9 +12,9 @@
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>Proyecto_red_de_sensores</AssemblyName>
-    <Name>Proyecto_red_de_sensores</Name>
-    <RootNamespace>Proyecto_red_de_sensores</RootNamespace>
+    <AssemblyName>SLAVE_Sensor1</AssemblyName>
+    <Name>SLAVE_Sensor1</Name>
+    <RootNamespace>SLAVE_Sensor1</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -126,26 +126,19 @@
     <Compile Include="ADC_Libraries\ADC.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="I2C_Libraries\I2C.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="I2C_Libraries\I2C.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="UART_libraries\UART_Library.c">
+    <Compile Include="UART_Libraries\UART_Library.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="UART_libraries\UART_Library.h">
+    <Compile Include="UART_Libraries\UART_Library.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="I2C_Libraries" />
     <Folder Include="ADC_Libraries" />
-    <Folder Include="UART_libraries" />
+    <Folder Include="UART_Libraries" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

@@ -15,7 +15,6 @@
 
 #include <avr/io.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 //Libreria para configurar el ATMega328 para comunicacion I2C
 
@@ -28,7 +27,7 @@ uint8_t I2C_Start(void);									//Funcion para iniciar conversacion (el Master 
 uint8_t I2C_repeatedStart(void);							//Funcion para seguir conversacion (el master escucha)
 void I2C_stop(void);										//Funcion para parar comunicacion
 uint8_t I2C_write(uint8_t dato);							//Funcion para escribir
-uint8_t I2C_read(uint8_t *buffer, uint8_t ack);				//funcion para leer dato
+uint8_t I2C_read(uint8_t buffer, uint8_t ack);				//funcion para leer dato
 
 
 

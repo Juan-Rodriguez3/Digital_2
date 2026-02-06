@@ -5,11 +5,9 @@
  * Gerardo Lopez -
  *	Digital 2 - Seccion 11
  */ 
-#include "I2C.h"
 
 void I2C_init_Master(uint8_t prescaler, unsigned long CLK){
 	//Opciones de prescaler 1, 4,16,64.
-	DDRC &= ~((1<<DDC4)|(1<<DDC5));
 	switch(prescaler){
 		case 1:
 		TWSR &= ~((1<<TWPS0)|(1<<TWPS1));
@@ -33,11 +31,10 @@ void I2C_init_Master(uint8_t prescaler, unsigned long CLK){
 	TWCR |= (1<<TWEN); //Activar comunicacion I2C
 }
 
-void I2C_init_Slave(uint8_t address)
-{
-	DDRC &= ~((1<<DDC4)|(1<<DDC5));
+void I2C_init_Slave(uint8_t address){
+	DDRC &= ~((1<<DDC4)(1<<DDC5));
 	
-	TWAR = address << 1;
+	TWAR = address <<1;
 	
 	//Se habilita la interfaz, ACK automatico, se habilita la iSR
 	
