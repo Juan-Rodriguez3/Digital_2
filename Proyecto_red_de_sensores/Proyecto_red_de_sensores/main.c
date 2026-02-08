@@ -19,19 +19,27 @@
 #include "ADC_Libraries/ADC.h"
 #include "UART_libraries/UART_Library.h"
 #include "LCD_Libraries/LCD8bits.h"
+
 #define slave1R (0x30<<1)|0x01
 #define slave1W (0x30<<1)& 0b11111110
 
 
-uint8_t direccion;
-uint8_t temp;
+
 uint8_t bufferI2C=0;
 
+/********* Listas para la función de LCD *********/
+char lista1[8] = {'0', '0', '0', '0'};
+char lista2[8] = {'0', '0', '0', '0'};
+char lista3[8] = {'0', '0', '0', '0'};
 
+/********* Prototipos *********/
 void refresh_PORT(uint8_t bus_data);
 void setup();
+void actualizarLCD();
+void actualizar_datos_slave(uint8_t addressW, uint8_t addressR ,uint8_t dato, char comando);
+void actualizarS1(char *lista, uint8_t dato);
 
-
+/********* Funcion principal *********/
 int main(void)
 {
     /* Replace with your application code */
@@ -39,40 +47,9 @@ int main(void)
 	setup();
     while (1) 
     {
-		writeString("Inicio de comunicacion\n");
 		
-		if(!I2C_Start()) continue;
-		
-		
-		if (!I2C_write(slave1W)){
-			I2C_stop();
-			writeString("Fallo al iniciar\n");
-			continue;
-		}
-		
-		if(!I2C_write('R')){
-			I2C_stop();
-			writeString("Fallo al enviar\n");
-			continue;
-		}
-		
-		if (!I2C_repeatedStart()){
-			I2C_stop();
-			writeString("Fallo al reptir\n");
-			continue;
-		}
-		
-		if(!I2C_write(slave1R)){
-			I2C_stop();
-			writeString("fallo al escribir\n");
-			continue;
-		}
-		
-		I2C_read(&bufferI2C, 0);	//ACK		
-		I2C_stop();
-		
-		writeString("No hay fallo\n");
-		refresh_PORT(bufferI2C);
+		actualizar_datos_slave(slave1W, slave1R ,bufferI2C, 'R');
+		actualizarLCD();
 		
 		
 		_delay_ms(100);
@@ -80,7 +57,7 @@ int main(void)
     }
 }
 
-//Rutina para distribuir los datos de salida entre puertos
+/********* Subrutinas *********/
 void refresh_PORT(uint8_t bus_data){
 	// Bits D0 y D1 --> PORTB0 y PORTB1
 	PORTB = (PORTB & 0xFC) | (bus_data & 0x03);
@@ -101,5 +78,91 @@ void setup(){
 	
 	I2C_init_Master(1, 100000);
 	initUART_9600();
+	Lcd_Init8bits();
+	Lcd_Clear();
+	
 	sei();
 }
+
+//Funcion para comunicarse con el esclavo y actualizar los datos de los sensores
+//addressW es la dirrecion del esclavo para escribirle
+//addressR es la direccion del esclavo para leerlo
+//dato es el dato o lectura del sensor
+//comando es el caracter que enviara el Master al slave. (Instruccion que debe hacer)
+
+void actualizar_datos_slave(uint8_t addressW, uint8_t addressR ,uint8_t dato, char comando){
+	writeString("Inicio de comunicacion\n");
+	if(!I2C_Start()) return;
+	
+	if (!I2C_write(addressW)){
+		I2C_stop();
+		writeString("Fallo al iniciar\n");
+		return;
+	}
+	
+	if(!I2C_write(comando)){
+		I2C_stop();
+		writeString("Fallo al enviar\n");
+		return;
+	}
+	
+	if (!I2C_repeatedStart()){
+		I2C_stop();
+		writeString("Fallo al reptir\n");
+		return;
+	}
+	
+	if(!I2C_write(addressR)){
+		I2C_stop();
+		writeString("fallo al escribir\n");
+		return;
+	}
+	
+	I2C_read(&dato, 0);	//ACK
+	I2C_stop();
+	
+	writeString("No hay fallo\n");
+}
+
+void actualizarLCD() {
+	Lcd_Clear();  // Limpiar pantalla
+	Lcd_Set_Cursor(0, 0);
+	Lcd_Write_String("S1:");  // Escribir etiqueta de Sensor 1
+	Lcd_Set_Cursor(0, 6);
+	Lcd_Write_String("S2:");  // Escribir etiqueta de Sensor 2
+	Lcd_Set_Cursor(0, 11);
+	Lcd_Write_String("S3:");  // Escribir etiqueta de Sensor 3
+	
+	actualizarS1(lista1,bufferI2C);
+	
+	Lcd_Set_Cursor(0,0);
+	Lcd_Write_String(lista1);
+	
+	
+}
+
+void actualizarS1(char *lista, uint8_t dato){
+	float voltaje = (dato * 5.0) / 255.0;
+	uint16_t int_part = (uint16_t)voltaje;
+	uint16_t dec_part = (uint16_t)((voltaje - int_part) * 100);  // Dos decimales
+
+	if (int_part < 10) {
+		lista[0] = '0' + int_part;
+		lista[1] = '.';
+		lista[2] = '0' + (dec_part / 10);
+		lista[3] = '0' + (dec_part % 10);
+		lista[4] = 'V';
+		lista[5] = '\0';
+	}
+	else {
+		lista[0] = '0' + (int_part / 10);
+		lista[1] = '0' + (int_part % 10);
+		lista[2] = '.';
+		lista[3] = '0' + (dec_part / 10);
+		lista[4] = '0' + (dec_part % 10);
+		lista[5] = 'V';
+		lista[6] = '\0';
+	}
+}
+
+/********* Rutinas de interrupcion *********/

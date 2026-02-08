@@ -132,6 +132,12 @@
     <Compile Include="I2C_Libraries\I2C.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="LCD_Libraries\LCD8bits.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="LCD_Libraries\LCD8bits.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
@@ -145,6 +151,7 @@
   <ItemGroup>
     <Folder Include="I2C_Libraries" />
     <Folder Include="ADC_Libraries" />
+    <Folder Include="LCD_Libraries" />
     <Folder Include="UART_libraries" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />

@@ -26,6 +26,8 @@ void dato_a_mostrar(char a)
 
 void Lcd_Init8bits()
 {
+	DDRB |= (1<<PORTB2)|(1<<PORTB3);			//Configurar los puertos como salidas
+	
 	PORTB &= ~(1<<PORTB2);   //RS = 0, se le indica que es modo comando
 	PORTB &= ~(1<<PORTB3);   //E = 0
 	_delay_ms(20);     //Peque?os delay que indica el fabricante del LCD
@@ -83,6 +85,8 @@ void Lcd_Shift_Left()    //Activa el corrimiento hacia la izquierda
 {
 	inicio(0x18);  //Comando brindado por el fabricante de la LCD
 }
+
+
 
 
 
