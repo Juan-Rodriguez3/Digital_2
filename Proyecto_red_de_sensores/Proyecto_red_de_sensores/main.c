@@ -22,10 +22,13 @@
 
 #define slave1R (0x30<<1)|0x01
 #define slave1W (0x30<<1)& 0b11111110
+#define slave2R (0x40<<1)|0x01
+#define slave2W (0x40<<1)& 0b11111110
 
 
 
-uint8_t bufferI2C=0;
+uint8_t lectura_S1=0;
+uint8_t lectura_S2=0;
 
 /********* Listas para la función de LCD *********/
 char lista1[8] = {'0', '0', '0', '0'};
@@ -36,7 +39,7 @@ char lista3[8] = {'0', '0', '0', '0'};
 void refresh_PORT(uint8_t bus_data);
 void setup();
 void actualizarLCD();
-void actualizar_datos_slave(uint8_t addressW, uint8_t addressR ,uint8_t dato, char comando);
+void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, uint8_t sensor);
 void actualizarS1(char *lista, uint8_t dato);
 
 /********* Funcion principal *********/
@@ -45,14 +48,15 @@ int main(void)
     /* Replace with your application code */
 	
 	setup();
+	
+	Lcd_Clear();
+	
     while (1) 
     {
-		
-		actualizar_datos_slave(slave1W, slave1R ,bufferI2C, 'R');
+		actualizar_datos_slave(slave1W, slave1R,'R',0);
+		//actualizar_datos_slave(slave2W, slave2R , 'W', 1);
 		actualizarLCD();
-		
-		
-		_delay_ms(100);
+		_delay_ms(50);
 		
     }
 }
@@ -68,17 +72,20 @@ void refresh_PORT(uint8_t bus_data){
 
 void setup(){
 	cli();
+	
 	//Puerto D
 	DDRD |= (1<<PORTD2)|(1<<PORTD3)|(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7);		//Salidas
 	PORTD &= ~((1<<PORTD2)|(1<<PORTD3)|(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7));
 	
 	//PUERTO B
-	DDRB |= (1<<PORTB0)|(1<<PORTB1);
-	PORTB &= ~((1<<PORTB0)|(1<<PORTB1));
+	DDRB |= (1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3);
+	PORTB &= ~((1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3));
+
 	
+	Lcd_Init8bits();
 	I2C_init_Master(1, 100000);
 	initUART_9600();
-	Lcd_Init8bits();
+	
 	Lcd_Clear();
 	
 	sei();
@@ -90,7 +97,7 @@ void setup(){
 //dato es el dato o lectura del sensor
 //comando es el caracter que enviara el Master al slave. (Instruccion que debe hacer)
 
-void actualizar_datos_slave(uint8_t addressW, uint8_t addressR ,uint8_t dato, char comando){
+void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, uint8_t sensor){
 	writeString("Inicio de comunicacion\n");
 	if(!I2C_Start()) return;
 	
@@ -117,8 +124,16 @@ void actualizar_datos_slave(uint8_t addressW, uint8_t addressR ,uint8_t dato, ch
 		writeString("fallo al escribir\n");
 		return;
 	}
-	
-	I2C_read(&dato, 0);	//ACK
+	switch(sensor){
+		case 0:
+		I2C_read(&lectura_S1, 0);
+		break;
+		case 1:
+		I2C_read(&lectura_S2, 0);
+		break;
+		default:
+		break;
+	}
 	I2C_stop();
 	
 	writeString("No hay fallo\n");
@@ -128,15 +143,20 @@ void actualizarLCD() {
 	Lcd_Clear();  // Limpiar pantalla
 	Lcd_Set_Cursor(0, 0);
 	Lcd_Write_String("S1:");  // Escribir etiqueta de Sensor 1
+	
 	Lcd_Set_Cursor(0, 6);
 	Lcd_Write_String("S2:");  // Escribir etiqueta de Sensor 2
-	Lcd_Set_Cursor(0, 11);
+	/*Lcd_Set_Cursor(0, 11);
 	Lcd_Write_String("S3:");  // Escribir etiqueta de Sensor 3
+	*/
+	actualizarS1(lista1, lectura_S1);
+	actualizarS1(lista2,lectura_S2);
+	//actualizarS3(lista3,lectura_S3)
 	
-	actualizarS1(lista1,bufferI2C);
-	
-	Lcd_Set_Cursor(0,0);
+	Lcd_Set_Cursor(1,0);
 	Lcd_Write_String(lista1);
+	Lcd_Set_Cursor(1,6);
+	Lcd_Write_String(lista2);
 	
 	
 }

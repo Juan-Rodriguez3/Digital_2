@@ -1,13 +1,23 @@
 #include "LCD8bits.h"
 
-//PINOUT
+//PINOUT para que funcione esta librería
 /*
-	RS-->PB2
+	RS-->PORTB2
 	RW-->GND
-	E--> PB3
-	D0-D7 --> PORD0-PORTD7
+	E -->PORTB3
+	D0-D7 --> PORTD2-PORTD7 y PORTB0-PORTB1
 */
+void dato_a_mostrar(char a)
+{
+	//PORTD = a;
+	// Bits D0 y D1 ? PORTB0 y PORTB1
+	PORTB = (PORTB & 0xFC) | (a & 0x03);
 
+	// Bits D2–D7 ? PORTD2–PORTD7
+	PORTD = (PORTD & 0x03) | (a & 0xFC);
+}
+
+//Para mandar un comando
 void inicio(char a)
 {
 	PORTB &= ~(1<<PORTB2);  //RS = 0, se le indica que es modo comando
@@ -18,16 +28,8 @@ void inicio(char a)
 	_delay_ms(1);
 }
 
-void dato_a_mostrar(char a)
-{
-	PORTD = a;
-}
-
-
 void Lcd_Init8bits()
 {
-	DDRB |= (1<<PORTB2)|(1<<PORTB3);			//Configurar los puertos como salidas
-	
 	PORTB &= ~(1<<PORTB2);   //RS = 0, se le indica que es modo comando
 	PORTB &= ~(1<<PORTB3);   //E = 0
 	_delay_ms(20);     //Peque?os delay que indica el fabricante del LCD
@@ -37,7 +39,6 @@ void Lcd_Init8bits()
 	_delay_ms(5);
 	inicio(0x30);
 	_delay_ms(10);
-
 	inicio(0x38);  //Comando que indica el fabricante del LCD, usando la matriz de 5X8
 	inicio(0x0C);  //Comando que indica el fabricante del LCD, display encendido
 	inicio(0x01);  //Comando que indica el fabricante del LCD, Limpiar LCD
@@ -51,6 +52,7 @@ void Lcd_Set_Cursor(char a, char b)
 	
 	else if(a == 1)
 	inicio(0xC0 + b);  //Posicionarse en la linea 2  y se suma la columna
+	
 }
 
 void Lcd_Clear()    //Limpia la pantalla LCD
@@ -75,6 +77,7 @@ void Lcd_Write_String(char *a) //Usando punteros, ya que, estos almacenan por ej
 	for(i=0; a[i]!='\0'; i++)   //Se recorre todo el puntero, hasta que el valor sea nulo
 	Lcd_Write_Char(a[i]);
 }
+
 
 void Lcd_Shift_Right() //Activa el corrimiento hacia la derecha
 {
