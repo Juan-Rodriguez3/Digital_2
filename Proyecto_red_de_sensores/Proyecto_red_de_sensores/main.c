@@ -18,6 +18,7 @@
 #include "I2C_Libraries/I2C.h"
 #include "ADC_Libraries/ADC.h"
 #include "UART_libraries/UART_Library.h"
+#include "LCD_Libraries/LCD8bits.h"
 #define slave1R (0x30<<1)|0x01
 #define slave1W (0x30<<1)& 0b11111110
 
