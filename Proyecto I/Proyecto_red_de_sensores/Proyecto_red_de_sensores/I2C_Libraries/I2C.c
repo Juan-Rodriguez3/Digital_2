@@ -7,6 +7,7 @@
  */ 
 #include "I2C.h"
 
+
 void I2C_init_Master(uint8_t prescaler, unsigned long CLK){
 	//Opciones de prescaler 1, 4,16,64.
 	DDRC &= ~((1<<DDC4)|(1<<DDC5));
@@ -51,7 +52,7 @@ uint8_t I2C_Start(void){
 		Lo normal con comunicacion I2C es que el maestro este polliando y al esclavo se utilice las interrupciones.
 	*/
 	while (!(TWCR&(1<<TWINT)));	//Esperamos que ocurra evento con la bandera de TWCR
-	
+	writeString("Esperando a que inicie");
 	return ((TWSR & 0xF8)==0x08);	//Nos quedamos con los bits de estado
 	/*Porque 0x08? Porque ese es el comando o el codigo de estado que indica que se envio al condicion de inicio.
 	  Si se envio la condicion de inicio entonces esta funcion debe regresar un 1.
@@ -75,7 +76,9 @@ uint8_t I2C_repeatedStart(void){
 void I2C_stop(void){
 	TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN);	//Inicia la secuencia de parada
 	
-	while (TWCR & (1<<TWSTO));	//Esperamos que el bit se limpie
+	while (TWCR & (1<<TWSTO)){
+		writeString("Esperando a limpiar el bit\n");
+	}
 }	
 
 //Funcion para escribir									
@@ -115,8 +118,9 @@ uint8_t I2C_read(uint8_t *buffer, uint8_t ack){
 	estado = TWSR&0xF8;					//Nos quedamos con los bits de estado nuevamente
 	//Verificar si se recibio el dato ya sea con ACK o sin ACK
 	if (ack && estado != 0x50) return 0;
-	if (ack && estado != 0x58) return 0;
+	if (!ack && estado != 0x58) return 0;
 	
 	*buffer = TWDR; //obtenemos los resultados en el registro de datos
+	
 	return 1;
 }	

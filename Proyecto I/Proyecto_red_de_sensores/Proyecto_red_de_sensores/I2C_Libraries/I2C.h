@@ -16,6 +16,7 @@
 #include <avr/io.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\Proyecto I\Proyecto_red_de_sensores\Proyecto_red_de_sensores\UART_libraries/UART_Library.h"
 
 //Libreria para configurar el ATMega328 para comunicacion I2C
 

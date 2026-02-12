@@ -8,7 +8,7 @@
  */ 
 //Master
 
-#define F_CPU 16000000UL
+#define F_CPU 16000000
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -54,10 +54,12 @@ int main(void)
     while (1) 
     {
 		actualizar_datos_slave(slave1W, slave1R,'R', 0);
-		//actualizar_datos_slave(slave2W, slave2R , 'W', 1);
-		//actualizarLCD();
-		_delay_ms(50);
 		
+		actualizar_datos_slave(slave2W, slave2R , 'W', 1);
+		
+		actualizarLCD();
+		
+		_delay_ms(100);
     }
 }
 
@@ -99,6 +101,7 @@ void setup(){
 
 void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, uint8_t sensor){
 	writeString("Inicio de comunicacion\n");
+	
 	if(!I2C_Start()) return;
 	
 	if (!I2C_write(addressW)){
@@ -125,22 +128,25 @@ void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, u
 		return;
 	}
 	
+	writeString("Esperando Dato\n");
+	
+	
 	switch(sensor){
 		case 0:
-		I2C_read(&lectura_S1, 1);
-		I2C_stop();
+		I2C_read(&lectura_S1, 0);
+		writeString("Dato recibidio\n");
+		
 		break;
 		case 1:
-		I2C_read(&lectura_S2, 1);
-		I2C_stop();
+		I2C_read(&lectura_S2, 0);
+		writeString("Dato recibidio\n");
 		break;
 		default:
-		I2C_stop();
 		break;
 	}
+	I2C_stop();
 	
-	
-	writeString("No hay fallo\n");
+	writeString("comunicación terminada\n");
 }
 
 void actualizarLCD() {

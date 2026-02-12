@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <util/delay.h>
 #include "I2C_Libraries/I2C.h"
-
+//C:\Users\juana\Downloads\slave_S\slave2\slave2\main.c
 #define S2_Address 0x40
 
 uint8_t buffer = 0;
@@ -34,19 +34,17 @@ void wStr(char* strng);
 int main(void)
 {
     setup();
-	
     while (1) 
     {
-		
 		if (buffer == 'W')
 		{
-			PORTC |= (1<<PORTC2);
+			PINC |= (1<<PINC2);
 			buffer = 0;
 		}
 		//adc_a_string(ADCUno, string_buffer);
 		//wStr(string_buffer);
 		//wChar(TWDR);
-		_delay_ms(50);
+		_delay_ms(100);
     }
 }
 
@@ -67,7 +65,7 @@ void initADC()
 	ADMUX = 0;
 	ADMUX |= (1 << REFS0); //referencia = avcc
 	ADMUX |= (1 << ADLAR);
-	ADMUX |= (1<<MUX2)|(1<<MUX1); // ACtivando ADC6
+	ADMUX |= (1<<MUX2)|(1<<MUX1);
 	
 	ADCSRA = 0;
 	ADCSRA |= (1 << ADEN);
@@ -135,7 +133,6 @@ ISR(ADC_vect)
 }
 
 ISR(TWI_vect){
-	PORTC &= ~(1<<PORTC2);
 	uint8_t estado = TWSR & 0xFC; // Nos quedamos unicamente con los bits de estado TWI Status
 	switch(estado){
 		/*******************************/
@@ -146,7 +143,7 @@ ISR(TWI_vect){
 		//break;
 		case 0x70: // General Call
 		TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
-		wStr("General Call");
+		//wStr("General Call");
 		break;
 
 		case 0x80: // Dato recibido, ACK enviado
@@ -155,38 +152,37 @@ ISR(TWI_vect){
 		case 0x90: // Dato recibido General Call, ACK enviado
 		buffer = TWDR;
 		TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
-		wStr("Dato recibido General Call, ACK enviado");
+		//wStr("Dato recibido General Call, ACK enviado");
 		break;
 
 		/*******************************/
 		// Slave debe transmitir dato
 		/*******************************/
 		case 0xA8: // SLA+R recibido
-		wStr("SLA+R recibido");
+		//wStr("SLA+R recibido");
 		//break;
 		case 0xB8: // Dato transmitido, ACK recibido
 		TWDR = ADCUno;   // Dato a enviar
 		TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
-		wStr("Dato transmitido, ACK recibido");
+		//wStr("Dato transmitido, ACK recibido");
 		break;
 		
 		case 0xC0:
 		case 0xC8: // Ultimo dato transmitido
 		TWCR = 0;
 		TWCR = (1<<TWEN)|(1<<TWEA)|(1<<TWIE);
-		wStr("Ultimo dato transmitido");
+		//wStr("Ultimo dato transmitido");
 		break;
 
 		case 0xA0: // STOP o repeated START recibido
 		TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
-		wStr("STOP o repeated START recibido");
+		//wStr("STOP o repeated START recibido");
 		break;
 		
 		default:
 		TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
-		wStr("default");
+		//wStr("default");
 		break;
 	}
-}
-		
+}	
 
