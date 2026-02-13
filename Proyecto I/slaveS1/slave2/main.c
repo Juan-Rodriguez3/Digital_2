@@ -18,16 +18,26 @@
 
 #define S2_Address 0x30
 
+#define TIME_MAX 25000UL //microsegundos 
+
 uint8_t buffer = 0;
 uint8_t descartar = 1;
 volatile uint8_t ADCUno = 0;
 char string_buffer[6];
-void initADC();
+
+//Variables para sennsor 
+volatile uint16_t tiempo_ticks = 0;
+volatile uint8_t echo_state = 0;
+volatile uint8_t distancia_map = 0;
+
+//Funcion de 
+//void initADC();
 void setup();
 void initUART();
 void adc_a_string(uint8_t adc, char *str);
 void wChar(char character);
 void wStr(char* strng);
+void Start_sensor();
 
 
 
@@ -41,25 +51,82 @@ int main(void)
 			PIND |= (1<<PIND2);
 			buffer = 0;
 		}
+		
+		
+		if (!echo_state){
+			Start_sensor();	
+		}
+		else if (echo_state) {
+			// Flanco de bajada ? capturar tiempo
+			tiempo_ticks = TCNT1;
+
+			
+
+			// Convertir ticks a microsegundos:
+			// 1 tick = 0.5 µs
+			uint32_t tiempo_us = tiempo_ticks /2;
+
+			// Mapear a 0–255 (máx 25000 µs)
+			if (tiempo_us >= 25000)
+			tiempo_us = 25000;
+			echo_state = 0;
+			distancia_map = (tiempo_us * 255UL) / TIME_MAX;
+		}
+			//iniciar el sensor
 		//adc_a_string(ADCUno, string_buffer);
 		//wStr(string_buffer);
 		//wChar(TWDR);
-		_delay_ms(10);
+		_delay_ms(60);
     }
 }
+
+
 
 void setup()
 {
 	cli();
 	DDRD |= (1<<DDD2);
 	PORTD &= ~(1<<PORTD2);
-	initADC();
+	
+//*******Configuracion del sensor*******//	
+
+	//Configuración de pines del sensor HYSRF05
+	DDRC |= (1 << PORTC1);   // PC1 como salida (Trigger)
+	DDRC &= ~(1 << PORTC0);  // PC0 como entrada (Echo)
+	PORTC &= ~(1<<PORTC1);	//Cero
+	
+	 // Habilitar Pin Change Interrupt para PC0
+	 PCICR |= (1 << PCIE1);      // Habilita grupo PCINT[14:8]
+	 PCMSK1 |= (1 << PCINT8);    // PC0 = PCINT8
+
+	 // Timer1 normal mode
+	 TCCR1A = 0;
+	 TCCR1B = (1 << CS11);  // Prescaler 8
+	 
+//*******Configuracion del sensor*******//		
+	
+	//initADC();
 	I2C_init_Slave(S2_Address);
 	initUART();
 	
 	sei();
 }
 
+//Funcion para leer distancia con el sensor HY-SRF05
+void Start_sensor(){
+	//Asegurar que el PORTC1 este apagado
+	PORTC &= ~(1<<PORTC1);
+	_delay_us(2);
+	
+	//Enviar el pulso de 10uS para inicializar la lectura.
+	PORTC |= (1<<PORTC1);
+	_delay_us(10);
+	PORTC &= ~(1<<PORTC1);
+	
+	//Toca esperar el pulso de ECHO
+}
+
+/*
 void initADC()
 {
 	ADMUX = 0;
@@ -73,7 +140,7 @@ void initADC()
 	
 	ADCSRA |= (1 << ADSC);
 }
-
+*/
 void initUART()
 {
 	DDRD |= (1 << 1);
@@ -102,6 +169,8 @@ void adc_a_string(uint8_t adc, char *str)
 	str[5] = '\0';
 }
 
+
+
 void wChar(char character)
 {
 	while ((UCSR0A & (1 << UDRE0)) == 0);
@@ -116,7 +185,7 @@ void wStr(char* strng)
 	}
 }
 
-
+/*
 ISR(ADC_vect)
 {
 	
@@ -130,7 +199,18 @@ ISR(ADC_vect)
 	ADCUno = ADCH;
 	ADCSRA |= (1 << ADSC);
 }
+*/
+/*
+ISR(PCINT1_vect) {
 
+	if (PINC & (1 << PORTC0)) {
+		// Flanco de subida ? iniciar timer
+		TCNT1 = 0;
+		echo_state = 1;
+	}
+	
+}
+*/
 ISR(TWI_vect){
 	uint8_t estado = TWSR & 0xFC; // Nos quedamos unicamente con los bits de estado TWI Status
 	switch(estado){
@@ -155,7 +235,7 @@ ISR(TWI_vect){
 		/*******************************/
 		case 0xA8:
 		case 0xB8: // Dato transmitido, ACK recibido
-		TWDR = ADCUno;   // Dato a enviar
+		TWDR = distancia_map;   // Dato a enviar
 		TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
 		//wStr("Dato transmitido, ACK recibido");
 		break;

@@ -24,7 +24,7 @@
 #define slave1W (0x30<<1)& 0b11111110
 #define slave2R (0x40<<1)|0x01
 #define slave2W (0x40<<1)& 0b11111110
-
+#define velocity_sound 340
 
 
 uint8_t lectura_S1=0;
@@ -40,7 +40,9 @@ void refresh_PORT(uint8_t bus_data);
 void setup();
 void actualizarLCD();
 void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, uint8_t sensor);
-void actualizarS1(char *lista, uint8_t dato);
+void actualizarS1(char *lista, uint8_t cod_time);
+void actualizarS2(char *lista, uint8_t dato);
+
 
 /********* Funcion principal *********/
 int main(void)
@@ -160,7 +162,7 @@ void actualizarLCD() {
 	Lcd_Write_String("S3:");  // Escribir etiqueta de Sensor 3
 	*/
 	actualizarS1(lista1, lectura_S1);
-	actualizarS1(lista2,lectura_S2);
+	actualizarS2(lista2,lectura_S2);
 	//actualizarS3(lista3,lectura_S3)
 	
 	Lcd_Set_Cursor(1,0);
@@ -171,7 +173,26 @@ void actualizarLCD() {
 	
 }
 
-void actualizarS1(char *lista, uint8_t dato){
+void actualizarS1(char *lista, uint8_t cod_time){
+	uint8_t dec_time = cod_time*25/255;
+	uint16_t distancia = (dec_time*velocity_sound*1000 / 200);
+
+
+	if (distancia > 450)   // seguridad por si se pasa
+	distancia = 450;
+
+	uint8_t centenas = distancia / 100;
+	uint8_t decenas  = (distancia / 10) % 10;
+	uint8_t unidades = distancia % 10;
+
+	lista[0] = centenas + '0';
+	lista[1] = decenas + '0';
+	lista[2] = unidades + '0';
+	lista[3] = '\0';
+	
+}
+
+void actualizarS2(char *lista, uint8_t dato){
 	float voltaje = (dato * 5.0) / 255.0;
 	uint16_t int_part = (uint16_t)voltaje;
 	uint16_t dec_part = (uint16_t)((voltaje - int_part) * 100);  // Dos decimales
