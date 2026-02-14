@@ -154,7 +154,7 @@ void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, u
 void actualizarLCD() {
 	Lcd_Clear();  // Limpiar pantalla
 	Lcd_Set_Cursor(0, 0);
-	Lcd_Write_String("S1:");  // Escribir etiqueta de Sensor 1
+	Lcd_Write_String("S1:");  // Escribir etiqueta de Sensor 1		
 	
 	Lcd_Set_Cursor(0, 6);
 	Lcd_Write_String("S2:");  // Escribir etiqueta de Sensor 2
@@ -173,12 +173,11 @@ void actualizarLCD() {
 	
 }
 
-void actualizarS1(char *lista, uint8_t cod_time){
-	uint8_t dec_time = cod_time*25/255;
-	uint16_t distancia = (dec_time*velocity_sound*1000 / 200);
+void actualizarS1(char *lista, uint8_t cod_dist)
+{
+	uint16_t distancia = ((uint32_t)cod_dist * 448UL) / 255UL + 2;
 
-
-	if (distancia > 450)   // seguridad por si se pasa
+	if (distancia > 450)
 	distancia = 450;
 
 	uint8_t centenas = distancia / 100;
@@ -186,11 +185,13 @@ void actualizarS1(char *lista, uint8_t cod_time){
 	uint8_t unidades = distancia % 10;
 
 	lista[0] = centenas + '0';
-	lista[1] = decenas + '0';
+	lista[1] = decenas  + '0';
 	lista[2] = unidades + '0';
-	lista[3] = '\0';
-	
+	lista[3] = 'c';
+	lista[4] = 'm';
+	lista[5] = '\0';
 }
+
 
 void actualizarS2(char *lista, uint8_t dato){
 	float voltaje = (dato * 5.0) / 255.0;

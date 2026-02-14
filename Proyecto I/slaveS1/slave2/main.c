@@ -31,8 +31,11 @@ char string_buffer[6];
 volatile uint16_t start_time = 0;
 volatile uint16_t pulse_width = 0;
 volatile uint8_t sensor_state = 0;
-volatile uint8_t distancia_map = 0;
+uint8_t tiempo_uS=0;
+uint8_t distancia_map = 0;
+uint16_t distanciaCM = 0;
 static uint8_t ready_to_trigger = 1;
+char buffer_str[6];
 
 //Funcion de 
 //void initADC();
@@ -60,7 +63,7 @@ int main(void)
 		
 		// ---- DISPARO CONTROLADO CADA ~60 ms ----
 		 // Disparar si está libre
-		 if (sensor_state == 0 && ready_to_trigger && !(PINC & (1 << PC2)))
+		 if (sensor_state == 0 && ready_to_trigger && !(PINC & (1 << PC0)))
 		 {
 			 Ultrasonico_Trigger();
 			 wStr("Lanzando trigger\n");
@@ -71,6 +74,17 @@ int main(void)
 		}
 		else if (sensor_state==2){
 			wStr("Lectura del sensor terminada\n");
+			tiempo_uS = pulse_width * 0.5;
+			distanciaCM=tiempo_uS/58;
+			
+			if (distanciaCM>400){
+				distanciaCM = 400;
+			}
+			
+			distancia_map = (uint8_t)((distanciaCM * 255UL) / 400UL);
+			adc_a_string(distancia_map,buffer_str);
+			wStr(buffer_str);
+			wStr("\n");
 			
 			ready_to_trigger = 0;
 			_delay_ms(60);
@@ -95,15 +109,18 @@ void setup()
 //*******Configuracion del sensor*******//	
 
 	DDRC |= (1 << PC1);      // Trigger output
-	DDRC &= ~(1 << PC2);     // Echo input
+	DDRC &= ~(1 << PC0);     // Echo input
 
 	PORTC &= ~(1 << PC1);
 
 	TCCR1A = 0;
 	TCCR1B = (1 << CS11);    // prescaler 8
+	/*
+	Debido a 16MHz 16/8=2 MHz --> 1/2MHz --> 0.5 microS por tick
+	*/
 
 	PCICR |= (1 << PCIE1);
-	PCMSK1 |= (1 << PCINT10);	
+	PCMSK1 |= (1 << PCINT8);	
 
 	sensor_state = 0;
 	 
@@ -118,10 +135,13 @@ void setup()
 
 void Ultrasonico_Trigger(void)
 {
+	//Resetear el contador
+	TCNT1=0;
+	
     PORTC &= ~(1<<PC1);
 	_delay_us(10);
 	
-	
+	//Señal de inicializacion del sensor
     PORTC |= (1 << PC1);
     _delay_us(10);
     PORTC &= ~(1 << PC1);
@@ -143,6 +163,19 @@ void initUART()
 
 void adc_a_string(uint8_t adc, char *str)
 {
+	
+	// Centenas
+	str[0] = (adc / 100) + '0';
+
+	// Decenas
+	str[1] = ((adc % 100) / 10) + '0';
+
+	// Unidades
+	str[2] = (adc % 10) + '0';
+
+	str[3] = '\0';
+	
+	/*
 	uint16_t vCom = (adc * 500UL) / 255;
 	uint8_t vEnt = vCom / 100;
 	uint8_t vDec = vCom % 100;
@@ -153,6 +186,7 @@ void adc_a_string(uint8_t adc, char *str)
 	str[3] = (vDec % 10) + '0';
 	str[4] = 'V';
 	str[5] = '\0';
+	*/
 }
 
 
@@ -175,13 +209,15 @@ void wStr(char* strng)
 ISR(PCINT1_vect)
 {
 	 // FLANCO SUBIDA
-	 if ((PINC & (1 << PC2)) && (sensor_state == 0))
+	 if ((PINC & (1 << PC0)) && (sensor_state == 0))
 	 {
+		 start_time = TCNT1;   // guardar tiempo de subida
 		 sensor_state = 1;
 	 }
 	 // FLANCO BAJADA
-	 else if (!(PINC & (1 << PC2)) && (sensor_state == 1))
+	 else if (!(PINC & (1 << PC0)) && (sensor_state == 1))
 	 {
+		  pulse_width = TCNT1 - start_time;  // duración del pulso
 		 sensor_state = 2;
 	 }
 

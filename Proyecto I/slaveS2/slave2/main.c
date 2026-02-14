@@ -36,7 +36,11 @@ int main(void)
     setup();
     while (1) 
     {
-		distancia_map= Leer_Ultrasonico();
+		if (buffer == 'W')
+		{
+			PINC |= (1<<PINC2);
+			buffer = 0;
+		}
 		//adc_a_string(ADCUno, string_buffer);
 		//wStr(string_buffer);
 		//wChar(TWDR);
