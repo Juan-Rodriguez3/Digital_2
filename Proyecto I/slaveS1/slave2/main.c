@@ -60,7 +60,7 @@ int main(void)
 		
 		// ---- DISPARO CONTROLADO CADA ~60 ms ----
 		 // Disparar si está libre
-		 if (sensor_state == 0 && ready_to_trigger)
+		 if (sensor_state == 0 && ready_to_trigger && !(PINC & (1 << PC2)))
 		 {
 			 Ultrasonico_Trigger();
 			 wStr("Lanzando trigger\n");
@@ -94,16 +94,16 @@ void setup()
 	
 //*******Configuracion del sensor*******//	
 
-	DDRC |= (1 << PC1);      // Trigger
-	DDRC &= ~(1 << PC0);     // Echo
+	DDRC |= (1 << PC1);      // Trigger output
+	DDRC &= ~(1 << PC2);     // Echo input
 
 	PORTC &= ~(1 << PC1);
 
 	TCCR1A = 0;
-	TCCR1B = (1 << CS11);    // Prescaler 8
+	TCCR1B = (1 << CS11);    // prescaler 8
 
-	PCICR |= (1 << PCIE1);   // Enable PCINT[14:8]
-	PCMSK1 |= (1 << PCINT8); // PC0
+	PCICR |= (1 << PCIE1);
+	PCMSK1 |= (1 << PCINT10);	
 
 	sensor_state = 0;
 	 
@@ -119,7 +119,9 @@ void setup()
 void Ultrasonico_Trigger(void)
 {
     PORTC &= ~(1<<PC1);
-
+	_delay_us(10);
+	
+	
     PORTC |= (1 << PC1);
     _delay_us(10);
     PORTC &= ~(1 << PC1);
@@ -173,12 +175,12 @@ void wStr(char* strng)
 ISR(PCINT1_vect)
 {
 	 // FLANCO SUBIDA
-	 if ((PINC & (1 << PC0)) && (sensor_state == 0))
+	 if ((PINC & (1 << PC2)) && (sensor_state == 0))
 	 {
 		 sensor_state = 1;
 	 }
 	 // FLANCO BAJADA
-	 else if (!(PINC & (1 << PC0)) && (sensor_state == 1))
+	 else if (!(PINC & (1 << PC2)) && (sensor_state == 1))
 	 {
 		 sensor_state = 2;
 	 }
