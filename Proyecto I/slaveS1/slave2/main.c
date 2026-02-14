@@ -26,9 +26,13 @@ volatile uint8_t ADCUno = 0;
 char string_buffer[6];
 
 //Variables para sennsor 
-volatile uint16_t tiempo_ticks = 0;
-volatile uint8_t echo_state = 0;
+#define TIMEOUT_TICKS 60000
+
+volatile uint16_t start_time = 0;
+volatile uint16_t pulse_width = 0;
+volatile uint8_t sensor_state = 0;
 volatile uint8_t distancia_map = 0;
+static uint8_t ready_to_trigger = 1;
 
 //Funcion de 
 //void initADC();
@@ -37,14 +41,16 @@ void initUART();
 void adc_a_string(uint8_t adc, char *str);
 void wChar(char character);
 void wStr(char* strng);
-void Start_sensor();
+void Ultrasonico_Trigger(void);
 
 
 
 int main(void)
 {
     setup();
-    while (1) 
+	
+	
+    while (1)
     {
 		if (buffer == 'R')
 		{
@@ -52,31 +58,29 @@ int main(void)
 			buffer = 0;
 		}
 		
-		
-		if (!echo_state){
-			Start_sensor();	
+		// ---- DISPARO CONTROLADO CADA ~60 ms ----
+		 // Disparar si está libre
+		 if (sensor_state == 0 && ready_to_trigger)
+		 {
+			 Ultrasonico_Trigger();
+			 wStr("Lanzando trigger\n");
+		 }
+		else if (sensor_state==1){
+			wStr("Trigger recibido ----> ");
+			wStr("Esperando pulso de bajada\n");
 		}
-		else if (echo_state) {
-			// Flanco de bajada ? capturar tiempo
-			tiempo_ticks = TCNT1;
-
+		else if (sensor_state==2){
+			wStr("Lectura del sensor terminada\n");
 			
-
-			// Convertir ticks a microsegundos:
-			// 1 tick = 0.5 µs
-			uint32_t tiempo_us = tiempo_ticks /2;
-
-			// Mapear a 0–255 (máx 25000 µs)
-			if (tiempo_us >= 25000)
-			tiempo_us = 25000;
-			echo_state = 0;
-			distancia_map = (tiempo_us * 255UL) / TIME_MAX;
+			ready_to_trigger = 0;
+			_delay_ms(60);
+			sensor_state = 0;
+			ready_to_trigger = 1;
+			
+			wStr("Volver a leer\n");
 		}
-			//iniciar el sensor
-		//adc_a_string(ADCUno, string_buffer);
-		//wStr(string_buffer);
-		//wChar(TWDR);
-		_delay_ms(60);
+		
+		 
     }
 }
 
@@ -85,23 +89,23 @@ int main(void)
 void setup()
 {
 	cli();
-	DDRD |= (1<<DDD2);
-	PORTD &= ~(1<<PORTD2);
+	DDRD |= (1<<DDD2)|(1<<PORTD7);
+	PORTD &= ~((1<<PORTD2)|(1<<PORTD7));
 	
 //*******Configuracion del sensor*******//	
 
-	//Configuración de pines del sensor HYSRF05
-	DDRC |= (1 << PORTC1);   // PC1 como salida (Trigger)
-	DDRC &= ~(1 << PORTC0);  // PC0 como entrada (Echo)
-	PORTC &= ~(1<<PORTC1);	//Cero
-	
-	 // Habilitar Pin Change Interrupt para PC0
-	 PCICR |= (1 << PCIE1);      // Habilita grupo PCINT[14:8]
-	 PCMSK1 |= (1 << PCINT8);    // PC0 = PCINT8
+	DDRC |= (1 << PC1);      // Trigger
+	DDRC &= ~(1 << PC0);     // Echo
 
-	 // Timer1 normal mode
-	 TCCR1A = 0;
-	 TCCR1B = (1 << CS11);  // Prescaler 8
+	PORTC &= ~(1 << PC1);
+
+	TCCR1A = 0;
+	TCCR1B = (1 << CS11);    // Prescaler 8
+
+	PCICR |= (1 << PCIE1);   // Enable PCINT[14:8]
+	PCMSK1 |= (1 << PCINT8); // PC0
+
+	sensor_state = 0;
 	 
 //*******Configuracion del sensor*******//		
 	
@@ -112,35 +116,15 @@ void setup()
 	sei();
 }
 
-//Funcion para leer distancia con el sensor HY-SRF05
-void Start_sensor(){
-	//Asegurar que el PORTC1 este apagado
-	PORTC &= ~(1<<PORTC1);
-	_delay_us(2);
-	
-	//Enviar el pulso de 10uS para inicializar la lectura.
-	PORTC |= (1<<PORTC1);
-	_delay_us(10);
-	PORTC &= ~(1<<PORTC1);
-	
-	//Toca esperar el pulso de ECHO
+void Ultrasonico_Trigger(void)
+{
+    PORTC &= ~(1<<PC1);
+
+    PORTC |= (1 << PC1);
+    _delay_us(10);
+    PORTC &= ~(1 << PC1);
 }
 
-/*
-void initADC()
-{
-	ADMUX = 0;
-	ADMUX |= (1 << REFS0); //referencia = avcc
-	ADMUX |= (1 << ADLAR);
-	ADMUX |= (1<<MUX2)|(1<<MUX1); //Activando el ADC6
-	ADCSRA = 0;
-	ADCSRA |= (1 << ADEN);
-	ADCSRA |= (1 << ADIE);
-	ADCSRA |= (1 << ADPS1) | (1 << ADPS1) | (1 << ADPS0);
-	
-	ADCSRA |= (1 << ADSC);
-}
-*/
 void initUART()
 {
 	DDRD |= (1 << 1);
@@ -185,32 +169,21 @@ void wStr(char* strng)
 	}
 }
 
-/*
-ISR(ADC_vect)
-{
-	
-	if (descartar)
-	{
-		descartar = 0;
-		ADCSRA |= (1 << ADSC);
-		return;
-	}
-	descartar = 1;
-	ADCUno = ADCH;
-	ADCSRA |= (1 << ADSC);
-}
-*/
-/*
-ISR(PCINT1_vect) {
 
-	if (PINC & (1 << PORTC0)) {
-		// Flanco de subida ? iniciar timer
-		TCNT1 = 0;
-		echo_state = 1;
-	}
-	
+ISR(PCINT1_vect)
+{
+	 // FLANCO SUBIDA
+	 if ((PINC & (1 << PC0)) && (sensor_state == 0))
+	 {
+		 sensor_state = 1;
+	 }
+	 // FLANCO BAJADA
+	 else if (!(PINC & (1 << PC0)) && (sensor_state == 1))
+	 {
+		 sensor_state = 2;
+	 }
+
 }
-*/
 ISR(TWI_vect){
 	uint8_t estado = TWSR & 0xFC; // Nos quedamos unicamente con los bits de estado TWI Status
 	switch(estado){
