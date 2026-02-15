@@ -2,7 +2,8 @@
  * slave2.c
  *
  * Created: 5/02/2026 19:39:57
- * Author : laloj
+ * Author : juan rodriguez
+ * Esclavo encargado de monitorear la luz y de mover la plataforma de los paneles según la luz.
  */ 
 
 
@@ -15,20 +16,31 @@
 #include <stdlib.h>
 #include <util/delay.h>
 #include "I2C_Libraries/I2C.h"
-//C:\Users\juana\Downloads\slave_S\slave2\slave2\main.c
+#include "Stepper_Libraries/Stepper.h"
+
+//Direccion de libreria I2C
 #define S2_Address 0x40
 
+//Variables que sirven para debugear
 uint8_t buffer = 0;
-uint8_t descartar = 1;
-volatile uint8_t ADCUno = 0;
 char string_buffer[6];
+//VAriables para lectura del sensor
+uint8_t descartar = 1;			
+volatile uint8_t LUZ = 0;	
+//Variables para el movimiento del stepper
+Stepper_t motor;
+uint8_t posicion = 0;
+
+//Prototipos de funciones de inicializacion
 void initADC();
 void setup();
 void initUART();
+void Timer0_Init(void);
+
+//Prototipos de funciones de instruccion
 void adc_a_string(uint8_t adc, char *str);
 void wChar(char character);
 void wStr(char* strng);
-
 
 
 int main(void)
@@ -41,7 +53,23 @@ int main(void)
 			PINC |= (1<<PINC2);
 			buffer = 0;
 		}
-		//adc_a_string(ADCUno, string_buffer);
+		
+		 // Si está oscuro y todavía no ha girado
+		 if(LUZ < 75 && posicion == 0)
+		 {
+			 Stepper_Move(&motor, 1024);   // girar 90° horario
+			 posicion = 1;
+		 }
+
+		 // Si hay luz y está en 90°
+		 if(LUZ > 100 && posicion == 1)
+		 {
+			 Stepper_Move(&motor, -1024);  // regresar 90° antihorario
+			 posicion = 0;
+		 }
+		
+		
+		//adc_a_string(LUZ, string_buffer);
 		//wStr(string_buffer);
 		//wChar(TWDR);
 		_delay_ms(100);
@@ -53,11 +81,27 @@ void setup()
 	cli();
 	DDRC |= (1<<DDC2);
 	PORTC &= ~(1<<PORTC2);
+	
+	//Inicializacion de ADC
 	initADC();
+	//Inicializacion de comunicacion I2C
 	I2C_init_Slave(S2_Address);
+	//Inicializacion de stepper
+	Stepper_Init(&motor);
+	Stepper_SetSpeed(&motor, 10);   // 10 RPM
+	Timer0_Init();
+	//Inicializacion de UART
 	initUART();
 	
 	sei();
+}
+
+void Timer0_Init(void)
+{
+	TCCR0A = (1 << WGM01);               // Modo CTC
+	TCCR0B = (1 << CS01) | (1 << CS00);  // Prescaler 64
+	OCR0A = 249;                         // Valor de comparación
+	TIMSK0 = (1 << OCIE0A);              // Habilita interrupción
 }
 
 void initADC()
@@ -117,10 +161,14 @@ void wStr(char* strng)
 	}
 }
 
+ISR(TIMER0_COMPA_vect)
+{
+	Stepper_Update(&motor);
+}
+
 
 ISR(ADC_vect)
 {
-	
 	if (descartar)
 	{
 		descartar = 0;
@@ -128,7 +176,7 @@ ISR(ADC_vect)
 		return;
 	}
 	descartar = 1;
-	ADCUno = ADCH;
+	LUZ = ADCH;
 	ADCSRA |= (1 << ADSC);
 }
 
@@ -162,7 +210,7 @@ ISR(TWI_vect){
 		//wStr("SLA+R recibido");
 		//break;
 		case 0xB8: // Dato transmitido, ACK recibido
-		TWDR = ADCUno;   // Dato a enviar
+		TWDR = LUZ;   // Dato a enviar
 		TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
 		//wStr("Dato transmitido, ACK recibido");
 		break;

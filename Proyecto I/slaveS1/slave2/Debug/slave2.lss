@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000b0  00000000  00000000  0000092c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000e51  00000000  00000000  000009dc  2**0
+  6 .debug_info   00000e3f  00000000  00000000  000009dc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000008f1  00000000  00000000  0000182d  2**0
+  7 .debug_abbrev 000008f1  00000000  00000000  0000181b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000007e4  00000000  00000000  0000211e  2**0
+  8 .debug_line   000007e4  00000000  00000000  0000210c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000017c  00000000  00000000  00002904  2**2
+  9 .debug_frame  0000017c  00000000  00000000  000028f0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000530  00000000  00000000  00002a80  2**0
+ 10 .debug_str    00000526  00000000  00000000  00002a6c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000389  00000000  00000000  00002fb0  2**0
+ 11 .debug_loc    00000389  00000000  00000000  00002f92  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000090  00000000  00000000  00003339  2**0
+ 12 .debug_ranges 00000090  00000000  00000000  0000331b  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -618,7 +618,7 @@ int main(void)
 	}
 }
 
-
+//
 ISR(PCINT1_vect)
 {
  388:	1f 92       	push	r1
@@ -656,7 +656,7 @@ ISR(PCINT1_vect)
  3c6:	81 30       	cpi	r24, 0x01	; 1
  3c8:	89 f4       	brne	.+34     	; 0x3ec <__vector_4+0x64>
 	 {
-		  pulse_width = TCNT1 - start_time;  // duración del pulso
+		 pulse_width = TCNT1 - start_time;  // duración del pulso
  3ca:	80 91 84 00 	lds	r24, 0x0084	; 0x800084 <__TEXT_REGION_LENGTH__+0x7f8084>
  3ce:	90 91 85 00 	lds	r25, 0x0085	; 0x800085 <__TEXT_REGION_LENGTH__+0x7f8085>
  3d2:	20 91 c5 01 	lds	r18, 0x01C5	; 0x8001c5 <start_time>
@@ -669,7 +669,6 @@ ISR(PCINT1_vect)
  3e6:	82 e0       	ldi	r24, 0x02	; 2
  3e8:	80 93 c2 01 	sts	0x01C2, r24	; 0x8001c2 <sensor_state>
 	 }
-
 }
  3ec:	9f 91       	pop	r25
  3ee:	8f 91       	pop	r24
@@ -682,6 +681,7 @@ ISR(PCINT1_vect)
  3fc:	18 95       	reti
 
 000003fe <__vector_24>:
+
 ISR(TWI_vect){
  3fe:	1f 92       	push	r1
  400:	0f 92       	push	r0

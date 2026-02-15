@@ -129,9 +129,16 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Stepper_Libraries\Stepper.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Stepper_Libraries\Stepper.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="I2C_Libraries" />
+    <Folder Include="Stepper_Libraries" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

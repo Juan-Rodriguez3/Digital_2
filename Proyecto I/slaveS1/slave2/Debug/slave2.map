@@ -66,8 +66,6 @@ Discarded input sections
  .bss.distanciaCM
                 0x00000000        0x2 main.o
  .bss.ADCUno    0x00000000        0x1 main.o
- .data.descartar
-                0x00000000        0x1 main.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fixunssfsi.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fixunssfsi.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fixunssfsi.o)
@@ -630,11 +628,11 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xe51
+.debug_info     0x00000000      0xe3f
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_info    0x000005f4      0x1ae I2C_Libraries/I2C.o
- .debug_info    0x000007a2      0x6af main.o
+ .debug_info    0x000007a2      0x69d main.o
 
 .debug_abbrev   0x00000000      0x8f1
  *(.debug_abbrev)
@@ -653,13 +651,13 @@ END GROUP
  .debug_frame   0x00000000       0x8c I2C_Libraries/I2C.o
  .debug_frame   0x0000008c       0xf0 main.o
 
-.debug_str      0x00000000      0x530
+.debug_str      0x00000000      0x526
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_str     0x00000208      0x1c6 I2C_Libraries/I2C.o
                                 0x201 (size before relaxing)
- .debug_str     0x000003ce      0x162 main.o
-                                0x2f2 (size before relaxing)
+ .debug_str     0x000003ce      0x158 main.o
+                                0x2e8 (size before relaxing)
 
 .debug_loc      0x00000000      0x389
  *(.debug_loc)

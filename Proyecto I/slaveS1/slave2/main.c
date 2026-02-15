@@ -15,19 +15,17 @@
 #include <stdlib.h>
 #include <util/delay.h>
 #include "I2C_Libraries/I2C.h"
+#include "Stepper_Libraries/Stepper.h"
 
+//Direccion para comunicacion I2C
 #define S2_Address 0x30
 
-#define TIME_MAX 25000UL //microsegundos 
 
 uint8_t buffer = 0;
-uint8_t descartar = 1;
 volatile uint8_t ADCUno = 0;
 char string_buffer[6];
 
 //Variables para sennsor 
-#define TIMEOUT_TICKS 60000
-
 volatile uint16_t start_time = 0;
 volatile uint16_t pulse_width = 0;
 volatile uint8_t sensor_state = 0;
@@ -225,7 +223,7 @@ void wStr(char* strng)
 	}
 }
 
-
+//
 ISR(PCINT1_vect)
 {
 	 // FLANCO SUBIDA
@@ -237,11 +235,11 @@ ISR(PCINT1_vect)
 	 // FLANCO BAJADA
 	 else if (!(PINC & (1 << PC0)) && (sensor_state == 1))
 	 {
-		  pulse_width = TCNT1 - start_time;  // duración del pulso
+		 pulse_width = TCNT1 - start_time;  // duración del pulso
 		 sensor_state = 2;
 	 }
-
 }
+
 ISR(TWI_vect){
 	uint8_t estado = TWSR & 0xFC; // Nos quedamos unicamente con los bits de estado TWI Status
 	switch(estado){
