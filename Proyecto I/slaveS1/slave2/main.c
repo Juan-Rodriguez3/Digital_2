@@ -75,13 +75,33 @@ int main(void)
 		else if (sensor_state==2){
 			wStr("Lectura del sensor terminada\n");
 			tiempo_uS = pulse_width * 0.5;
-			distanciaCM=tiempo_uS/58;
+			uint32_t distanciaCM = (uint32_t)pulse_width / 116UL;
+
+			
+			//Imprimir el pulso medido
+			wStr("Pulso medido: ");
+			adc_a_string(pulse_width, buffer_str);
+			wStr(buffer_str);
+			wStr("\n");
+			
+			//Imprimir el pulso medido
+			wStr("Tiempo medido: ");
+			adc_a_string(tiempo_uS, buffer_str);
+			wStr(buffer_str);
+			wStr("\n");
+			
+			//Imprimir la distancia en CM
+			wStr("Distancia: ");
+			adc_a_string(distanciaCM, buffer_str);
+			wStr(buffer_str);
+			wStr(" CM\n");
 			
 			if (distanciaCM>400){
 				distanciaCM = 400;
 			}
 			
 			distancia_map = (uint8_t)((distanciaCM * 255UL) / 400UL);
+			wStr("Lectura enviada al master: ");
 			adc_a_string(distancia_map,buffer_str);
 			wStr(buffer_str);
 			wStr("\n");
@@ -113,7 +133,7 @@ void setup()
 
 	PORTC &= ~(1 << PC1);
 
-	TCCR1A = 0;
+	TCCR1A = 0;				 //Modo normal
 	TCCR1B = (1 << CS11);    // prescaler 8
 	/*
 	Debido a 16MHz 16/8=2 MHz --> 1/2MHz --> 0.5 microS por tick
