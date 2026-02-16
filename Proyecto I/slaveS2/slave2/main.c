@@ -60,7 +60,7 @@ int main(void)
 		//Ambos son comando W solo le indica para devolver el valor del sensor mientras que C es para ajustar el parametro de luz
 		if (buffer == 'W' || buffer == 'C')
 		{
-			PINC |= (1<<PINC2);
+			PINC |= (1<<PINC0);		//Toggle
 			if (buffer == 'C'){
 				settings=1;		//Se activo el modo ajuste, de estar desactiva a esperar parametro
 			}
@@ -94,8 +94,8 @@ int main(void)
 void setup()
 {
 	cli();
-	DDRC |= (1<<DDC2);
-	PORTC &= ~(1<<PORTC2);
+	DDRC |= (1<<DDC0);
+	PORTC &= ~(1<<PORTC0);
 	
 	//Inicializacion de ADC
 	initADC();

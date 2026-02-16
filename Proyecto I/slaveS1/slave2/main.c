@@ -1,7 +1,7 @@
 /*
  * slave2.c
  *
- * Created: 5/02/2026 19:39:57
+ * Created: 5/02/2026 19:39:5
  * Author : laloj
  */ 
 //C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\Proyecto I\slaveS1\slave2\main.c
@@ -55,7 +55,7 @@ int main(void)
     {
 		if (buffer == 'R')
 		{
-			PIND |= (1<<PIND2);
+			PINC |= (1<<PINC2);
 			buffer = 0;
 		}
 		
@@ -121,8 +121,8 @@ int main(void)
 void setup()
 {
 	cli();
-	DDRD |= (1<<DDD2)|(1<<PORTD7);
-	PORTD &= ~((1<<PORTD2)|(1<<PORTD7));
+	DDRC |= (1<<DDC2);
+	PORTD &= ~(1<<PORTD2);
 	
 //*******Configuracion del sensor*******//	
 

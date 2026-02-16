@@ -189,10 +189,10 @@ void I2C_init_Slave(uint8_t address)
 0000012e <setup>:
  12e:	f8 94       	cli
  130:	87 b1       	in	r24, 0x07	; 7
- 132:	84 60       	ori	r24, 0x04	; 4
+ 132:	81 60       	ori	r24, 0x01	; 1
  134:	87 b9       	out	0x07, r24	; 7
  136:	88 b1       	in	r24, 0x08	; 8
- 138:	8b 7f       	andi	r24, 0xFB	; 251
+ 138:	8e 7f       	andi	r24, 0xFE	; 254
  13a:	88 b9       	out	0x08, r24	; 8
  13c:	0e 94 66 00 	call	0xcc	; 0xcc <initADC>
  140:	80 e4       	ldi	r24, 0x40	; 64
@@ -224,7 +224,7 @@ void I2C_init_Slave(uint8_t address)
  186:	83 34       	cpi	r24, 0x43	; 67
  188:	61 f4       	brne	.+24     	; 0x1a2 <main+0x3c>
  18a:	86 b1       	in	r24, 0x06	; 6
- 18c:	84 60       	ori	r24, 0x04	; 4
+ 18c:	81 60       	ori	r24, 0x01	; 1
  18e:	86 b9       	out	0x06, r24	; 6
  190:	80 91 0d 01 	lds	r24, 0x010D	; 0x80010d <buffer>
  194:	83 34       	cpi	r24, 0x43	; 67

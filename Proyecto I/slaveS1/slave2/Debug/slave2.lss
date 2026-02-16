@@ -204,13 +204,13 @@ void setup()
 {
 	cli();
  110:	f8 94       	cli
-	DDRD |= (1<<DDD2)|(1<<PORTD7);
- 112:	8a b1       	in	r24, 0x0a	; 10
- 114:	84 68       	ori	r24, 0x84	; 132
- 116:	8a b9       	out	0x0a, r24	; 10
-	PORTD &= ~((1<<PORTD2)|(1<<PORTD7));
+	DDRC |= (1<<DDC2);
+ 112:	87 b1       	in	r24, 0x07	; 7
+ 114:	84 60       	ori	r24, 0x04	; 4
+ 116:	87 b9       	out	0x07, r24	; 7
+	PORTD &= ~(1<<PORTD2);
  118:	8b b1       	in	r24, 0x0b	; 11
- 11a:	8b 77       	andi	r24, 0x7B	; 123
+ 11a:	8b 7f       	andi	r24, 0xFB	; 251
  11c:	8b b9       	out	0x0b, r24	; 11
 	
 //*******Configuracion del sensor*******//	
@@ -394,10 +394,10 @@ int main(void)
  1ec:	82 35       	cpi	r24, 0x52	; 82
  1ee:	29 f4       	brne	.+10     	; 0x1fa <main+0x16>
 		{
-			PIND |= (1<<PIND2);
- 1f0:	89 b1       	in	r24, 0x09	; 9
+			PINC |= (1<<PINC2);
+ 1f0:	86 b1       	in	r24, 0x06	; 6
  1f2:	84 60       	ori	r24, 0x04	; 4
- 1f4:	89 b9       	out	0x09, r24	; 9
+ 1f4:	86 b9       	out	0x06, r24	; 6
 			buffer = 0;
  1f6:	10 92 c7 01 	sts	0x01C7, r1	; 0x8001c7 <buffer>
 		}
