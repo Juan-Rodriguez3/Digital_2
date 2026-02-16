@@ -26,7 +26,9 @@ uint8_t buffer = 0;
 char string_buffer[6];
 //VAriables para lectura del sensor
 uint8_t descartar = 1;			
-volatile uint8_t LUZ = 0;	
+volatile uint8_t LUZ = 0;
+volatile uint8_t settings=0;
+uint8_t parameter=127;
 //Variables para el movimiento del stepper
 Stepper_t motor;
 uint8_t posicion = 0;
@@ -47,22 +49,35 @@ int main(void)
 {
     setup();
     while (1) 
-    {
-		if (buffer == 'W')
+    {	
+		//Fase final de proceso de ajuste de parametro
+		if (settings==2){
+			parameter=buffer;	//Parametro cambiado
+			settings=0;			//Modo ajuste en reposo 
+			//El parametro ha sido cambiado.
+		}
+		
+		//Ambos son comando W solo le indica para devolver el valor del sensor mientras que C es para ajustar el parametro de luz
+		if (buffer == 'W' || buffer == 'C')
 		{
 			PINC |= (1<<PINC2);
+			if (buffer == 'C'){
+				settings=1;		//Se activo el modo ajuste, de estar desactiva a esperar parametro
+			}
 			buffer = 0;
 		}
 		
+		
+		
 		 // Si está oscuro y todavía no ha girado
-		 if(LUZ < 75 && posicion == 0)
+		 if(LUZ <= parameter && posicion == 0)
 		 {
 			 Stepper_Move(&motor, 1024);   // girar 90° horario
 			 posicion = 1;
 		 }
 
 		 // Si hay luz y está en 90°
-		 if(LUZ > 100 && posicion == 1)
+		 if(LUZ >= parameter && posicion == 1)
 		 {
 			 Stepper_Move(&motor, -1024);  // regresar 90° antihorario
 			 posicion = 0;
@@ -182,6 +197,7 @@ ISR(ADC_vect)
 
 ISR(TWI_vect){
 	uint8_t estado = TWSR & 0xFC; // Nos quedamos unicamente con los bits de estado TWI Status
+	
 	switch(estado){
 		/*******************************/
 		// Slave debe recibir dato
@@ -231,6 +247,10 @@ ISR(TWI_vect){
 		TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWIE)|(1<<TWEA);
 		//wStr("default");
 		break;
+	}
+	//EL modo ajuste activado por lo que el dato que esta en el buffer es el nuevo parametro de luz
+	if (settings==1){
+		settings=2;	//Configurando el progreso de ajuste a parametro recibido
 	}
 }	
 

@@ -24,11 +24,13 @@
 #define slave1W (0x30<<1)& 0b11111110
 #define slave2R (0x40<<1)|0x01
 #define slave2W (0x40<<1)& 0b11111110
-#define velocity_sound 340
 
+
+uint8_t command_ESP='L';
 
 uint8_t lectura_S1=0;
 uint8_t lectura_S2=0;
+uint8_t lectura_S3=0;
 
 /********* Listas para la función de LCD *********/
 char lista1[8] = {'0', '0', '0', '0'};
@@ -55,13 +57,29 @@ int main(void)
 	
     while (1) 
     {
+		//Lectura de S1 - Sensor ultrasonico 
 		actualizar_datos_slave(slave1W, slave1R,'R', 0);
 		
-		actualizar_datos_slave(slave2W, slave2R , 'W', 1);
 		
+		//Lectura de S2 - Sensor de luz
+		//Cambiar el parametro crítico del sensor de LUZ
+		if (command_ESP=='L'){
+			//El tres es para indicarle al Master que le esta mandando comando
+			//La lee le indica al esclavo que le van a reconfigurar el valor de la resistencia para mover el stepper.
+			//actualizar_datos_slave(slave2W,slave2R, 'C', 1);
+			//Aca le configuro ese valor
+			//actualizar_datos_slave(slave2W,slave2R, 64, 1);	
+			
+			//Limpiar bandera de comando
+			command_ESP=0;		
+		}
+		actualizar_datos_slave(slave2W, slave2R , 'W', 1);	//Pedir dato de luz
+		
+		//Lectura de S3 - Sensor de temperatura
+		//actualizar_datos_slave(slave2W, slave2R , 'W', 1);
 		actualizarLCD();
 		
-		_delay_ms(100);
+		_delay_ms(10);
     }
 }
 
@@ -130,18 +148,17 @@ void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, u
 		return;
 	}
 	
-	writeString("Esperando Dato\n");
-	
-	
 	switch(sensor){
 		case 0:
 		I2C_read(&lectura_S1, 0);
 		writeString("Dato recibidio\n");
-		
 		break;
 		case 1:
 		I2C_read(&lectura_S2, 0);
 		writeString("Dato recibidio\n");
+		break;
+		case 3:
+		writeString("No leemos dato");
 		break;
 		default:
 		break;
@@ -153,25 +170,28 @@ void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, u
 
 void actualizarLCD() {
 	Lcd_Clear();  // Limpiar pantalla
+	
 	Lcd_Set_Cursor(0, 0);
-	Lcd_Write_String("S1:");  // Escribir etiqueta de Sensor 1		
-	
-	Lcd_Set_Cursor(0, 6);
-	Lcd_Write_String("S2:");  // Escribir etiqueta de Sensor 2
-	/*Lcd_Set_Cursor(0, 11);
-	Lcd_Write_String("S3:");  // Escribir etiqueta de Sensor 3
-	*/
-	actualizarS1(lista1, lectura_S1);
-	actualizarS2(lista2,lectura_S2);
-	//actualizarS3(lista3,lectura_S3)
-	
+	Lcd_Write_String("S1:");  // Escribir etiqueta de Sensor 1
+	actualizarS1(lista1, lectura_S1);	//Actualizar dato de S1
 	Lcd_Set_Cursor(1,0);
 	Lcd_Write_String(lista1);
+		
+	Lcd_Set_Cursor(0, 6);
+	Lcd_Write_String("S2:");  // Escribir etiqueta de Sensor S2
+	actualizarS2(lista2,lectura_S2);	//Actualizar dato de S1
 	Lcd_Set_Cursor(1,6);
 	Lcd_Write_String(lista2);
-	
-	
+		
+	Lcd_Set_Cursor(0, 11);
+	Lcd_Write_String("S3:");  // Escribir etiqueta de Sensor S2
+	//actualizarS3(lista3,lectura_S3);	//Actualizar dato de S1
+	Lcd_Set_Cursor(1,10);
+	//Lcd_Write_String(lista3);
+		
 }
+
+
 
 void actualizarS1(char *lista, uint8_t cod_dist)
 {
@@ -193,27 +213,36 @@ void actualizarS1(char *lista, uint8_t cod_dist)
 }
 
 
-void actualizarS2(char *lista, uint8_t dato){
-	float voltaje = (dato * 5.0) / 255.0;
-	uint16_t int_part = (uint16_t)voltaje;
-	uint16_t dec_part = (uint16_t)((voltaje - int_part) * 100);  // Dos decimales
+void actualizarS2(char *lista, uint8_t dato)
+{
+	/*no hay luz --> 0%
+	  Con luz --> 100%
+	  Para ello hay que inverir el dato si hay mucha luz la lectura del ADC 
+	  sera pequeña por lo tanto 255-dato sera mayor y si esta oscura el voltaje
+	  sera alto por lo que el porcentaje sera menor
+	*/
+	uint8_t porcentaje = (( 255-dato)* 100UL) / 255;
 
-	if (int_part < 10) {
-		lista[0] = '0' + int_part;
-		lista[1] = '.';
-		lista[2] = '0' + (dec_part / 10);
-		lista[3] = '0' + (dec_part % 10);
-		lista[4] = 'V';
-		lista[5] = '\0';
+	if (porcentaje == 100)
+	{
+		lista[0] = '1';
+		lista[1] = '0';
+		lista[2] = '0';
+		lista[3] = '%';
+		lista[4] = '\0';
 	}
-	else {
-		lista[0] = '0' + (int_part / 10);
-		lista[1] = '0' + (int_part % 10);
-		lista[2] = '.';
-		lista[3] = '0' + (dec_part / 10);
-		lista[4] = '0' + (dec_part % 10);
-		lista[5] = 'V';
-		lista[6] = '\0';
+	else if (porcentaje >= 10)
+	{
+		lista[0] = (porcentaje / 10) + '0';
+		lista[1] = (porcentaje % 10) + '0';
+		lista[2] = '%';
+		lista[3] = '\0';
+	}
+	else
+	{
+		lista[0] = porcentaje + '0';
+		lista[1] = '%';
+		lista[2] = '\0';
 	}
 }
 
