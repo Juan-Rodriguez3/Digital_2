@@ -26,7 +26,7 @@
 #define slave2W (0x40<<1)& 0b11111110
 
 
-uint8_t command_ESP='L';
+uint8_t command_ESP=0;
 
 uint8_t lectura_S1=0;
 uint8_t lectura_S2=0;
@@ -66,9 +66,9 @@ int main(void)
 		if (command_ESP=='L'){
 			//El tres es para indicarle al Master que le esta mandando comando
 			//La lee le indica al esclavo que le van a reconfigurar el valor de la resistencia para mover el stepper.
-			//actualizar_datos_slave(slave2W,slave2R, 'C', 1);
+			actualizar_datos_slave(slave2W,slave2R, 'C', 1);
 			//Aca le configuro ese valor
-			//actualizar_datos_slave(slave2W,slave2R, 64, 1);	
+			actualizar_datos_slave(slave2W,slave2R, 200, 1);	
 			
 			//Limpiar bandera de comando
 			command_ESP=0;		
