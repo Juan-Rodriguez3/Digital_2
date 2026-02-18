@@ -82,24 +82,24 @@ void I2C_stop(void){
 }	
 
 //Funcion para escribir									
-uint8_t I2C_write(uint8_t dato){
-	uint8_t estado;
+	uint8_t I2C_write(uint8_t dato){
+		uint8_t estado;
 	
-	TWDR=dato;		//Cargo el dato
-	TWCR=(1<<TWEN)|(1<<TWINT);	//Inicia la secuencia de envio limpiando la bandera y habilitando la interface
+		TWDR=dato;		//Cargo el dato
+		TWCR=(1<<TWEN)|(1<<TWINT);	//Inicia la secuencia de envio limpiando la bandera y habilitando la interface
 	
-	while(!(TWCR&(1<<TWINT)));	//Esperamos al flag TWINT
-	estado = TWSR & 0xF8;		//Limpiamos para quedarnos unicamente con los bits de estados
-	//Verificar si se le envio una SLA+W con ACK o un dato con ACK
-	//Verificar comandos en datasheet o en la presentacion de I2C
-	if (estado == 0x18 || estado == 0x28){
-		return 1;
-	}else {
-		return estado;
-	}
+		while(!(TWCR&(1<<TWINT)));	//Esperamos al flag TWINT
+		estado = TWSR & 0xF8;		//Limpiamos para quedarnos unicamente con los bits de estados
+		//Verificar si se le envio una SLA+W con ACK o un dato con ACK
+		//Verificar comandos en datasheet o en la presentacion de I2C
+		if (estado == 0x18 || estado == 0x28 || estado == 0x40){
+			return 1;
+		}else {
+			return estado;
+		}
 	
 	
-}	
+	}	
 
 //funcion para leer dato			
 uint8_t I2C_read(uint8_t *buffer, uint8_t ack){

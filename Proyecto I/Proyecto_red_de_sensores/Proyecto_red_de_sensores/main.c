@@ -21,16 +21,21 @@
 #include "LCD_Libraries/LCD8bits.h"
 
 #define slave1R (0x30<<1)|0x01
-#define slave1W (0x30<<1)& 0b11111110
+#define slave1W (0x30<<1) & 0b11111110
 #define slave2R (0x40<<1)|0x01
-#define slave2W (0x40<<1)& 0b11111110
+#define slave2W (0x40<<1) & 0b11111110
+
+#define ST_I2CR	(0x48<<1)|0x01
+#define ST_I2cW  (0x48<<1) & 0b11111110
+
+
 
 
 uint8_t command_ESP=0;
 
 uint8_t lectura_S1=0;
 uint8_t lectura_S2=0;
-uint8_t lectura_S3=0;
+int16_t lectura_LM75 = 0;
 
 /********* Listas para la función de LCD *********/
 char lista1[8] = {'0', '0', '0', '0'};
@@ -44,7 +49,11 @@ void actualizarLCD();
 void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, uint8_t sensor);
 void actualizarS1(char *lista, uint8_t cod_time);
 void actualizarS2(char *lista, uint8_t dato);
+void actualizarS3(char *lista, float temp);
 
+//Funciones para sensor I2C
+uint8_t leer_LM75(void);
+float obtenerTemperatura(); 
 
 /********* Funcion principal *********/
 int main(void)
@@ -64,9 +73,12 @@ int main(void)
 		//Lectura de S2 - Sensor de luz
 		//Cambiar el parametro crítico del sensor de LUZ
 		if (command_ESP=='L'){
-			//El tres es para indicarle al Master que le esta mandando comando
-			//La lee le indica al esclavo que le van a reconfigurar el valor de la resistencia para mover el stepper.
+			/*
+			El tres es para indicarle al Master que le esta mandando comando
+			La lee le indica al esclavo que le van a reconfigurar el valor de la resistencia para mover el stepper.
+			*/
 			actualizar_datos_slave(slave2W,slave2R, 'C', 1);
+			
 			//Aca le configuro ese valor
 			actualizar_datos_slave(slave2W,slave2R, 200, 1);	
 			
@@ -76,9 +88,16 @@ int main(void)
 		actualizar_datos_slave(slave2W, slave2R , 'W', 1);	//Pedir dato de luz
 		
 		//Lectura de S3 - Sensor de temperatura
-		//actualizar_datos_slave(slave2W, slave2R , 'W', 1);
-		actualizarLCD();
+		if(leer_LM75()){ 
+			PINC |= (1<<PINC3);
+			lectura_LM75 = obtenerTemperatura(); 
+		}
+		else {
+			writeString("Lectura de sensor I2C fallo\n");
+		}
 		
+		//Actualizar los datos
+		actualizarLCD();
 		_delay_ms(10);
     }
 }
@@ -103,6 +122,9 @@ void setup(){
 	DDRB |= (1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3);
 	PORTB &= ~((1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3));
 
+	//PORTC 
+	DDRC |= (1<<DDC3);
+	PORTC &= ~(1<<PORTC3);
 	
 	Lcd_Init8bits();
 	I2C_init_Master(1, 100000);
@@ -168,6 +190,58 @@ void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, u
 	writeString("comunicación terminada\n");
 }
 
+/*Funcion para comunicarse con el sensor I2C de temperatura LM75*/
+uint8_t leer_LM75(void)
+{
+	uint8_t MSB, LSB;
+
+	if(!I2C_Start()) return 0;
+
+	if(!I2C_write(ST_I2cW)){
+		I2C_stop();
+		return 0;
+	}
+
+	// Pointer TEMP = 0x00
+	if(!I2C_write(0x00)){
+		I2C_stop();
+		return 0;
+	}
+
+	if(!I2C_repeatedStart()){
+		I2C_stop();
+		return 0;
+	}
+
+	if(!I2C_write(ST_I2CR)){
+		I2C_stop();
+		return 0;
+	}
+
+	if(!I2C_read(&MSB, 1)){
+		I2C_stop();
+		return 0;
+	}
+
+	if(!I2C_read(&LSB, 0)){
+		I2C_stop();
+		return 0;
+	}
+
+	I2C_stop();
+
+	lectura_LM75 = (MSB << 8) | LSB;
+
+	return 1;
+}
+
+/*Funcion para convertir la lectura del sensor a °C*/
+float obtenerTemperatura(void)
+{
+	int16_t temp = lectura_LM75 >> 7;
+	return temp * 0.5;
+}
+
 void actualizarLCD() {
 	Lcd_Clear();  // Limpiar pantalla
 	
@@ -183,12 +257,11 @@ void actualizarLCD() {
 	Lcd_Set_Cursor(1,6);
 	Lcd_Write_String(lista2);
 		
-	Lcd_Set_Cursor(0, 11);
+	Lcd_Set_Cursor(0, 10);
 	Lcd_Write_String("S3:");  // Escribir etiqueta de Sensor S2
-	//actualizarS3(lista3,lectura_S3);	//Actualizar dato de S1
+	actualizarS3(lista3,lectura_LM75);	//Actualizar dato de S1
 	Lcd_Set_Cursor(1,10);
-	//Lcd_Write_String(lista3);
-		
+	Lcd_Write_String(lista3);
 }
 
 
@@ -245,5 +318,53 @@ void actualizarS2(char *lista, uint8_t dato)
 		lista[2] = '\0';
 	}
 }
+
+void actualizarS3(char *lista, float temp)
+{
+	int entero;
+	uint8_t decimal;
+	uint8_t index = 0;
+
+	// Manejo de negativo
+	if(temp < 0){
+		lista[index++] = '-';
+		temp = -temp;
+	}
+
+	entero = (int)temp;
+
+	// Parte decimal (solo 0 o 5)
+	if((temp - entero) >= 0.5)
+	decimal = 5;
+	else
+	decimal = 0;
+
+	// Centenas (si existen)
+	if(entero >= 100){
+		lista[index++] = (entero / 100) + '0';
+		entero %= 100;
+	}
+
+	// Decenas
+	if(entero >= 10){
+		lista[index++] = (entero / 10) + '0';
+		} else {
+		lista[index++] = '0';
+	}
+
+	// Unidades
+	lista[index++] = (entero % 10) + '0';
+
+	// Punto decimal
+	lista[index++] = '.';
+
+	// Decimal
+	lista[index++] = decimal + '0';
+	lista[index++] = 0xDF;   // Código típico para ° en HD44780
+	lista[index++] = 'C';
+
+	lista[index] = '\0';
+}
+
 
 /********* Rutinas de interrupcion *********/
