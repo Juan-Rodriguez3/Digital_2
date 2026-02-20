@@ -19,6 +19,7 @@
 #include "ADC_Libraries/ADC.h"
 #include "UART_libraries/UART_Library.h"
 #include "LCD_Libraries/LCD8bits.h"
+#include "Stepper_libraries/Stepper.h"
 
 #define slave1R (0x30<<1)|0x01
 #define slave1W (0x30<<1) & 0b11111110
@@ -29,10 +30,14 @@
 #define ST_I2cW  (0x48<<1) & 0b11111110
 
 
-
-
+//Stepper
+Stepper_t motor;
+//Variables de ESP32
 uint8_t command_ESP=0;
+float temp=0;
+uint32_t contador_envio = 0;
 
+//Sensores
 uint8_t lectura_S1=0;
 uint8_t lectura_S2=0;
 int16_t lectura_LM75 = 0;
@@ -45,6 +50,7 @@ char lista3[8] = {'0', '0', '0', '0'};
 /********* Prototipos *********/
 void refresh_PORT(uint8_t bus_data);
 void setup();
+void enviarDatosESP(void);
 void actualizarLCD();
 void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, uint8_t sensor);
 void actualizarS1(char *lista, uint8_t cod_time);
@@ -54,6 +60,7 @@ void actualizarS3(char *lista, float temp);
 //Funciones para sensor I2C
 uint8_t leer_LM75(void);
 float obtenerTemperatura(); 
+
 
 /********* Funcion principal *********/
 int main(void)
@@ -66,9 +73,9 @@ int main(void)
 	
     while (1) 
     {
+		
 		//Lectura de S1 - Sensor ultrasonico 
 		actualizar_datos_slave(slave1W, slave1R,'R', 0);
-		
 		
 		//Lectura de S2 - Sensor de luz
 		//Cambiar el parametro crítico del sensor de LUZ
@@ -85,20 +92,29 @@ int main(void)
 			//Limpiar bandera de comando
 			command_ESP=0;		
 		}
+		
 		actualizar_datos_slave(slave2W, slave2R , 'W', 1);	//Pedir dato de luz
 		
 		//Lectura de S3 - Sensor de temperatura
+		
 		if(leer_LM75()){ 
-			PINC |= (1<<PINC3);
-			lectura_LM75 = obtenerTemperatura(); 
-		}
-		else {
-			writeString("Lectura de sensor I2C fallo\n");
+			PINC |= (1<<PINC3); 
 		}
 		
+		if (obtenerTemperatura()>=28){
+			//prender ventilador
+			PORTC |= (1<<PORTC0);
+			PORTC &= ~(1<<PORTC1);
+		}
+		else{
+			//Apagar ventilador
+			PORTC &= ~((1<<PORTC1)|(1<<PORTC0));
+		}
 		//Actualizar los datos
 		actualizarLCD();
-		_delay_ms(10);
+		
+		
+		_delay_ms(100);
     }
 }
 
@@ -113,7 +129,8 @@ void refresh_PORT(uint8_t bus_data){
 
 void setup(){
 	cli();
-	
+	//Stepper_Init(&motor);
+	//Stepper_SetSpeed(&motor, 3);  // RPM
 	//Puerto D
 	DDRD |= (1<<PORTD2)|(1<<PORTD3)|(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7);		//Salidas
 	PORTD &= ~((1<<PORTD2)|(1<<PORTD3)|(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7));
@@ -123,8 +140,10 @@ void setup(){
 	PORTB &= ~((1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3));
 
 	//PORTC 
-	DDRC |= (1<<DDC3);
-	PORTC &= ~(1<<PORTC3);
+	DDRC |= (1<<DDC0)|(1<<DDC3)|(1<<DDC1);
+	PORTC &= ~((1<<DDC0)|(1<<DDC3)|(1<<DDC1));
+	
+	
 	
 	Lcd_Init8bits();
 	I2C_init_Master(1, 100000);
@@ -135,59 +154,78 @@ void setup(){
 	sei();
 }
 
-//Funcion para comunicarse con el esclavo y actualizar los datos de los sensores
-//addressW es la dirrecion del esclavo para escribirle
-//addressR es la direccion del esclavo para leerlo
-//dato es el dato o lectura del sensor
-//comando es el caracter que enviara el Master al slave. (Instruccion que debe hacer)
+/*
+	Funciones con UART
+	Formato con el que mandaremos la cadena S1:123,S2:85,S3:24.5\n
+*/
+void enviarDatosESP(void)
+{
+	char buffer[40];
+	float temp = obtenerTemperatura();
 
+	sprintf(buffer, "S1:%u,S2:%u,S3:%.1f\n",
+	lectura_S1,
+	lectura_S2,
+	temp);
+
+	writeString(buffer);
+}
+
+
+/*
+Funcion para comunicarse con el esclavo y actualizar los datos de los sensores
+addressW es la dirrecion del esclavo para escribirle
+addressR es la direccion del esclavo para leerlo
+dato es el dato o lectura del sensor
+comando es el caracter que enviara el Master al slave. (Instruccion que debe hacer)
+*/
 void actualizar_datos_slave(uint8_t addressW, uint8_t addressR , char comando, uint8_t sensor){
-	writeString("Inicio de comunicacion\n");
+	//writeString("Inicio de comunicacion\n");
 	
 	if(!I2C_Start()) return;
 	
 	if (!I2C_write(addressW)){
 		I2C_stop();
-		writeString("Fallo al iniciar\n");
+		//writeString("Fallo al iniciar\n");
 		return;
 	}
 	
 	if(!I2C_write(comando)){
 		I2C_stop();
-		writeString("Fallo al enviar\n");
+		//writeString("Fallo al enviar\n");
 		return;
 	}
 	
 	if (!I2C_repeatedStart()){
 		I2C_stop();
-		writeString("Fallo al reptir\n");
+		//writeString("Fallo al reptir\n");
 		return;
 	}
 	
 	if(!I2C_write(addressR)){
 		I2C_stop();
-		writeString("fallo al escribir\n");
+		//writeString("fallo al escribir\n");
 		return;
 	}
 	
 	switch(sensor){
 		case 0:
 		I2C_read(&lectura_S1, 0);
-		writeString("Dato recibidio\n");
+		//writeString("Dato recibidio\n");
 		break;
 		case 1:
 		I2C_read(&lectura_S2, 0);
-		writeString("Dato recibidio\n");
+		//writeString("Dato recibidio\n");
 		break;
 		case 3:
-		writeString("No leemos dato");
+		//writeString("No leemos dato");
 		break;
 		default:
 		break;
 	}
 	I2C_stop();
 	
-	writeString("comunicación terminada\n");
+	//writeString("comunicación terminada\n");
 }
 
 /*Funcion para comunicarse con el sensor I2C de temperatura LM75*/
@@ -259,7 +297,7 @@ void actualizarLCD() {
 		
 	Lcd_Set_Cursor(0, 10);
 	Lcd_Write_String("S3:");  // Escribir etiqueta de Sensor S2
-	actualizarS3(lista3,lectura_LM75);	//Actualizar dato de S1
+	actualizarS3(lista3,obtenerTemperatura());	//Actualizar dato de S1
 	Lcd_Set_Cursor(1,10);
 	Lcd_Write_String(lista3);
 }

@@ -52,7 +52,7 @@ uint8_t I2C_Start(void){
 		Lo normal con comunicacion I2C es que el maestro este polliando y al esclavo se utilice las interrupciones.
 	*/
 	while (!(TWCR&(1<<TWINT)));	//Esperamos que ocurra evento con la bandera de TWCR
-	writeString("Esperando a que inicie");
+	//writeString("Esperando a que inicie");
 	return ((TWSR & 0xF8)==0x08);	//Nos quedamos con los bits de estado
 	/*Porque 0x08? Porque ese es el comando o el codigo de estado que indica que se envio al condicion de inicio.
 	  Si se envio la condicion de inicio entonces esta funcion debe regresar un 1.
@@ -77,12 +77,12 @@ void I2C_stop(void){
 	TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN);	//Inicia la secuencia de parada
 	
 	while (TWCR & (1<<TWSTO)){
-		writeString("Esperando a limpiar el bit\n");
+		//writeString("Esperando a limpiar el bit\n");
 	}
 }	
 
 //Funcion para escribir									
-	uint8_t I2C_write(uint8_t dato){
+uint8_t I2C_write(uint8_t dato){
 		uint8_t estado;
 	
 		TWDR=dato;		//Cargo el dato
@@ -100,7 +100,7 @@ void I2C_stop(void){
 	
 	
 	}	
-
+/*
 //funcion para leer dato			
 uint8_t I2C_read(uint8_t *buffer, uint8_t ack){
 	uint8_t estado; 
@@ -124,3 +124,33 @@ uint8_t I2C_read(uint8_t *buffer, uint8_t ack){
 	
 	return 1;
 }	
+*/
+uint8_t I2C_wait(void){
+	uint16_t timeout = 50000;
+
+	while (!(TWCR & (1<<TWINT))){
+		if(--timeout == 0) return 0;
+	}
+	return 1;
+}
+
+uint8_t I2C_read(uint8_t *buffer, uint8_t ack){
+	uint8_t estado;
+
+	if (ack)
+	TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWEA);
+	else
+	TWCR = (1<<TWINT)|(1<<TWEN);
+
+	if(!I2C_wait()) return 0;
+
+	estado = TWSR & 0xF8;
+
+	if (estado != 0x50 && estado != 0x58){
+		I2C_stop();      // LIBERA BUS SI HAY ERROR
+		return 0;
+	}
+
+	*buffer = TWDR;
+	return 1;
+}

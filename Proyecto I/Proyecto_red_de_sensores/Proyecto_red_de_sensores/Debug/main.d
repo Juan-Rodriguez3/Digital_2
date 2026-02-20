@@ -22,7 +22,7 @@ main.d main.o: .././main.c \
  C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\Proyecto\ I\Proyecto_red_de_sensores\Proyecto_red_de_sensores\UART_libraries/UART_Library.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  .././ADC_Libraries/ADC.h .././UART_libraries/UART_Library.h \
- .././LCD_Libraries/LCD8bits.h
+ .././LCD_Libraries/LCD8bits.h .././Stepper_libraries/Stepper.h
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -73,3 +73,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././UART_libraries/UART_Library.h:
 
 .././LCD_Libraries/LCD8bits.h:
+
+.././Stepper_libraries/Stepper.h:

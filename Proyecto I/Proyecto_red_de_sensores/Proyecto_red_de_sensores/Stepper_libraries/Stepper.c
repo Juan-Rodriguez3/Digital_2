@@ -4,7 +4,6 @@
  * Created: 2/15/2026 11:19:12 AM
  *  Author: juan rodriguez
  * Esta libreria es para facilitat el uso de un motor STEPPER 24BYJ28
- * Utiliza la el puertoB PB0-PB3.
  */ 
 
 #include "stepper.h"
@@ -23,8 +22,15 @@ static const uint8_t sequence[8] =
 
 void Stepper_Init(Stepper_t *m)
 {
-	DDRB |= 0x0F;        // PB0–PB3 como salida
-	PORTB &= ~0x0F;      // Apagar bobinas
+	// Configurar PB2, PB3, PB4 como salida
+	DDRB |= (1<<PB2) | (1<<PB3) | (1<<PB4);
+
+	// Configurar PC2 como salida
+	DDRC |= (1<<PC2);
+
+	// Apagar bobinas
+	PORTB &= ~((1<<PB2) | (1<<PB3) | (1<<PB4));
+	PORTC &= ~(1<<PC2);
 
 	m->steps_remaining = 0;
 	m->step_index = 0;
@@ -43,7 +49,21 @@ void Stepper_Move(Stepper_t *m, int32_t steps)
 
 static void Stepper_Output(uint8_t value)
 {
-	PORTB = (PORTB & 0xF0) | (value & 0x0F);
+	// IN1 -> PB2  (bit0)
+	if(value & 0x01) PORTB |= (1<<PB2);
+	else PORTB &= ~(1<<PB2);
+
+	// IN2 -> PB3  (bit1)
+	if(value & 0x02) PORTB |= (1<<PB3);
+	else PORTB &= ~(1<<PB3);
+
+	// IN3 -> PB4  (bit2)
+	if(value & 0x04) PORTB |= (1<<PB4);
+	else PORTB &= ~(1<<PB4);
+
+	// IN4 -> PC2  (bit3)
+	if(value & 0x08) PORTC |= (1<<PC2);
+	else PORTC &= ~(1<<PC2);
 }
 
 void Stepper_Update(Stepper_t *m)

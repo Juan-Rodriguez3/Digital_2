@@ -19,7 +19,7 @@
 
 //Direccion para comunicacion I2C
 #define S2_Address 0x30
-
+Stepper_t motor;
 
 uint8_t buffer = 0;
 volatile uint8_t ADCUno = 0;
@@ -29,11 +29,17 @@ char string_buffer[6];
 volatile uint16_t start_time = 0;
 volatile uint16_t pulse_width = 0;
 volatile uint8_t sensor_state = 0;
+
 uint8_t tiempo_uS=0;
 uint8_t distancia_map = 0;
 uint16_t distanciaCM = 0;
 static uint8_t ready_to_trigger = 1;
 char buffer_str[6];
+
+//Variables para el porton
+//static uint8_t puerta_abierta = 0;
+#define DISTANCIA_ACTIVAR  20
+#define DISTANCIA_DESACTIVAR 25
 
 //Funcion de 
 //void initADC();
@@ -45,7 +51,6 @@ void wStr(char* strng);
 void Ultrasonico_Trigger(void);
 
 
-
 int main(void)
 {
     setup();
@@ -53,6 +58,8 @@ int main(void)
 	
     while (1)
     {
+		
+		
 		if (buffer == 'R')
 		{
 			PINC |= (1<<PINC2);
@@ -64,53 +71,65 @@ int main(void)
 		 if (sensor_state == 0 && ready_to_trigger && !(PINC & (1 << PC0)))
 		 {
 			 Ultrasonico_Trigger();
-			 wStr("Lanzando trigger\n");
+			 //wStr("Lanzando trigger\n");
 		 }
 		else if (sensor_state==1){
-			wStr("Trigger recibido ----> ");
-			wStr("Esperando pulso de bajada\n");
+			//wStr("Trigger recibido ----> ");
+			//wStr("Esperando pulso de bajada\n");
 		}
 		else if (sensor_state==2){
-			wStr("Lectura del sensor terminada\n");
+			//wStr("Lectura del sensor terminada\n");
 			tiempo_uS = pulse_width * 0.5;
-			uint32_t distanciaCM = (uint32_t)pulse_width / 116UL;
+			distanciaCM = pulse_width / 116UL;;
 
 			
 			//Imprimir el pulso medido
-			wStr("Pulso medido: ");
+			//wStr("Pulso medido: ");
 			adc_a_string(pulse_width, buffer_str);
-			wStr(buffer_str);
-			wStr("\n");
+			//wStr(buffer_str);
+			//wStr("\n");
 			
 			//Imprimir el pulso medido
-			wStr("Tiempo medido: ");
+			//wStr("Tiempo medido: ");
 			adc_a_string(tiempo_uS, buffer_str);
-			wStr(buffer_str);
-			wStr("\n");
+			//wStr(buffer_str);
+			//wStr("\n");
 			
 			//Imprimir la distancia en CM
-			wStr("Distancia: ");
+			//wStr("Distancia: ");
 			adc_a_string(distanciaCM, buffer_str);
-			wStr(buffer_str);
-			wStr(" CM\n");
+			//wStr(buffer_str);
+			//wStr(" CM\n");
 			
 			if (distanciaCM>400){
 				distanciaCM = 400;
 			}
 			
 			distancia_map = (uint8_t)((distanciaCM * 255UL) / 400UL);
-			wStr("Lectura enviada al master: ");
-			adc_a_string(distancia_map,buffer_str);
-			wStr(buffer_str);
-			wStr("\n");
+			//wStr("Lectura enviada al master: ");
+			//adc_a_string(distancia_map,buffer_str);
+			//wStr(buffer_str);
+			//wStr("\n");
 			
 			ready_to_trigger = 0;
-			_delay_ms(60);
+			//_delay_ms(60);
 			sensor_state = 0;
 			ready_to_trigger = 1;
 			
-			wStr("Volver a leer\n");
+			//wStr("Volver a leer\n");
 		}
+		
+
+
+		
+
+	/*	if(puerta_abierta && distanciaCM >= DISTANCIA_DESACTIVAR){
+			
+			puerta_abierta = 0;
+		}
+		*/
+		Stepper_Move(&motor, -1024);
+		Stepper_Update(&motor);
 		
 		 
     }
@@ -147,7 +166,8 @@ void setup()
 	//initADC();
 	I2C_init_Slave(S2_Address);
 	initUART();
-	
+	Stepper_Init(&motor);
+	Stepper_SetSpeed(&motor, 3);  // RPM
 	sei();
 }
 
@@ -223,6 +243,7 @@ void wStr(char* strng)
 	}
 }
 
+	
 //
 ISR(PCINT1_vect)
 {

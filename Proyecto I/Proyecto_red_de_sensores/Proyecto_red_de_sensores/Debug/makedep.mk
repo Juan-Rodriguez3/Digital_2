@@ -10,5 +10,7 @@ LCD_Libraries\LCD8bits.c
 
 main.c
 
+Stepper_libraries\Stepper.c
+
 UART_libraries\UART_Library.c
 

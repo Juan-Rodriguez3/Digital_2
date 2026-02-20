@@ -33,6 +33,7 @@ uint8_t parameter=127;
 Stepper_t motor;
 uint8_t posicion = 0;
 
+
 //Prototipos de funciones de inicializacion
 void initADC();
 void setup();
@@ -72,14 +73,14 @@ int main(void)
 		 // Si está oscuro y todavía no ha girado
 		 if(LUZ <= parameter && posicion == 0)
 		 {
-			 Stepper_Move(&motor, 1024);   // girar 90° horario
+			 Stepper_Move(&motor, 2048);   // girar 90° horario
 			 posicion = 1;
 		 }
 
 		 // Si hay luz y está en 90°
 		 if(LUZ >= parameter && posicion == 1)
 		 {
-			 Stepper_Move(&motor, -1024);  // regresar 90° antihorario
+			 Stepper_Move(&motor, -2048);  // regresar 90° antihorario
 			 posicion = 0;
 		 }
 		

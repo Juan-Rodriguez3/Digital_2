@@ -30,7 +30,7 @@ uint8_t I2C_repeatedStart(void);							//Funcion para seguir conversacion (el ma
 void I2C_stop(void);										//Funcion para parar comunicacion
 uint8_t I2C_write(uint8_t dato);							//Funcion para escribir
 uint8_t I2C_read(uint8_t *buffer, uint8_t ack);				//funcion para leer dato
-
+uint8_t I2C_wait(void);
 
 
 #endif /* I2C_H_ */

@@ -240,7 +240,7 @@ void I2C_init_Slave(uint8_t address)
  1b2:	81 11       	cpse	r24, r1
  1b4:	0b c0       	rjmp	.+22     	; 0x1cc <main+0x66>
  1b6:	40 e0       	ldi	r20, 0x00	; 0
- 1b8:	54 e0       	ldi	r21, 0x04	; 4
+ 1b8:	58 e0       	ldi	r21, 0x08	; 8
  1ba:	60 e0       	ldi	r22, 0x00	; 0
  1bc:	70 e0       	ldi	r23, 0x00	; 0
  1be:	84 e1       	ldi	r24, 0x14	; 20
@@ -256,7 +256,7 @@ void I2C_init_Slave(uint8_t address)
  1dc:	81 30       	cpi	r24, 0x01	; 1
  1de:	51 f4       	brne	.+20     	; 0x1f4 <main+0x8e>
  1e0:	40 e0       	ldi	r20, 0x00	; 0
- 1e2:	5c ef       	ldi	r21, 0xFC	; 252
+ 1e2:	58 ef       	ldi	r21, 0xF8	; 248
  1e4:	6f ef       	ldi	r22, 0xFF	; 255
  1e6:	7f ef       	ldi	r23, 0xFF	; 255
  1e8:	84 e1       	ldi	r24, 0x14	; 20

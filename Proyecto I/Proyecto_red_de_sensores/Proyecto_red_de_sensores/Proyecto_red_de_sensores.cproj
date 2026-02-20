@@ -141,6 +141,12 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Stepper_libraries\Stepper.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Stepper_libraries\Stepper.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="UART_libraries\UART_Library.c">
       <SubType>compile</SubType>
     </Compile>
@@ -152,6 +158,7 @@
     <Folder Include="I2C_Libraries" />
     <Folder Include="ADC_Libraries" />
     <Folder Include="LCD_Libraries" />
+    <Folder Include="Stepper_libraries" />
     <Folder Include="UART_libraries" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
