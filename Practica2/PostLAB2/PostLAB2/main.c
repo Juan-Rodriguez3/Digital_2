@@ -1,0 +1,259 @@
+/*/*
+ * Lab2.c
+ *
+ * Created: 1/22/2026 4:12:06 PM
+ * Author : juana
+ */ 
+
+//PINOUT
+/*
+	RS-->PORTC0
+	RW-->GND
+	E--> PORTC1
+	D0-D7 --> PORD0-PORTD7
+*/
+
+//Libreri?as y definiciones
+#define F_CPU 16000000UL
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+#include "ADC/ADC.h"
+#include "LCD/LCD8bits.h"
+#include "UART/UART_Library.h"
+	
+#define  Vref_5V 5
+#define ON 1
+#define OFF 0
+#define prescaler_ADC 128
+#define comparador 2
+
+/*** Variables globales ***/
+volatile uint8_t canal_ADC=2;	// =0 --> D10/OC1B - !=0 --> D9/OC1A
+volatile uint8_t valorADC = 0;	//Lectura del adc
+volatile uint8_t POT1,POT2, prePOT1, prePOT2=0;
+volatile uint8_t contador=0;
+volatile char dato_CN;
+volatile uint8_t flag_envio;
+
+
+char lista1[8] = {'0', '0', '0', '0'};
+char lista2[8] = {'0', '0', '0', '0'};
+char lista3[8] = {'0', '0', '0', '0'};
+
+
+/*** Prototipos ***/
+void setup();
+void actualizarVoltaje(char *lista, uint8_t valor);
+void actualizarVoltajeS2(char *lista, uint8_t valor);
+void actualizarLCD(void);
+void actualizarContador(char *lista, int valor);
+
+int main(void)
+{
+	setup();
+    /* Replace with your application code */
+	
+	/* 
+	  //Prueba de escritura del LCD
+	 // Posicionar cursor y escribir
+	 Lcd_Set_Cursor(0, 0);            // L?nea 1, columna 0
+	 Lcd_Write_String("Hola");
+	 */
+	actualizarLCD();
+    while (1) 
+    {
+	
+		
+		 if (POT1 != prePOT1)
+		 {
+			 prePOT1 = POT1;	//Actualizar el valor actual de pot1 para futura comparación
+			 actualizarLCD();
+		 }
+		 else if (POT2 != prePOT2){
+			 prePOT2 = POT2;	//Actualizar el valor actual de pot2 para futura comparación
+			 actualizarLCD();
+		 }
+		 
+		 switch (flag_envio) {
+			 case 1:
+			 // actualizar el contador en la pantalla
+			 actualizarLCD();
+			 flag_envio=0;
+			 break;
+			 case 2:
+			 // Imprimir en la terminal los valores de S1, S2 y S3
+			 writeString("S1: ");
+			 writeString(lista1);
+			 writeString("\n");
+			 writeString("S2: ");
+			 writeString(lista2);
+			 writeString("\n");
+			 writeString("S3: ");
+			 writeString(lista3);
+			 writeString("\n");
+			 flag_envio=0;
+			 break;
+
+			 default:
+			 // código si no coincide
+			 break;
+		 }
+			
+		_delay_ms(50);   // ?? delay al final del ciclo
+		
+    }
+}
+
+
+/***Subrutinas NON-Interrupt***/
+
+void setup(){
+	 cli();
+	   //UCSR0B = 0;                //Comunicaci?n serial
+	   
+	   //Puerto D
+	   
+	   DDRD |= (1<<PORTD2)|(1<<PORTD3)|(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7);		//Salidas
+	   PORTD =0x00;		//
+	   
+	   DDRB |= (1<<PORTB0)|(1<<PORTB1); //Salidas 
+	   PORTB &= ~((1<<PORTB0)|(1<<PORTB1)); //Setear en cero 
+	   
+	   //Puerto C
+	   DDRC |= (1<<PORTC0)|(1<<PORTC1);		//Salidas
+	   PORTC &= ~((1<<PORTC0)|(1<<PORTC1));
+	   
+	   //Inicializar el LCD
+	   Lcd_Init8bits();
+	   Lcd_Clear();
+	   
+	   //Inicializar el ADC
+	   ADC_init(ON, Vref_5V,canal_ADC,ON,prescaler_ADC);
+	   initUART_9600();
+	   sei();
+	   
+}
+
+void actualizarVoltaje(char *lista, uint8_t valor) {
+	float voltaje = (valor * 5.0) / 255.0;
+	uint16_t int_part = (uint16_t)voltaje;
+	uint16_t dec_part = (uint16_t)((voltaje - int_part) * 100);  // Dos decimales
+
+	if (int_part < 10) {
+		lista[0] = '0' + int_part;
+		lista[1] = '.';
+		lista[2] = '0' + (dec_part / 10);
+		lista[3] = '0' + (dec_part % 10);
+		lista[4] = 'V';
+		lista[5] = '\0';
+		} 
+		else {
+		lista[0] = '0' + (int_part / 10);
+		lista[1] = '0' + (int_part % 10);
+		lista[2] = '.';
+		lista[3] = '0' + (dec_part / 10);
+		lista[4] = '0' + (dec_part % 10);
+		lista[5] = 'V';
+		lista[6] = '\0';
+	}
+}
+
+void actualizarVoltajeS2(char *lista, uint8_t valor)
+{
+	uint16_t voltaje2;
+
+	// Convertir de 0–255 a 0–1023
+	voltaje2 = (valor * 1023UL) / 255UL;
+
+	// Convertir número a ASCII (4 dígitos)
+	lista[0] = '0' + ((voltaje2/1000));            // millares
+	lista[1] = '0' + ((voltaje2 / 100) % 10);      // centenas
+	lista[2] = '0' + ((voltaje2 / 10) % 10);       // decenas
+	lista[3] = '0' + (voltaje2 % 10);              // unidades
+	lista[4] = '\0';                               // fin de string
+}
+
+
+void actualizarContador(char *lista, int valor) {
+	lista[0] = '0' + (valor / 100);		//centenas
+	lista[1] = '0' + ((valor / 10) % 10);	//decenas
+	lista[2] = '0' + (valor % 10);			//unidades
+	lista[3] = '\0';						// salto
+}
+
+void actualizarLCD(void) {
+	Lcd_Clear();  // Limpiar pantalla
+	Lcd_Set_Cursor(0, 0);
+	Lcd_Write_String("S1:");  // Escribir etiqueta de Sensor 1
+	Lcd_Set_Cursor(0, 6);
+	Lcd_Write_String("S2:");  // Escribir etiqueta de Sensor 1
+	Lcd_Set_Cursor(0, 11);
+	Lcd_Write_String("S3:");  // Escribir etiqueta de Sensor 1
+	
+	// Actualizar las cadenas con los valores actuales
+	actualizarVoltaje(lista1, POT1);
+	actualizarVoltajeS2(lista2,POT2);
+	actualizarContador(lista3, contador);
+	
+	
+
+	// Mostrar los valores en la LCD
+	Lcd_Set_Cursor(1, 0);
+	Lcd_Write_String(lista1);
+	Lcd_Set_Cursor(1, 6);
+	Lcd_Write_String(lista2);
+	Lcd_Set_Cursor(1,11);
+	Lcd_Write_String(lista3);
+}
+
+
+/***Subrutinas Interrupt***/
+ISR(ADC_vect){
+	
+	//Guardamos el valor de ADC
+	valorADC = ADCH;        // Leemos solo ADCH por justificaci?n izquierda
+	
+	//Actualizamos el DutyCycle dependiendo de que canal se haya leido
+	switch(canal_ADC){
+		case 2:   // ADC3 = PC3
+		POT1 = valorADC;
+		break;
+		case 3:   // si luego usas otro pot
+		POT2 = valorADC;
+		break;
+		default:
+		break;
+	}
+
+	
+	//Multiplexeo de canales de ADC para la proxuma lectura.
+	if (canal_ADC>=3){
+		canal_ADC=2;
+	}
+	else {
+		canal_ADC++;	//pasamos al siguiente canal
+	}
+	
+	//Reconfiguracion del ADC
+	ADC_init(ON, Vref_5V,canal_ADC,ON,prescaler_ADC);
+}
+
+ISR(USART_RX_vect)
+{
+	//Recibimos el dato de la computadora
+	dato_CN=UDR0;
+	if (dato_CN == '+')
+	{
+		contador++;           // Acción "+"
+		flag_envio=1;
+	}
+	else if (dato_CN == '-')
+	{
+		contador--;			// Acción "-"
+		flag_envio=1;
+	}
+	else if (dato_CN == '1'){
+		flag_envio=2;
+	}
+}
