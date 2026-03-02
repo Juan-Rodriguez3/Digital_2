@@ -726,3 +726,24 @@ arm-none-eabi-size  Lab5.elf
   11480	     16	   1720	  13216	   33a0	Lab5.elf
 Finished building: default.size.stdout
  
+01:11:15 **** Incremental Build of configuration Debug for project Lab5 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Lab5.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\LAB1\Lab5\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5.elf
+ 
+arm-none-eabi-size  Lab5.elf 
+arm-none-eabi-objdump -h -S Lab5.elf  > "Lab5.list"
+   text	   data	    bss	    dec	    hex	filename
+  11484	     16	   1720	  13220	   33a4	Lab5.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5.list
+ 
+01:11:18 **** Incremental Build of configuration Debug for project Lab5 ****
+make -j12 all 
+arm-none-eabi-size  Lab5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  11484	     16	   1720	  13220	   33a4	Lab5.elf
+Finished building: default.size.stdout
+ 
