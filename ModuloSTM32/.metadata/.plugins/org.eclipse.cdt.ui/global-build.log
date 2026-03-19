@@ -522,3 +522,1048 @@ arm-none-eabi-size  LAB6.1.elf
   16468	     92	   2052	  18612	   48b4	LAB6.1.elf
 Finished building: default.size.stdout
  
+19:56:38 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+19:56:39 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32f4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f4xx_hal_msp.d" -MT"Core/Src/stm32f4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f4xx_hal_msp.o"
+arm-none-eabi-gcc "../Core/Src/stm32f4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f4xx_it.d" -MT"Core/Src/stm32f4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f4xx_it.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16660	     92	   2124	  18876	   49bc	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+20:01:50 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+20:01:51 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16668	     92	   2124	  18884	   49c4	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+20:02:03 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16668	     92	   2124	  18884	   49c4	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+20:02:53 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+20:02:54 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16628	     92	   2124	  18844	   499c	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+20:03:02 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16628	     92	   2124	  18844	   499c	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+20:06:59 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+20:06:59 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16548	     92	   2124	  18764	   494c	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+20:07:38 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+20:07:38 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16548	     92	   2124	  18764	   494c	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+20:07:42 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16548	     92	   2124	  18764	   494c	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+20:10:14 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+20:10:15 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16540	     92	   2124	  18756	   4944	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+20:10:17 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16540	     92	   2124	  18756	   4944	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+23:11:49 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:11:50 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:108:8: warning: unused variable 'buffer' [-Wunused-variable]
+  108 |   char buffer[50];
+      |        ^~~~~~
+../Core/Src/main.c:104:12: warning: unused variable 'adcY' [-Wunused-variable]
+  104 |   uint32_t adcY = 0;
+      |            ^~~~
+../Core/Src/main.c:103:12: warning: unused variable 'adcX' [-Wunused-variable]
+  103 |   uint32_t adcX = 0;
+      |            ^~~~
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  13316	     12	   1788	  15116	   3b0c	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+23:12:20 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:12:20 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  13304	     12	   1788	  15104	   3b00	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+23:12:40 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:12:41 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13304	     12	   1788	  15104	   3b00	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+23:12:43 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13304	     12	   1788	  15104	   3b00	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+23:16:41 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:16:41 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16540	     92	   2124	  18756	   4944	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+23:16:47 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16540	     92	   2124	  18756	   4944	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+23:22:22 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:22:22 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  13304	     12	   1788	  15104	   3b00	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+23:22:25 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13304	     12	   1788	  15104	   3b00	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+23:27:46 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:27:46 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  13316	     12	   1788	  15116	   3b0c	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+23:27:56 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13316	     12	   1788	  15116	   3b0c	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+23:44:23 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:44:23 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:110:32: warning: passing argument 2 of 'HAL_UART_Receive_IT' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |   HAL_UART_Receive_IT(&huart1, &rxData, 1);
+      |                                ^~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:411,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:748:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+  748 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/main.c:106:20: warning: unused variable 'index' [-Wunused-variable]
+  106 |   volatile uint8_t index = 0;
+      |                    ^~~~~
+../Core/Src/main.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/main.c:381:9: error: 'buffer' undeclared (first use in this function); did you mean 'setbuffer'?
+  381 |         buffer[index++] = rxData;
+      |         ^~~~~~
+      |         setbuffer
+../Core/Src/main.c:381:9: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:381:21: error: lvalue required as increment operand
+  381 |         buffer[index++] = rxData;
+      |                     ^~
+../Core/Src/main.c:384:36: warning: comparison between pointer and integer
+  384 |         if(rxData == '\n' || index >= 49)
+      |                                    ^~
+../Core/Src/main.c:387:13: error: 'dataReady' undeclared (first use in this function)
+  387 |             dataReady = 1;
+      |             ^~~~~~~~~
+../Core/Src/main.c:388:19: error: lvalue required as left operand of assignment
+  388 |             index = 0;
+      |                   ^
+../Core/Src/main.c:391:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  391 |         HAL_UART_Receive_IT(&huart1, &rxData, 1);
+      |                                      ^~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:748:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+  748 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+make: *** [Core/Src/subdir.mk:34: Core/Src/main.o] Error 1
+"make -j12 all" terminated with exit code 2. Build might be incomplete.
+23:45:29 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:45:29 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:106:20: warning: unused variable 'index' [-Wunused-variable]
+  106 |   volatile uint8_t index = 0;
+      |                    ^~~~~
+../Core/Src/main.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/main.c:381:9: error: 'buffer' undeclared (first use in this function); did you mean 'setbuffer'?
+  381 |         buffer[index++] = rxData;
+      |         ^~~~~~
+      |         setbuffer
+../Core/Src/main.c:381:9: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:381:21: error: lvalue required as increment operand
+  381 |         buffer[index++] = rxData;
+      |                     ^~
+../Core/Src/main.c:384:36: warning: comparison between pointer and integer
+  384 |         if(rxData == '\n' || index >= 49)
+      |                                    ^~
+../Core/Src/main.c:387:13: error: 'dataReady' undeclared (first use in this function)
+  387 |             dataReady = 1;
+      |             ^~~~~~~~~
+../Core/Src/main.c:388:19: error: lvalue required as left operand of assignment
+  388 |             index = 0;
+      |                   ^
+make: *** [Core/Src/subdir.mk:34: Core/Src/main.o] Error 1
+"make -j12 all" terminated with exit code 2. Build might be incomplete.
+23:45:45 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:45:45 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:106:20: warning: unused variable 'index' [-Wunused-variable]
+  106 |   volatile uint8_t index;
+      |                    ^~~~~
+../Core/Src/main.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/main.c:381:9: error: 'buffer' undeclared (first use in this function); did you mean 'setbuffer'?
+  381 |         buffer[index++] = rxData;
+      |         ^~~~~~
+      |         setbuffer
+../Core/Src/main.c:381:9: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:381:21: error: lvalue required as increment operand
+  381 |         buffer[index++] = rxData;
+      |                     ^~
+../Core/Src/main.c:384:36: warning: comparison between pointer and integer
+  384 |         if(rxData == '\n' || index >= 49)
+      |                                    ^~
+../Core/Src/main.c:387:13: error: 'dataReady' undeclared (first use in this function)
+  387 |             dataReady = 1;
+      |             ^~~~~~~~~
+../Core/Src/main.c:388:19: error: lvalue required as left operand of assignment
+  388 |             index = 0;
+      |                   ^
+make: *** [Core/Src/subdir.mk:34: Core/Src/main.o] Error 1
+"make -j12 all" terminated with exit code 2. Build might be incomplete.
+23:47:29 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:47:29 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:37:19: error: 'index' redeclared as different kind of symbol
+   37 |  volatile uint8_t index;
+      |                   ^~~~~
+In file included from C:\Users\juana\Documents\STM32CubeIDE_2.1.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740\tools\bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/include/string.h:24,
+                 from ../Core/Src/main.c:25:
+C:\Users\juana\Documents\STM32CubeIDE_2.1.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740\tools\bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/include/strings.h:64:10: note: previous declaration of 'index' with type 'char *(const char *, int)'
+   64 | char    *index(const char *, int) __pure;                       /* LEGACY */
+      |          ^~~~~
+make: *** [Core/Src/subdir.mk:34: Core/Src/main.o] Error 1
+"make -j12 all" terminated with exit code 2. Build might be incomplete.
+23:47:57 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:47:58 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:37:19: error: 'index' redeclared as different kind of symbol
+   37 |  volatile uint8_t index=0;
+      |                   ^~~~~
+In file included from C:\Users\juana\Documents\STM32CubeIDE_2.1.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740\tools\bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/include/string.h:24,
+                 from ../Core/Src/main.c:25:
+C:\Users\juana\Documents\STM32CubeIDE_2.1.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740\tools\bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/include/strings.h:64:10: note: previous declaration of 'index' with type 'char *(const char *, int)'
+   64 | char    *index(const char *, int) __pure;                       /* LEGACY */
+      |          ^~~~~
+make: *** [Core/Src/subdir.mk:34: Core/Src/main.o] Error 1
+"make -j12 all" terminated with exit code 2. Build might be incomplete.
+23:50:11 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+23:50:12 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  13348	     12	   1844	  15204	   3b64	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+23:50:16 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13348	     12	   1844	  15204	   3b64	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:05:55 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:05:55 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16572	     92	   2172	  18836	   4994	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:05:57 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16572	     92	   2172	  18836	   4994	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:06:15 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:06:16 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:06:32 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:08:25 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:08:25 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:08:28 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:09:27 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:09:28 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:09:32 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:10:13 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:10:14 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:10:17 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:11:17 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:11:17 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:11:22 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:11:23 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:11:25 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:12:17 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:12:18 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:12:20 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:13:41 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:13:42 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:13:51 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:14:31 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:14:32 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:14:36 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16616	     92	   2172	  18880	   49c0	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:16:36 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:16:37 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16696	     92	   2172	  18960	   4a10	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:16:40 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16696	     92	   2172	  18960	   4a10	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:17:36 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:17:36 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16696	     92	   2172	  18960	   4a10	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:17:41 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16696	     92	   2172	  18960	   4a10	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:20:14 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:20:14 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:20:16 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:20:53 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:20:53 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:20:56 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:21:17 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:21:17 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:21:22 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:21:41 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:21:41 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:21:45 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:22:14 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:22:14 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:22:17 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:33:21 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:33:21 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:107:12: warning: variable 'adcY' set but not used [-Wunused-but-set-variable]
+  107 |   uint32_t adcY = 0;
+      |            ^~~~
+../Core/Src/main.c:106:12: warning: variable 'adcX' set but not used [-Wunused-but-set-variable]
+  106 |   uint32_t adcX = 0;
+      |            ^~~~
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  13892	     12	   1844	  15748	   3d84	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:33:29 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13892	     12	   1844	  15748	   3d84	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:39:33 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:39:33 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16736	     92	   2180	  19008	   4a40	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:39:36 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16736	     92	   2180	  19008	   4a40	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:40:59 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:41:00 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB6.1.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB6.1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB6.1.elf
+ 
+arm-none-eabi-size  LAB6.1.elf 
+arm-none-eabi-objdump -h -S LAB6.1.elf  > "LAB6.1.list"
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB6.1.list
+ 
+00:41:03 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 

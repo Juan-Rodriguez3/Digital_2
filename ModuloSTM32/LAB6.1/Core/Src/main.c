@@ -33,10 +33,10 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define ADC_midline 126
-ADC_HandleTypeDef hadc1;
-uint8_t rxData;
-uint8_t flagP2=0;
-UART_HandleTypeDef huart2;
+ uint8_t rxData;
+volatile uint8_t i = 0;
+volatile uint8_t dataReady = 0;
+char buffer[50];
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -102,13 +102,15 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+
   uint32_t adcX = 0;
   uint32_t adcY = 0;
 
-  HAL_UART_Receive_IT(&huart2, &rxData, 1);
+
+  HAL_UART_Receive_IT(&huart1, &rxData, 1);
   HAL_ADC_Start(&hadc1);
-  char buffer[50];
- // uint8_t contador=0;
+
+ //uint8_t contador=0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -118,41 +120,47 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_ADC_Start(&hadc1);
-	  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-	  adcX = HAL_ADC_GetValue(&hadc1);
+	  if(dataReady)
+	  {
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 100);
+		  dataReady = 0;
+	  }
 
+	  HAL_ADC_Start(&hadc1);
 	  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
 	  adcY = HAL_ADC_GetValue(&hadc1);
 
+	  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+	  adcX = HAL_ADC_GetValue(&hadc1);
+
 	  HAL_ADC_Stop(&hadc1);
 
-	  if(adcX < ADC_midline)
+	  if(adcX < (ADC_midline-2))
 	  {
 		  sprintf(buffer, "PJ1: izquierda\r\n");
 	  }
-	  else if(adcX>ADC_midline)
+	  else if(adcX>(ADC_midline+5))
 	  {
 		  sprintf(buffer, "PJ1: derecha\r\n");
+	  }
+	  else{
+		  buffer[0] = '\0';  // vaciar string
 	  }
 
 	  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
 
-	  if(adcY<(ADC_midline)){
+	  if(adcY<(ADC_midline-2)){
 		  sprintf(buffer, "PJ1: abajo\r\n");
 	  }
-	  else if (adcY>(ADC_midline)){
+	  else if (adcY>(ADC_midline+2)){
 		  sprintf(buffer, "PJ1: arriba\r\n");
 	  }
-
-	  //HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-	  if (flagP2){
-		  HAL_UART_Transmit(&huart2, &rxData, 1, 100);
-		  flagP2=0;
+	  else{
+		  buffer[0] = '\0';  // vaciar string
 	  }
+	  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
 
-	  HAL_Delay(200);
+	  HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
@@ -372,12 +380,19 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    if (huart->Instance == USART2)
+    if (huart->Instance == USART1)
     {
-    	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    	flagP2=1;
-        // Reactivar interrupción
-        HAL_UART_Receive_IT(&huart2, &rxData, 1);
+        buffer[i++] = rxData;
+
+        // detectar fin de mensaje
+        if(rxData == '\n' || i >= 49)
+        {
+            buffer[i] = '\0';  // terminar string
+            dataReady = 1;
+            i = 0;
+        }
+
+        HAL_UART_Receive_IT(&huart1, &rxData, 1);
     }
 }
 /* USER CODE END 4 */
