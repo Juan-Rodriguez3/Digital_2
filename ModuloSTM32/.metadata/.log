@@ -151,3 +151,25 @@ COM9
 
 !ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-03-19 01:04:01.806
 !MESSAGE port: 
+!SESSION 2026-03-19 01:48:37.184 -----------------------------------------------
+eclipse.buildId=Version 2.1.0
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-03-19 01:48:46.288
+!MESSAGE Log4j2 initialized with config file C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-03-19 01:48:54.198
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-03-19 01:48:54.617
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-03-19 01:48:54.617
+!MESSAGE port: 
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-03-19 01:49:14.284
+!MESSAGE Indexed 'LAB7' (22 sources, 120 headers) in 3 sec: 11,820 declarations; 49,866 references; 1 unresolved inclusions; 92 syntax errors; 240 unresolved names (0.39%)
