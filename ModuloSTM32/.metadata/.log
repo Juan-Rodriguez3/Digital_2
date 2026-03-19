@@ -64,3 +64,14 @@ COM9
 
 !ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-03-18 12:16:40.105
 !MESSAGE port: 
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-03-18 17:00:59.594
+!MESSAGE Indexed 'LAB5' (22 sources, 123 headers) in 2.21 sec: 12,968 declarations; 62,731 references; 1 unresolved inclusions; 92 syntax errors; 240 unresolved names (0.32%)
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-03-18 19:21:45.075
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM9
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-03-18 19:21:45.075
+!MESSAGE port: COM9

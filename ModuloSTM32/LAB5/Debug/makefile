@@ -60,8 +60,8 @@ all: main-build
 main-build: LAB5.elf secondary-outputs
 
 # Tool invocations
-LAB5.elf LAB5.map: $(OBJS) $(USER_OBJS) C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\LAB2\LAB5\STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "LAB5.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\LAB2\LAB5\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB5.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+LAB5.elf LAB5.map: $(OBJS) $(USER_OBJS) C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB5\STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "LAB5.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB5\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB5.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
