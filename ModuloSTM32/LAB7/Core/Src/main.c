@@ -21,7 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,7 +32,137 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define NoteDo0 50861
+#define NoteDo1 25430
+#define NoteDo2 12715
+#define NoteDo3 6357
+#define NoteDo4 3178
+#define NoteDo5 1588
+#define NoteDo6 794
+#define NoteDo7 396
+#define NoteDo8 198
+#define NoteDo9 98
 
+#define NoteDoSReb0 48007
+#define NoteDoSReb1 24003
+#define NoteDoSReb2 12001
+#define NoteDoSReb3 6000
+#define NoteDoSReb4 2999
+#define NoteDoSReb5 1499
+#define NoteDoSReb6 749
+#define NoteDoSReb7 374
+#define NoteDoSReb8 187
+#define NoteDoSReb9 93
+
+#define NoteRe0 45312
+#define NoteRe1 22656
+#define NoteRe2 11327
+#define NoteRe3 5663
+#define NoteRe4 2831
+#define NoteRe5 1415
+#define NoteRe6 707
+#define NoteRe7 353
+#define NoteRe8 176
+#define NoteRe9 88
+
+#define NoteReSMib0 42769
+#define NoteReSMib1 21384
+#define NoteReSMib2 10692
+#define NoteReSMib3 5345
+#define NoteReSMib4 2672
+#define NoteReSMib5 1336
+#define NoteReSMib6 667
+#define NoteReSMib7 333
+#define NoteReSMib8 166
+#define NoteReSMib9 83
+
+#define NoteMi0 40369
+#define NoteMi1 20184
+#define NoteMi2 10091
+#define NoteMi3 5045
+#define NoteMi4 2522
+#define NoteMi5 1261
+#define NoteMi6 630
+#define NoteMi7 314
+#define NoteMi8 157
+#define NoteMi9 78
+
+#define NoteFa0 38103
+#define NoteFa1 19051
+#define NoteFa2 9525
+#define NoteFa3 4762
+#define NoteFa4 2380
+#define NoteFa5 1190
+#define NoteFa6 594
+#define NoteFa7 297
+#define NoteFa8 148
+#define NoteFa9 73
+
+#define NoteFaSSolb0 35964
+#define NoteFaSSolb1 17982
+#define NoteFaSSolb2 8990
+#define NoteFaSSolb3 4495
+#define NoteFaSSolb4 2247
+#define NoteFaSSolb5 1123
+#define NoteFaSSolb6 561
+#define NoteFaSSolb7 280
+#define NoteFaSSolb8 139
+#define NoteFaSSolb9 69
+
+#define NoteSol0 33946
+#define NoteSol1 16972
+#define NoteSol2 8486
+#define NoteSol3 4242
+#define NoteSol4 2121
+#define NoteSol5 1060
+#define NoteSol6 529
+#define NoteSol7 264
+#define NoteSol8 132
+#define NoteSol9 65
+
+#define NoteSolSLab0 32040
+#define NoteSolSLab1 16020
+#define NoteSolSLab2 8009
+#define NoteSolSLab3 4004
+#define NoteSolSLab4 2002
+#define NoteSolSLab5 1000
+#define NoteSolSLab6 500
+#define NoteSolSLab7 249
+#define NoteSolSLab8 124
+#define NoteSolSLab9 62
+
+#define NoteLa0 30242
+#define NoteLa1 15121
+#define NoteLa2 7560
+#define NoteLa3 3779
+#define NoteLa4 1889
+#define NoteLa5 944
+#define NoteLa6 472
+#define NoteLa7 235
+#define NoteLa8 117
+#define NoteLa9 58
+
+#define NoteLaSSib0 28545
+#define NoteLaSSib1 14272
+#define NoteLaSSib2 7135
+#define NoteLaSSib3 3567
+#define NoteLaSSib4 1783
+#define NoteLaSSib5 891
+#define NoteLaSSib6 445
+#define NoteLaSSib7 222
+#define NoteLaSSib8 111
+#define NoteLaSSib9 55
+
+#define NoteSi0 26942
+#define NoteSi1 13471
+#define NoteSi2 6735
+#define NoteSi3 3367
+#define NoteSi4 1683
+#define NoteSi5 841
+#define NoteSi6 420
+#define NoteSi7 209
+#define NoteSi8 104
+#define NoteSi9 52
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -40,26 +171,100 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-DAC_HandleTypeDef hdac;
+TIM_HandleTypeDef htim2;
 
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+char buffer[50];
+volatile uint8_t S_audio=0;
+uint8_t rxData;
+uint16_t mario_notes[] = {
+    NoteMi5, NoteMi5, 0, NoteMi5,
+    0, NoteDo5, NoteMi5, 0,
+    NoteSol5, 0, 0, 0,
+    NoteSol4, 0, 0, 0,
 
+    NoteDo5, 0, 0, NoteSol4,
+    0, 0, NoteMi4, 0,
+    0, NoteLa4, 0, NoteSi4,
+    0, NoteLaSSib4, NoteLa4, 0,
+
+    NoteSol4, NoteMi5, NoteSol5,
+    NoteLa5, 0, NoteFa5, NoteSol5,
+    0, NoteMi5, 0, NoteDo5,
+    NoteRe5, NoteSi4, 0, 0
+};
+uint16_t mario_duration[] = {
+    150, 150, 150, 150,
+    150, 150, 150, 150,
+    300, 150, 150, 150,
+    300, 150, 150, 150,
+
+    150, 150, 150, 150,
+    150, 150, 150, 150,
+    150, 150, 150, 150,
+    150, 150, 150, 150,
+
+    150, 150, 150,
+    300, 150, 150, 150,
+    150, 150, 150, 150,
+    150, 300, 150, 150
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_DAC_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
-
+void playNote(uint16_t psc);
+void playMario();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void playNote(uint16_t psc)
+{
+    if(psc == 0)
+    {
+        // silencio
+        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+        return;
+    }
 
+    // Cambiar prescaler (frecuencia)
+    __HAL_TIM_SET_PRESCALER(&htim2, psc);
+
+    __HAL_TIM_SET_AUTORELOAD(&htim2, 100);
+
+    // Duty cycle 50%
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 50);
+}
+
+void playMario()
+{
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+    int size = sizeof(mario_notes)/sizeof(mario_notes[0]);
+
+    for(int i = 0; i < size; i++)
+    {
+        if(mario_notes[i] == 0)
+        {
+            __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+        }
+        else
+        {
+            playNote(mario_notes[i]);
+        }
+
+        HAL_Delay(mario_duration[i]);
+
+        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+        HAL_Delay(50);
+    }
+}
 /* USER CODE END 0 */
 
 /**
@@ -91,10 +296,19 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DAC_Init();
   MX_USART2_UART_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  //Desplegar el menu
+  sprintf(buffer, "Seleccione el audio a reproducir con 1 o 2\r\n");
+  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+  sprintf(buffer, "1) Audio 1\r\n");
+  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+  sprintf(buffer, "2) Audio 2\r\n");
+  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
 
+  //Esperar respuesta
+  HAL_UART_Receive_IT(&huart2, &rxData, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -104,6 +318,30 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	  if (S_audio==1){
+		  sprintf(buffer, "Reproduciendo audio 1\r\n");
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  for(int j = 0; j < 2; j++)   // repetir 2 veces
+		  {
+		      playMario();
+		  }
+		  S_audio=3;
+	  }
+	  else if (S_audio==2){
+		  sprintf(buffer, "Reproduciendo audio 2\r\n");
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  S_audio=3;
+	  }
+	  else if (S_audio==3){
+		  sprintf(buffer, "Seleccione el audio a reproducir con 1 o 2\r\n");
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  sprintf(buffer, "1) Audio 1\r\n");
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  sprintf(buffer, "2) Audio 2\r\n");
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  S_audio=0;
+	  }
   }
   /* USER CODE END 3 */
 }
@@ -156,42 +394,61 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief DAC Initialization Function
+  * @brief TIM2 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_DAC_Init(void)
+static void MX_TIM2_Init(void)
 {
 
-  /* USER CODE BEGIN DAC_Init 0 */
+  /* USER CODE BEGIN TIM2_Init 0 */
 
-  /* USER CODE END DAC_Init 0 */
+  /* USER CODE END TIM2_Init 0 */
 
-  DAC_ChannelConfTypeDef sConfig = {0};
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
 
-  /* USER CODE BEGIN DAC_Init 1 */
+  /* USER CODE BEGIN TIM2_Init 1 */
 
-  /* USER CODE END DAC_Init 1 */
-
-  /** DAC Initialization
-  */
-  hdac.Instance = DAC;
-  if (HAL_DAC_Init(&hdac) != HAL_OK)
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 0;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 100;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
   {
     Error_Handler();
   }
-
-  /** DAC channel OUT1 config
-  */
-  sConfig.DAC_Trigger = DAC_TRIGGER_SOFTWARE;
-  sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
-  if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN DAC_Init 2 */
+  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 50;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
 
-  /* USER CODE END DAC_Init 2 */
+  /* USER CODE END TIM2_Init 2 */
+  HAL_TIM_MspPostInit(&htim2);
 
 }
 
@@ -268,7 +525,24 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == USART2)
+    {
+    	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5); // Cambia estado del LED
+        if(rxData=='1'){
+        	S_audio=1;
+        }
+        else if(rxData=='2'){
+        	S_audio=2;
+        }
+        else {
+        	S_audio=0;
+        }
 
+        HAL_UART_Receive_IT(&huart2, &rxData, 1);
+    }
+}
 /* USER CODE END 4 */
 
 /**

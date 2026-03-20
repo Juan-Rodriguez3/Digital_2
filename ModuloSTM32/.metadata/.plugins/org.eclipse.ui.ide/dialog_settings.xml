@@ -9,6 +9,7 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7"/>
 			<item value="C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB5"/>
 			<item value="C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB6.1"/>
 			<item value="C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Lab4"/>
