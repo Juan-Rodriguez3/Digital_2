@@ -383,6 +383,22 @@ uint16_t mario_duration[] = {
     150, 150, 150, 150,
     150, 300, 150, 150
 };
+
+uint16_t paciente_notes[] = {
+    ARR_La4, ARR_Fa4, ARR_Do4, ARR_Sol4,
+    ARR_La4, ARR_Fa4, ARR_Do4, ARR_Sol4,
+
+    ARR_La4, ARR_La4, ARR_Fa4, ARR_Do4,
+    ARR_Sol4, 0, ARR_Sol4, 0
+};
+
+uint16_t paciente_duration[] = {
+    300, 300, 300, 300,
+    300, 300, 300, 300,
+
+    200, 200, 300, 300,
+    400, 200, 400, 200
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -425,8 +441,8 @@ void playToneDAC(uint16_t ARR){
 
 void playGenshin(){
 
-	int sizeM = sizeof(genshin_notes)/sizeof(genshin_notes[0]);
-
+	//int sizeM = sizeof(genshin_notes)/sizeof(genshin_notes[0]);
+	int sizeM = sizeof(paciente_notes)/sizeof(paciente_notes[0]);
 	// Iniciar timer (muy importante)
 	HAL_TIM_Base_Start(&htim6);
 	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size,DAC_ALIGN_12B_R);
@@ -434,9 +450,9 @@ void playGenshin(){
     for(int i = 0; i < sizeM; i++)
     {
 
-		playToneDAC(genshin_notes[i]);
+		playToneDAC(paciente_notes[i]);
 
-        HAL_Delay(genshin_duration[i]);
+        HAL_Delay(paciente_duration[i]);
 
         HAL_Delay(50);
     }
