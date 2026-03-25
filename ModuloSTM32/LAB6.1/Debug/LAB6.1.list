@@ -520,6 +520,7 @@ int main(void)
  8000614:	701a      	strb	r2, [r3, #0]
 	  }
 
+
 	  HAL_ADC_Start(&hadc1);
  8000616:	482e      	ldr	r0, [pc, #184]	@ (80006d0 <main+0x114>)
  8000618:	f000 fcb4 	bl	8000f84 <HAL_ADC_Start>
@@ -620,8 +621,8 @@ int main(void)
  80006b8:	4808      	ldr	r0, [pc, #32]	@ (80006dc <main+0x120>)
  80006ba:	f002 f82b 	bl	8002714 <HAL_UART_Transmit>
 
-	  HAL_Delay(100);
- 80006be:	2064      	movs	r0, #100	@ 0x64
+	  HAL_Delay(50);
+ 80006be:	2032      	movs	r0, #50	@ 0x32
  80006c0:	f000 fbf8 	bl	8000eb4 <HAL_Delay>
 	  if(dataReady)
  80006c4:	e795      	b.n	80005f2 <main+0x36>

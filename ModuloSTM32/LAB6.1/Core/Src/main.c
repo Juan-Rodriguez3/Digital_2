@@ -126,6 +126,7 @@ int main(void)
 		  dataReady = 0;
 	  }
 
+
 	  HAL_ADC_Start(&hadc1);
 	  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
 	  adcY = HAL_ADC_GetValue(&hadc1);
@@ -160,7 +161,7 @@ int main(void)
 	  }
 	  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
 
-	  HAL_Delay(100);
+	  HAL_Delay(50);
   }
   /* USER CODE END 3 */
 }
