@@ -1,0 +1,10 @@
+20:35:14 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+
+20:35:15 Build Finished. 0 errors, 0 warnings. (took 250ms)
+

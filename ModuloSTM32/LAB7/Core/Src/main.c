@@ -24,6 +24,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <stdlib.h>
+#include "Notes.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,273 +35,14 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define size 64
+#define size 128
 #define pi 3.1415926
 #define TIM_FREQ 84000000
 
-//Notas
-#define NoteDo0 50861
-#define NoteDo1 25430
-#define NoteDo2 12715
-#define NoteDo3 6357
-#define NoteDo4 3178
-#define NoteDo5 1588
-#define NoteDo6 794
-#define NoteDo7 396
-#define NoteDo8 198
-#define NoteDo9 98
 
-#define NoteDoSReb0 48007
-#define NoteDoSReb1 24003
-#define NoteDoSReb2 12001
-#define NoteDoSReb3 6000
-#define NoteDoSReb4 2999
-#define NoteDoSReb5 1499
-#define NoteDoSReb6 749
-#define NoteDoSReb7 374
-#define NoteDoSReb8 187
-#define NoteDoSReb9 93
 
-#define NoteRe0 45312
-#define NoteRe1 22656
-#define NoteRe2 11327
-#define NoteRe3 5663
-#define NoteRe4 2831
-#define NoteRe5 1415
-#define NoteRe6 707
-#define NoteRe7 353
-#define NoteRe8 176
-#define NoteRe9 88
 
-#define NoteReSMib0 42769
-#define NoteReSMib1 21384
-#define NoteReSMib2 10692
-#define NoteReSMib3 5345
-#define NoteReSMib4 2672
-#define NoteReSMib5 1336
-#define NoteReSMib6 667
-#define NoteReSMib7 333
-#define NoteReSMib8 166
-#define NoteReSMib9 83
 
-#define NoteMi0 40369
-#define NoteMi1 20184
-#define NoteMi2 10091
-#define NoteMi3 5045
-#define NoteMi4 2522
-#define NoteMi5 1261
-#define NoteMi6 630
-#define NoteMi7 314
-#define NoteMi8 157
-#define NoteMi9 78
-
-#define NoteFa0 38103
-#define NoteFa1 19051
-#define NoteFa2 9525
-#define NoteFa3 4762
-#define NoteFa4 2380
-#define NoteFa5 1190
-#define NoteFa6 594
-#define NoteFa7 297
-#define NoteFa8 148
-#define NoteFa9 73
-
-#define NoteFaSSolb0 35964
-#define NoteFaSSolb1 17982
-#define NoteFaSSolb2 8990
-#define NoteFaSSolb3 4495
-#define NoteFaSSolb4 2247
-#define NoteFaSSolb5 1123
-#define NoteFaSSolb6 561
-#define NoteFaSSolb7 280
-#define NoteFaSSolb8 139
-#define NoteFaSSolb9 69
-
-#define NoteSol0 33946
-#define NoteSol1 16972
-#define NoteSol2 8486
-#define NoteSol3 4242
-#define NoteSol4 2121
-#define NoteSol5 1060
-#define NoteSol6 529
-#define NoteSol7 264
-#define NoteSol8 132
-#define NoteSol9 65
-
-#define NoteSolSLab0 32040
-#define NoteSolSLab1 16020
-#define NoteSolSLab2 8009
-#define NoteSolSLab3 4004
-#define NoteSolSLab4 2002
-#define NoteSolSLab5 1000
-#define NoteSolSLab6 500
-#define NoteSolSLab7 249
-#define NoteSolSLab8 124
-#define NoteSolSLab9 62
-
-#define NoteLa0 30242
-#define NoteLa1 15121
-#define NoteLa2 7560
-#define NoteLa3 3779
-#define NoteLa4 1889
-#define NoteLa5 944
-#define NoteLa6 472
-#define NoteLa7 235
-#define NoteLa8 117
-#define NoteLa9 58
-
-#define NoteLaSSib0 28545
-#define NoteLaSSib1 14272
-#define NoteLaSSib2 7135
-#define NoteLaSSib3 3567
-#define NoteLaSSib4 1783
-#define NoteLaSSib5 891
-#define NoteLaSSib6 445
-#define NoteLaSSib7 222
-#define NoteLaSSib8 111
-#define NoteLaSSib9 55
-
-#define NoteSi0 26942
-#define NoteSi1 13471
-#define NoteSi2 6735
-#define NoteSi3 3367
-#define NoteSi4 1683
-#define NoteSi5 841
-#define NoteSi6 420
-#define NoteSi7 209
-#define NoteSi8 104
-#define NoteSi9 52
-
-//Notas con ARR
-#define ARR_Do0   20066
-#define ARR_DoSReb0 18940
-#define ARR_Re0   17877
-#define ARR_ReSMib0 16873
-#define ARR_Mi0   15926
-#define ARR_Fa0   15032
-#define ARR_FaSSolb0 14188
-#define ARR_Sol0  13392
-#define ARR_SolSLab0 12640
-#define ARR_La0   11931
-#define ARR_LaSSib0 11261
-#define ARR_Si0   10629
-
-#define ARR_Do1   10032
-#define ARR_DoSReb1 9469
-#define ARR_Re1   8938
-#define ARR_ReSMib1 8436
-#define ARR_Mi1   7963
-#define ARR_Fa1   7516
-#define ARR_FaSSolb1 7094
-#define ARR_Sol1  6695
-#define ARR_SolSLab1 6320
-#define ARR_La1   5965
-#define ARR_LaSSib1 5630
-#define ARR_Si1   5314
-
-#define ARR_Do2   5016
-#define ARR_DoSReb2 4734
-#define ARR_Re2   4468
-#define ARR_ReSMib2 4218
-#define ARR_Mi2   3981
-#define ARR_Fa2   3757
-#define ARR_FaSSolb2 3546
-#define ARR_Sol2  3347
-#define ARR_SolSLab2 3159
-#define ARR_La2   2982
-#define ARR_LaSSib2 2815
-#define ARR_Si2   2657
-
-#define ARR_Do3   5016
-#define ARR_DoSReb3 4734
-#define ARR_Re3   4468
-#define ARR_ReSMib3 4218
-#define ARR_Mi3   3981
-#define ARR_Fa3   3757
-#define ARR_FaSSolb3 3546
-#define ARR_Sol3  3347
-#define ARR_SolSLab3 3159
-#define ARR_La3   2982
-#define ARR_LaSSib3 2815
-#define ARR_Si3   2657
-
-#define ARR_Do4   2507
-#define ARR_DoSReb4 2367
-#define ARR_Re4   2234
-#define ARR_ReSMib4 2108
-#define ARR_Mi4   1990
-#define ARR_Fa4   1878
-#define ARR_FaSSolb4 1773
-#define ARR_Sol4  1673
-#define ARR_SolSLab4 1579
-#define ARR_La4   1490
-#define ARR_LaSSib4 1407
-#define ARR_Si4   1328
-
-#define ARR_Do5   1253
-#define ARR_DoSReb5 1183
-#define ARR_Re5   1116
-#define ARR_ReSMib5 1054
-#define ARR_Mi5   994
-#define ARR_Fa5   939
-#define ARR_FaSSolb5 886
-#define ARR_Sol5  836
-#define ARR_SolSLab5 789
-#define ARR_La5   745
-#define ARR_LaSSib5 703
-#define ARR_Si5   663
-
-#define ARR_Do6   313
-#define ARR_DoSReb6 295
-#define ARR_Re6   278
-#define ARR_ReSMib6 263
-#define ARR_Mi6   248
-#define ARR_Fa6   234
-#define ARR_FaSSolb6 221
-#define ARR_Sol6  208
-#define ARR_SolSLab6 197
-#define ARR_La6   185
-#define ARR_LaSSib6 175
-#define ARR_Si6   165
-
-#define ARR_Do7   156
-#define ARR_DoSReb7 147
-#define ARR_Re7   139
-#define ARR_ReSMib7 131
-#define ARR_Mi7   123
-#define ARR_Fa7   116
-#define ARR_FaSSolb7 110
-#define ARR_Sol7  104
-#define ARR_SolSLab7 98
-#define ARR_La7   92
-#define ARR_LaSSib7 87
-#define ARR_Si7   82
-
-#define ARR_Do8   77
-#define ARR_DoSReb8 73
-#define ARR_Re8   69
-#define ARR_ReSMib8 65
-#define ARR_Mi8   61
-#define ARR_Fa8   58
-#define ARR_FaSSolb8 54
-#define ARR_Sol8  51
-#define ARR_SolSLab8 48
-#define ARR_La8   46
-#define ARR_LaSSib8 43
-#define ARR_Si8   41
-
-#define ARR_Do9   38
-#define ARR_DoSReb9 36
-#define ARR_Re9   34
-#define ARR_ReSMib9 32
-#define ARR_Mi9   30
-#define ARR_Fa9   28
-#define ARR_FaSSolb9 27
-#define ARR_Sol9  25
-#define ARR_SolSLab9 24
-#define ARR_La9   22
-#define ARR_LaSSib9 21
-#define ARR_Si9   20
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -314,91 +57,22 @@ DMA_HandleTypeDef hdma_dac1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim6;
 
+UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-char buffer[50];
+char buffer[600]; // seguro para 20 líneas
 volatile uint8_t S_audio=0;
+
+char bufferU1[20];
+uint8_t idx = 0;
+uint8_t rx_char;
+
 uint8_t rxData;
 uint32_t Ysine[size];
-
-uint16_t genshin_notes[] = {
-    ARR_Mi4, ARR_Sol4, ARR_La4, ARR_Sol4,
-    ARR_Mi4, ARR_Re4, ARR_Do4, 0,
-
-    ARR_Mi4, ARR_Sol4, ARR_La4, ARR_Sol4,
-    ARR_Mi4, ARR_Re4, ARR_Do4, 0,
-
-    ARR_Re4, ARR_Mi4, ARR_Sol4, ARR_Mi4,
-    ARR_Re4, ARR_Do4, ARR_Re4, 0,
-
-    ARR_Mi4, ARR_Sol4, ARR_La4, ARR_Sol4,
-    ARR_Mi4, ARR_Re4, ARR_Do4, 0
-};
-
-uint16_t genshin_duration[] = {
-    300, 300, 400, 300,
-    300, 300, 500, 200,
-
-    300, 300, 400, 300,
-    300, 300, 500, 200,
-
-    300, 300, 400, 300,
-    300, 300, 500, 200,
-
-    300, 300, 400, 300,
-    300, 300, 600, 200
-};
-
-uint16_t mario_notes[] = {
-    NoteMi5, NoteMi5, 0, NoteMi5,
-    0, NoteDo5, NoteMi5, 0,
-    NoteSol5, 0, 0, 0,
-    NoteSol4, 0, 0, 0,
-
-    NoteDo5, 0, 0, NoteSol4,
-    0, 0, NoteMi4, 0,
-    0, NoteLa4, 0, NoteSi4,
-    0, NoteLaSSib4, NoteLa4, 0,
-
-    NoteSol4, NoteMi5, NoteSol5,
-    NoteLa5, 0, NoteFa5, NoteSol5,
-    0, NoteMi5, 0, NoteDo5,
-    NoteRe5, NoteSi4, 0, 0
-};
-
-uint16_t mario_duration[] = {
-    150, 150, 150, 150,
-    150, 150, 150, 150,
-    300, 150, 150, 150,
-    300, 150, 150, 150,
-
-    150, 150, 150, 150,
-    150, 150, 150, 150,
-    150, 150, 150, 150,
-    150, 150, 150, 150,
-
-    150, 150, 150,
-    300, 150, 150, 150,
-    150, 150, 150, 150,
-    150, 300, 150, 150
-};
-
-uint16_t paciente_notes[] = {
-    ARR_La4, ARR_Fa4, ARR_Do4, ARR_Sol4,
-    ARR_La4, ARR_Fa4, ARR_Do4, ARR_Sol4,
-
-    ARR_La4, ARR_La4, ARR_Fa4, ARR_Do4,
-    ARR_Sol4, 0, ARR_Sol4, 0
-};
-
-uint16_t paciente_duration[] = {
-    300, 300, 300, 300,
-    300, 300, 300, 300,
-
-    200, 200, 300, 300,
-    400, 200, 400, 200
-};
+uint32_t Ysilencio[size];
+uint32_t Ysine_scaled[size];
+uint16_t Ynoise[size];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -409,56 +83,289 @@ static void MX_USART2_UART_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_DAC_Init(void);
 static void MX_TIM6_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 void playNotePWM(uint16_t psc);
 void playMario();
 void generarSin();
-void playToneDAC(uint16_t ARR);
-void playGenshin();
+void playToneDAC(uint32_t ARR);
+void playSon(uint32_t cancion[], uint16_t duracion[], uint16_t sizeM);
+void setAmplitude(float gain);
+void swordSlash(uint32_t frequencyI, uint32_t frequencyF,uint8_t sweepA,uint8_t sweepD);
+void unsheath();
+void StarPower();
+void impact();
+void generateNoise();
+void loading_soft();
+void loading_tick_progressive();
+void loading_tick_pro();
+void loading_tick_complete();
+void loading_brbr();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void generarSin(){
-    for (int x=0; x< size; x++){
-        if (sin(x*2*pi/size) > 0)
-            Ysine[x] = 4095;
-        else
-            Ysine[x] = 0;
+    for (int x = 0; x < size; x++){
+    	Ysine[x] = (uint32_t)(2048+2047 * sin(2.0 * pi * x / size));
+    	Ysilencio[x] = 0;
     }
 }
 
-void playToneDAC(uint16_t ARR){
-	 if(ARR == 0)
-	    {
-	        // silencio
-	        return;
-	    }
-
-	    // Cambiar el periodo ARR (frecuencia)
-	 	 __HAL_TIM_SET_AUTORELOAD(&htim6, ARR);
+void generateNoise()
+{
+    for(int i = 0; i < size; i++)
+    {
+        Ynoise[i] = rand() % 4096; // DAC 12 bits
+    }
 }
 
-void playGenshin(){
+// Corrección — silencio real:
+void playToneDAC(uint32_t ARR)
+{
+    if(ARR == 0)
+    {
+        // Silencio: cambiar a tabla plana SIN parar el DMA
+        HAL_TIM_Base_Stop(&htim6);
+        HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
 
-	//int sizeM = sizeof(genshin_notes)/sizeof(genshin_notes[0]);
-	int sizeM = sizeof(paciente_notes)/sizeof(paciente_notes[0]);
-	// Iniciar timer (muy importante)
-	HAL_TIM_Base_Start(&htim6);
-	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size,DAC_ALIGN_12B_R);
+        // Reiniciar con tabla de silencio
+        __HAL_TIM_SET_AUTORELOAD(&htim6, 99); // cualquier ARR, no importa
+        __HAL_TIM_SET_COUNTER(&htim6, 0);
+        HAL_TIM_Base_Start(&htim6);
+        HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+                          (uint32_t*)Ysilencio, size, DAC_ALIGN_12B_R);
+        return;
+    }
+
+    // Nota: parar, reconfigurar y arrancar con tabla de seno
+    HAL_TIM_Base_Stop(&htim6);
+    HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
+
+    __HAL_TIM_SET_AUTORELOAD(&htim6, ARR);
+    __HAL_TIM_SET_COUNTER(&htim6, 0);
+
+    HAL_TIM_Base_Start(&htim6);
+    HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+                      (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
+}
+
+void playSon(uint32_t cancion[], uint16_t duracion[], uint16_t sizeM)
+{
+    // Arrancar con silencio inicialmente
+    playToneDAC(0);
 
     for(int i = 0; i < sizeM; i++)
     {
+        uint16_t dur_nota     = duracion[i] * 90 / 100UL;
+        uint16_t dur_silencio = duracion[i] * 10 / 100UL;
+        if(dur_silencio < 25) dur_silencio = 25;
 
-		playToneDAC(paciente_notes[i]);
+        // Tocar nota
+        playToneDAC(cancion[i]);
+        HAL_Delay(dur_nota);
 
-        HAL_Delay(paciente_duration[i]);
-
-        HAL_Delay(50);
+        // Silencio entre notas con tabla plana
+        playToneDAC(0);
+        HAL_Delay(dur_silencio);
     }
-    HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
+
+    // Al final dejar en silencio
+    playToneDAC(0);
 }
 
+void setAmplitude(float gain)
+{
+    for(int i = 0; i < size; i++)
+    {
+        Ysine_scaled[i] = Ysine[i] * gain;
+    }
+}
+
+void swordSlash(uint32_t frequencyI, uint32_t frequencyF,uint8_t sweepA,uint8_t sweepD)
+{
+    for(uint32_t arr = frequencyI; arr < frequencyF; arr += sweepA)
+    {
+    	float gain = (float)(arr - frequencyI) / 2200.0f; // ataque
+		setAmplitude(gain);
+		playToneDAC(arr);
+		HAL_Delay(2);
+    }
+
+    for(uint32_t arr = frequencyF; arr > frequencyI; arr -= sweepD)
+    {
+    	float gain = (float)(arr - frequencyI) / 2500.0f; // decay
+		setAmplitude(gain);
+		playToneDAC(arr);
+		HAL_Delay(2);
+    }
+
+    playToneDAC(0); // silencio
+}
+
+void unsheath()
+{
+    for(uint32_t arr = 3000; arr > 500; arr -= 100)
+    {
+        playToneDAC(arr);
+        HAL_Delay(2);
+    }
+
+    for(uint32_t arr = 500; arr < 1500; arr += 30)
+    {
+        playToneDAC(arr);
+        HAL_Delay(3);
+    }
+
+    playToneDAC(0);
+}
+
+void StarPower()
+{
+    /*playToneDAC(2000);
+    HAL_Delay(30);
+
+    playToneDAC(1000);
+    HAL_Delay(40);
+
+    playToneDAC(0);*/
+	// 1. IMPACTO (golpe inicial)
+	for(uint32_t arr = 500; arr < 800; arr += 20)
+	{
+		playToneDAC(arr);
+		HAL_Delay(2);
+	}
+
+	// 2. CUERPO (peso del pie)
+	for(uint32_t arr = 800; arr > 200; arr -= 25)
+	{
+		playToneDAC(arr);
+		HAL_Delay(3);
+	}
+
+	// 3. FRICCIÓN (ruido)
+	generateNoise(); // tu función de ruido
+	HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
+
+	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+					  (uint32_t*)Ynoise, size, DAC_ALIGN_12B_R);
+
+	HAL_Delay(15);
+
+	playToneDAC(0); // silencio
+}
+
+void impact()
+{
+    for(uint32_t arr = 500; arr < 3000; arr += 200)
+    {
+        playToneDAC(arr);
+        HAL_Delay(2);
+    }
+
+    playToneDAC(0);
+}
+
+void Disparos()
+{
+	for(int i = 0; i < 3; i++)
+	{
+		// sweep
+		for(uint32_t arr = 2500; arr > 1000; arr -= 80)
+		{
+			playToneDAC(arr);
+			HAL_Delay(5);
+		}
+
+		// ruido corto (textura)
+		generateNoise();
+		HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+						  (uint32_t*)Ynoise, size, DAC_ALIGN_12B_R);
+
+		HAL_Delay(20);
+	}
+
+	playToneDAC(0);
+}
+
+void loading_tick_progressive()
+{
+    uint16_t tone = 1200;
+
+    int delay_time = 120; // empieza lento
+
+    for(int i = 0; i < 30; i++)
+    {
+        playToneDAC(tone);
+        HAL_Delay(10); // tic corto
+
+        playToneDAC(0);
+        HAL_Delay(delay_time);
+
+        // acelerar progresivamente
+        if(delay_time > 20)
+            delay_time -= 3;
+    }
+}
+
+void loading_tick_pro()
+{
+    uint32_t base = 900;
+    int delay_time = 120;
+
+    for(int i = 0; i < 50; i++)
+    {
+        uint32_t tone = base + i * 10; // sube tono
+
+        playToneDAC(tone);
+        HAL_Delay(8);
+
+        playToneDAC(0);
+        HAL_Delay(delay_time);
+
+        if(delay_time > 10)
+            delay_time -= 2;
+    }
+}
+
+void loading_tick_complete()
+{
+    loading_tick_pro();
+
+    // sonido final
+    playToneDAC(800);
+    HAL_Delay(100);
+
+    playToneDAC(600);
+    HAL_Delay(150);
+
+    playToneDAC(0);
+}
+
+void loading_brbr()
+{
+    uint32_t tone = 1000;
+
+    for(int i = 0; i < 20; i++)
+    {
+        // BR
+        playToneDAC(tone);
+        HAL_Delay(20);
+
+        playToneDAC(0);
+        HAL_Delay(20);
+
+        // BR (segundo pulso)
+        playToneDAC(tone);
+        HAL_Delay(20);
+
+        playToneDAC(0);
+
+        // pausa entre grupos
+        HAL_Delay(100);
+    }
+}
+/*
 void playNotePWM(uint16_t psc)
 {
     if(psc == 0)
@@ -499,6 +406,7 @@ void playMario()
         HAL_Delay(50);
     }
 }
+*/
 /* USER CODE END 0 */
 
 /**
@@ -535,18 +443,36 @@ int main(void)
   MX_TIM2_Init();
   MX_DAC_Init();
   MX_TIM6_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   //Desplegar el menu
-  sprintf(buffer, "Seleccione el audio a reproducir con 1 o 2\r\n");
-  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-  sprintf(buffer, "1) Audio 1\r\n");
-  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-  sprintf(buffer, "2) Audio 2\r\n");
+  sprintf(buffer,
+  		  "Seleccione el audio a reproducir:\r\n"
+  		  "1) Audio 1\r\n"
+  		  "2) Audio 2\r\n"
+  		  "3) Audio 3\r\n"
+  		  "4) Audio 4\r\n"
+  		  "5) Audio 5\r\n"
+  		  "6) Audio 6\r\n"
+  		  "7) Audio 7\r\n"
+  		  "8) Audio 8\r\n"
+  		  "9) Audio 9\r\n"
+  		  "10) Audio 10\r\n"
+  		  "11) Audio 11\r\n"
+  		  "12) Audio 12\r\n"
+  		  "13) Audio 13\r\n"
+  		  "14) Audio 14\r\n"
+  		  "15) Audio 15\r\n"
+  		  "16) Audio 16\r\n"
+  		  "17) Audio 17\r\n"
+  		  "18) Audio 18\r\n"
+  		  "19) Audio 19\r\n"
+  		  "20) Audio 20\r\n"
+  		  );
   HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
   generarSin();
   //Esperar respuesta
   HAL_UART_Receive_IT(&huart2, &rxData, 1);
-  HAL_TIM_Base_Start(&htim6);
   //HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size,DAC_ALIGN_12B_R);
   /* USER CODE END 2 */
 
@@ -557,28 +483,162 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  if (HAL_UART_Receive(&huart1, &rx_char, 1, 10) == HAL_OK) {
+
+	      if (rx_char == '\n') {
+	          bufferU1[idx] = '\0';
+
+	          // imprimir línea completa en USART2
+	          HAL_UART_Transmit(&huart2, (uint8_t*)bufferU1, idx, 100);
+	          HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, 100);
+
+	          idx = 0; // reset buffer
+	      }
+	      else {
+	          if (idx < sizeof(bufferU1)-1) {
+	              bufferU1[idx++] = rx_char;
+	          }
+	      }
+	  }
 
 	  if (S_audio==1){
 		  sprintf(buffer, "Reproduciendo audio 1\r\n");
+		  HAL_TIM_Base_Start(&htim6);
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
 		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  for(int j = 0; j < 2; j++)   // repetir 2 veces
-		  {
-		      playMario();
-		  }
-		  S_audio=3;
+		  playSon(Final_Battle_2_notes, Final_Battle_2_duration , Final_Battle_2_size);
+		  S_audio=21;
 	  }
 	  else if (S_audio==2){
 		  sprintf(buffer, "Reproduciendo audio 2\r\n");
+		  HAL_TIM_Base_Start(&htim6);
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
 		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  playGenshin();
-		  S_audio=3;
+		  //playSon(starwars_notes,starwars_duration, starwars_size);
+		  S_audio=21;
 	  }
 	  else if (S_audio==3){
-		  sprintf(buffer, "Seleccione el audio a reproducir con 1 o 2\r\n");
+		  sprintf(buffer, "Reproduciendo audio 3\r\n");
+		  HAL_TIM_Base_Start(&htim6);
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
 		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  sprintf(buffer, "1) Audio 1\r\n");
+		  //playSon(mario_notes,mario_duration, mario_size);
+		  playSon(DuelFates_notes, DuelFates_duration, DuelFates_size);
+
+		  S_audio=21;
+	  }
+	  else if (S_audio==4){
+		  sprintf(buffer, "Reproduciendo audio 4\r\n");
+		  HAL_TIM_Base_Start(&htim6);
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
 		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  sprintf(buffer, "2) Audio 2\r\n");
+		  //playSon(game_over_notes,game_over_duration,game_over_size);
+		  playSon(Fantasmic_notes, Fantasmic_duration, Fantasmic_size);
+		  S_audio=21;
+	  }
+	  else if (S_audio==5){
+		  sprintf(buffer, "Reproduciendo audio 5\r\n");
+		  HAL_TIM_Base_Start(&htim6);
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  //playSon(labrynth_crystal_notes,labrynth_crystal_duration,labrynth_crystal_size);
+		  playSon(Electrical_notes, Electrical_duration, Electrical_size);
+		  S_audio=21;
+	  }
+	  else if (S_audio==6){
+		  sprintf(buffer, "Reproduciendo audio 6\r\n");
+		  HAL_TIM_Base_Start(&htim6);
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  playSon(game_over_remix_notes,game_over_remix_duration,game_over_size);
+		  S_audio=21;
+	  }
+	  else if (S_audio==7){
+		  sprintf(buffer, "Reproduciendo audio 7\r\n");
+		  HAL_TIM_Base_Start(&htim6);
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  playSon(Overworld_1_notes,Overworld_1_duration,Overworld_1_size);
+		  S_audio=21;
+	  }
+	  else if (S_audio==8){
+		  sprintf(buffer, "Reproduciendo audio 8\r\n");
+		  HAL_TIM_Base_Start(&htim6);
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  playSon(LOTR_notes,LOTR_duration,LOTR_size);
+		  S_audio=21;
+	  }
+	  else if (S_audio==9){
+		  sprintf(buffer, "Reproduciendo audio 9\r\n");
+		  HAL_TIM_Base_Start(&htim6);
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  playSon(Jurassic_notes, Jurassic_duration, Jurassic_size);
+		  S_audio=21;
+	  }
+	  else if (S_audio==10){
+		  sprintf(buffer, "Reproduciendo audio 10\r\n");
+		  HAL_TIM_Base_Start(&htim6);
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+		  playSon(Start_notes, Start_duration, Start_size);
+		  S_audio=21;
+	  }
+	  else if (S_audio==11){
+		  loading_tick_complete();
+		  S_audio=21;
+	  }
+	  else if( S_audio==12){
+		  loading_brbr();
+		  S_audio=21;
+	  }
+	  else if (S_audio==16){
+		  swordSlash(800, 3000, 50, 80);
+		  S_audio=21;
+	  }
+	  else if (S_audio==17){
+		  unsheath();
+		  S_audio=21;
+	  }
+	  else if (S_audio==18){
+		  StarPower();
+		 // S_audio=21;
+	  }
+	  else if (S_audio==19){
+		  //impact();
+		  loading_tick_pro();
+		  S_audio=21;
+	  }
+	  else if (S_audio==20){
+		  //Disparos();
+		 loading_tick_progressive();
+		  S_audio=21;
+	  }
+	  else if (S_audio==21){
+		  sprintf(buffer,
+		  "Seleccione el audio a reproducir:\r\n"
+		  "1) Audio 1\r\n"
+		  "2) Audio 2\r\n"
+		  "3) Audio 3\r\n"
+		  "4) Audio 4\r\n"
+		  "5) Audio 5\r\n"
+		  "6) Audio 6\r\n"
+		  "7) Audio 7\r\n"
+		  "8) Audio 8\r\n"
+		  "9) Audio 9\r\n"
+		  "10) Audio 10\r\n"
+		  "11) Audio 11\r\n"
+		  "12) Audio 12\r\n"
+		  "13) Audio 13\r\n"
+		  "14) Audio 14\r\n"
+		  "15) Audio 15\r\n"
+		  "16) Audio 16\r\n"
+		  "17) Audio 17\r\n"
+		  "18) Audio 18\r\n"
+		  "19) Audio 19\r\n"
+		  "20) Audio 20\r\n"
+		  );
 		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
 		  S_audio=0;
 	  }
@@ -771,6 +831,39 @@ static void MX_TIM6_Init(void)
 }
 
 /**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
@@ -853,16 +946,74 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     if (huart->Instance == USART2)
     {
+    //uint8_t buffer2[3];
+    //uint8_t ind;
     	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5); // Cambia estado del LED
-        if(rxData=='1'){
-        	S_audio=1;
-        }
-        else if(rxData=='2'){
-        	S_audio=2;
-        }
-        else {
-        	S_audio=0;
-        }
+    	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+
+    	if(rxData=='1'){
+    	    S_audio=1;
+    	}
+    	else if(rxData=='2'){
+    	    S_audio=2;
+    	}
+    	else if(rxData=='3'){
+    	    S_audio=3;
+    	}
+    	else if(rxData=='4'){
+    	    S_audio=4;
+    	}
+    	else if(rxData=='5'){
+    	    S_audio=5;
+    	}
+    	else if(rxData=='6'){
+    	    S_audio=6;
+    	}
+    	else if(rxData=='7'){
+    	    S_audio=7;
+    	}
+    	else if(rxData=='8'){
+    	    S_audio=8;
+    	}
+    	else if(rxData=='9'){
+    	    S_audio=9;
+    	}
+    	else if(rxData=='A'){
+    	    S_audio=10;
+    	}
+    	else if(rxData=='B'){
+    	    S_audio=11;
+    	}
+    	else if(rxData=='C'){
+    	    S_audio=12;
+    	}
+    	else if(rxData=='D'){
+    	    S_audio=13;
+    	}
+    	else if(rxData=='E'){
+    	    S_audio=14;
+    	}
+    	else if(rxData=='F'){
+    	    S_audio=15;
+    	}
+    	else if(rxData=='Q'){
+			S_audio=16;
+		}
+		else if(rxData=='J'){
+			S_audio=17;
+		}
+		else if(rxData=='U'){
+			S_audio=18;
+		}
+		else if(rxData=='N'){
+			S_audio=19;
+		}
+		else if(rxData=='M'){
+			S_audio=20;
+		}
+    	else{
+    	    S_audio=0;
+    	}
 
         HAL_UART_Receive_IT(&huart2, &rxData, 1);
     }

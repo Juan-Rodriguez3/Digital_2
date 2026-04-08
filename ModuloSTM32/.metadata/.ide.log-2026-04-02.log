@@ -1,0 +1,9 @@
+2026-04-02 00:07:17,093 [ERROR] AdobePublisher:187 - Exception while getting the server answer: java.net.SocketTimeoutException: Read timed out
+2026-04-02 17:15:44,073 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2026-04-02 17:15:44,074 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2026-04-02 17:15:44,075 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2026-04-02 23:24:17,622 [INFO] Activator:176 - 
+
+
+2026-04-02 23:24:17,626 [INFO] Activator:177 - !SESSION log4j initialized
+2026-04-02 23:24:28,970 [INFO] LogOutputStream:77 - [STDOUT_REDIRECT] 
