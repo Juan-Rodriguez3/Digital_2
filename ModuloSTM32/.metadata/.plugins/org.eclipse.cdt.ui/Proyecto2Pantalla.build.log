@@ -1,0 +1,10 @@
+21:16:55 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2Pantalla.elf 
+   text	   data	    bss	    dec	    hex	filename
+ 329668	     92	   2244	 332004	  510e4	Proyecto2Pantalla.elf
+Finished building: default.size.stdout
+ 
+
+21:16:55 Build Finished. 0 errors, 0 warnings. (took 255ms)
+
