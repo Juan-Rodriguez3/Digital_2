@@ -59,6 +59,7 @@ TIM_HandleTypeDef htim6;
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 char buffer[600]; // seguro para 20 líneas
@@ -67,6 +68,16 @@ volatile uint8_t S_audio=0;
 char bufferU1[20];
 uint8_t idx = 0;
 uint8_t rx_char;
+
+char bufferU3[20];
+uint8_t idx3 = 0;
+uint8_t rx_char3;
+
+char linea[50];
+
+//Banderas
+volatile uint8_t newDataU1 = 0;
+volatile uint8_t newDataU3 = 0;
 
 uint8_t rxData;
 uint32_t Ysine[size];
@@ -84,6 +95,7 @@ static void MX_TIM2_Init(void);
 static void MX_DAC_Init(void);
 static void MX_TIM6_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
 void playNotePWM(uint16_t psc);
 void playMario();
@@ -444,6 +456,7 @@ int main(void)
   MX_DAC_Init();
   MX_TIM6_Init();
   MX_USART1_UART_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   //Desplegar el menu
   sprintf(buffer,
@@ -483,23 +496,58 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  if (HAL_UART_Receive(&huart1, &rx_char, 1, 10) == HAL_OK) {
+	  // --- ESP32 #1 via USART1 ---
+	  if (HAL_UART_Receive(&huart3, &rx_char3, 1, 0) == HAL_OK) {
 
-	      if (rx_char == '\n') {
-	          bufferU1[idx] = '\0';
+	 	      if (rx_char3 == '\n') {
+	 	          bufferU3[idx3] = '\0';
 
-	          // imprimir línea completa en USART2
-	          HAL_UART_Transmit(&huart2, (uint8_t*)bufferU1, idx, 100);
-	          HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, 100);
+	 	          // imprimir línea completa en USART2
+	 	          //HAL_UART_Transmit(&huart2, (uint8_t*)bufferU3, idx3, 100);
+	 	          //HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, 100);
+	 	          newDataU3=1;
+	 	         //idx3 = 0; // reset bxuffer
+	 	      }
+	 	      else {
+	 	          if (idx3 < sizeof(bufferU3)-1) {
+	 	              bufferU3[idx3++] = rx_char3;
+	 	          }
+	 	      }
+	 	  }
+	  if (HAL_UART_Receive(&huart1, &rx_char, 1, 0) == HAL_OK) {
 
-	          idx = 0; // reset buffer
-	      }
-	      else {
-	          if (idx < sizeof(bufferU1)-1) {
-	              bufferU1[idx++] = rx_char;
-	          }
-	      }
+		  if (rx_char == '\n') {
+			  bufferU1[idx] = '\0';
+
+			  // imprimir línea completa en USART2
+			  //HAL_UART_Transmit(&huart2, (uint8_t*)bufferU1, idx, 100);
+			  //HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, 100);
+			  newDataU1=1;
+			  //idx=0;
+		  }
+		  else {
+		  	  if (idx < sizeof(bufferU1)-1) {
+			  bufferU1[idx++] = rx_char;
+		  	  }
+	  	  }
 	  }
+
+	  if (newDataU1==1 && newDataU3==1 ){
+
+
+		  bufferU3[idx3] = '\0';
+		  bufferU1[idx] = '\0';
+
+		  idx3 = 0; // reset bxuffer
+		  idx = 0; // reset bxuffer
+
+		  sprintf(linea, "%s,%s\r\n",bufferU3, bufferU1);
+		  //sprintf(linea, "%s\r\n", bufferU3);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)linea, strlen(linea), 100);
+		  newDataU3=0;
+		  newDataU1=0;
+	  }
+
 
 	  if (S_audio==1){
 		  sprintf(buffer, "Reproduciendo audio 1\r\n");
@@ -642,6 +690,9 @@ int main(void)
 		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
 		  S_audio=0;
 	  }
+
+
+
   }
   /* USER CODE END 3 */
 }
@@ -893,6 +944,39 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE BEGIN USART2_Init 2 */
 
   /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * @brief USART3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART3_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART3_Init 0 */
+
+  /* USER CODE END USART3_Init 0 */
+
+  /* USER CODE BEGIN USART3_Init 1 */
+
+  /* USER CODE END USART3_Init 1 */
+  huart3.Instance = USART3;
+  huart3.Init.BaudRate = 115200;
+  huart3.Init.WordLength = UART_WORDLENGTH_8B;
+  huart3.Init.StopBits = UART_STOPBITS_1;
+  huart3.Init.Parity = UART_PARITY_NONE;
+  huart3.Init.Mode = UART_MODE_TX_RX;
+  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART3_Init 2 */
+
+  /* USER CODE END USART3_Init 2 */
 
 }
 

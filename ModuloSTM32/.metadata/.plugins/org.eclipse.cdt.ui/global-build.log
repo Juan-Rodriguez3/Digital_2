@@ -1,644 +1,1101 @@
-19:55:12 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+00:47:35 **** Incremental Build of configuration Debug for project LAB7 ****
 make -j12 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ADC_TIMER_UART.elf
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
  
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-arm-none-eabi-objdump -h -S ADC_TIMER_UART.elf  > "ADC_TIMER_UART.list"
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
    text	   data	    bss	    dec	    hex	filename
-  35612	    472	   2160	  38244	   9564	ADC_TIMER_UART.elf
+  36964	   4028	   4828	  45820	   b2fc	LAB7.elf
 Finished building: default.size.stdout
  
-Finished building: ADC_TIMER_UART.list
+Finished building: LAB7.list
  
-19:55:20 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+00:47:38 **** Incremental Build of configuration Debug for project LAB7 ****
 make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
+arm-none-eabi-size  LAB7.elf 
    text	   data	    bss	    dec	    hex	filename
-  35612	    472	   2160	  38244	   9564	ADC_TIMER_UART.elf
+  36964	   4028	   4828	  45820	   b2fc	LAB7.elf
 Finished building: default.size.stdout
  
-19:59:20 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+00:48:10 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
 make -j12 all 
 arm-none-eabi-size  ADC2_TIMER_UART.elf 
    text	   data	    bss	    dec	    hex	filename
   18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
 Finished building: default.size.stdout
  
-19:59:21 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  35612	    472	   2160	  38244	   9564	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-19:59:21 **** Incremental Build of configuration Debug for project LAB5 ****
-make -j12 all 
-arm-none-eabi-size  LAB5.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37868	    468	   2212	  40548	   9e64	LAB5.elf
-Finished building: default.size.stdout
- 
-19:59:21 **** Incremental Build of configuration Debug for project LAB6.1 ****
-make -j12 all 
-arm-none-eabi-size  LAB6.1.elf 
-   text	   data	    bss	    dec	    hex	filename
-  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
-Finished building: default.size.stdout
- 
-19:59:21 **** Incremental Build of configuration Debug for project LAB7 ****
-make -j12 all 
-arm-none-eabi-size  LAB7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  36564	   4028	   4732	  45324	   b10c	LAB7.elf
-Finished building: default.size.stdout
- 
-19:59:22 **** Incremental Build of configuration Debug for project Proyecto2 ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
-Finished building: default.size.stdout
- 
-19:59:22 **** Incremental Build of configuration Debug for project Proyecto_controles ****
-make -j12 all 
-arm-none-eabi-size  Proyecto_controles.elf 
-   text	   data	    bss	    dec	    hex	filename
-  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
-Finished building: default.size.stdout
- 
-19:59:22 **** Incremental Build of configuration Debug for project diente_de_sierra ****
-make -j12 all 
-arm-none-eabi-size  diente_de_sierra.elf 
-   text	   data	    bss	    dec	    hex	filename
-  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
-Finished building: default.size.stdout
- 
-19:59:33 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  35612	    472	   2160	  38244	   9564	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:02:41 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC2_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:02:42 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ADC_TIMER_UART.elf
- 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-arm-none-eabi-objdump -h -S ADC_TIMER_UART.elf  > "ADC_TIMER_UART.list"
-   text	   data	    bss	    dec	    hex	filename
-  36324	    472	   2192	  38988	   984c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-Finished building: ADC_TIMER_UART.list
- 
-20:02:43 **** Incremental Build of configuration Debug for project LAB5 ****
-make -j12 all 
-arm-none-eabi-size  LAB5.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37868	    468	   2212	  40548	   9e64	LAB5.elf
-Finished building: default.size.stdout
- 
-20:02:43 **** Incremental Build of configuration Debug for project LAB6.1 ****
-make -j12 all 
-arm-none-eabi-size  LAB6.1.elf 
-   text	   data	    bss	    dec	    hex	filename
-  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
-Finished building: default.size.stdout
- 
-20:02:43 **** Incremental Build of configuration Debug for project LAB7 ****
-make -j12 all 
-arm-none-eabi-size  LAB7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  36564	   4028	   4732	  45324	   b10c	LAB7.elf
-Finished building: default.size.stdout
- 
-20:02:44 **** Incremental Build of configuration Debug for project Proyecto2 ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
-Finished building: default.size.stdout
- 
-20:02:44 **** Incremental Build of configuration Debug for project Proyecto_controles ****
-make -j12 all 
-arm-none-eabi-size  Proyecto_controles.elf 
-   text	   data	    bss	    dec	    hex	filename
-  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
-Finished building: default.size.stdout
- 
-20:02:44 **** Incremental Build of configuration Debug for project diente_de_sierra ****
-make -j12 all 
-arm-none-eabi-size  diente_de_sierra.elf 
-   text	   data	    bss	    dec	    hex	filename
-  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
-Finished building: default.size.stdout
- 
-20:02:46 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  36324	    472	   2192	  38988	   984c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:08:00 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC2_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:08:00 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ADC_TIMER_UART.elf
- 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-arm-none-eabi-objdump -h -S ADC_TIMER_UART.elf  > "ADC_TIMER_UART.list"
-   text	   data	    bss	    dec	    hex	filename
-  36508	    472	   2192	  39172	   9904	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-Finished building: ADC_TIMER_UART.list
- 
-20:08:01 **** Incremental Build of configuration Debug for project LAB5 ****
-make -j12 all 
-arm-none-eabi-size  LAB5.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37868	    468	   2212	  40548	   9e64	LAB5.elf
-Finished building: default.size.stdout
- 
-20:08:02 **** Incremental Build of configuration Debug for project LAB6.1 ****
-make -j12 all 
-arm-none-eabi-size  LAB6.1.elf 
-   text	   data	    bss	    dec	    hex	filename
-  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
-Finished building: default.size.stdout
- 
-20:08:02 **** Incremental Build of configuration Debug for project LAB7 ****
-make -j12 all 
-arm-none-eabi-size  LAB7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  36564	   4028	   4732	  45324	   b10c	LAB7.elf
-Finished building: default.size.stdout
- 
-20:08:03 **** Incremental Build of configuration Debug for project Proyecto2 ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
-Finished building: default.size.stdout
- 
-20:08:03 **** Incremental Build of configuration Debug for project Proyecto_controles ****
-make -j12 all 
-arm-none-eabi-size  Proyecto_controles.elf 
-   text	   data	    bss	    dec	    hex	filename
-  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
-Finished building: default.size.stdout
- 
-20:08:03 **** Incremental Build of configuration Debug for project diente_de_sierra ****
-make -j12 all 
-arm-none-eabi-size  diente_de_sierra.elf 
-   text	   data	    bss	    dec	    hex	filename
-  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
-Finished building: default.size.stdout
- 
-20:08:05 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  36508	    472	   2192	  39172	   9904	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:16:12 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC2_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:16:13 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ADC_TIMER_UART.elf
- 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-arm-none-eabi-objdump -h -S ADC_TIMER_UART.elf  > "ADC_TIMER_UART.list"
-   text	   data	    bss	    dec	    hex	filename
-  36492	    472	   2192	  39156	   98f4	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-Finished building: ADC_TIMER_UART.list
- 
-20:16:14 **** Incremental Build of configuration Debug for project LAB5 ****
-make -j12 all 
-arm-none-eabi-size  LAB5.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37868	    468	   2212	  40548	   9e64	LAB5.elf
-Finished building: default.size.stdout
- 
-20:16:14 **** Incremental Build of configuration Debug for project LAB6.1 ****
-make -j12 all 
-arm-none-eabi-size  LAB6.1.elf 
-   text	   data	    bss	    dec	    hex	filename
-  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
-Finished building: default.size.stdout
- 
-20:16:15 **** Incremental Build of configuration Debug for project LAB7 ****
-make -j12 all 
-arm-none-eabi-size  LAB7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  36564	   4028	   4732	  45324	   b10c	LAB7.elf
-Finished building: default.size.stdout
- 
-20:16:15 **** Incremental Build of configuration Debug for project Proyecto2 ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
-Finished building: default.size.stdout
- 
-20:16:15 **** Incremental Build of configuration Debug for project Proyecto_controles ****
-make -j12 all 
-arm-none-eabi-size  Proyecto_controles.elf 
-   text	   data	    bss	    dec	    hex	filename
-  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
-Finished building: default.size.stdout
- 
-20:16:16 **** Incremental Build of configuration Debug for project diente_de_sierra ****
-make -j12 all 
-arm-none-eabi-size  diente_de_sierra.elf 
-   text	   data	    bss	    dec	    hex	filename
-  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
-Finished building: default.size.stdout
- 
-20:16:17 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  36492	    472	   2192	  39156	   98f4	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:22:42 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC2_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:22:42 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ADC_TIMER_UART.elf
- 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-arm-none-eabi-objdump -h -S ADC_TIMER_UART.elf  > "ADC_TIMER_UART.list"
-   text	   data	    bss	    dec	    hex	filename
-  35796	    472	   2160	  38428	   961c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-Finished building: ADC_TIMER_UART.list
- 
-20:22:43 **** Incremental Build of configuration Debug for project LAB5 ****
-make -j12 all 
-arm-none-eabi-size  LAB5.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37868	    468	   2212	  40548	   9e64	LAB5.elf
-Finished building: default.size.stdout
- 
-20:22:43 **** Incremental Build of configuration Debug for project LAB6.1 ****
-make -j12 all 
-arm-none-eabi-size  LAB6.1.elf 
-   text	   data	    bss	    dec	    hex	filename
-  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
-Finished building: default.size.stdout
- 
-20:22:44 **** Incremental Build of configuration Debug for project LAB7 ****
-make -j12 all 
-arm-none-eabi-size  LAB7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  36564	   4028	   4732	  45324	   b10c	LAB7.elf
-Finished building: default.size.stdout
- 
-20:22:44 **** Incremental Build of configuration Debug for project Proyecto2 ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
-Finished building: default.size.stdout
- 
-20:22:45 **** Incremental Build of configuration Debug for project Proyecto_controles ****
-make -j12 all 
-arm-none-eabi-size  Proyecto_controles.elf 
-   text	   data	    bss	    dec	    hex	filename
-  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
-Finished building: default.size.stdout
- 
-20:22:45 **** Incremental Build of configuration Debug for project diente_de_sierra ****
-make -j12 all 
-arm-none-eabi-size  diente_de_sierra.elf 
-   text	   data	    bss	    dec	    hex	filename
-  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
-Finished building: default.size.stdout
- 
-20:22:47 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  35796	    472	   2160	  38428	   961c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:26:08 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC2_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:26:08 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ADC_TIMER_UART.elf
- 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-arm-none-eabi-objdump -h -S ADC_TIMER_UART.elf  > "ADC_TIMER_UART.list"
-   text	   data	    bss	    dec	    hex	filename
-  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-Finished building: ADC_TIMER_UART.list
- 
-20:26:10 **** Incremental Build of configuration Debug for project LAB5 ****
-make -j12 all 
-arm-none-eabi-size  LAB5.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37868	    468	   2212	  40548	   9e64	LAB5.elf
-Finished building: default.size.stdout
- 
-20:26:10 **** Incremental Build of configuration Debug for project LAB6.1 ****
-make -j12 all 
-arm-none-eabi-size  LAB6.1.elf 
-   text	   data	    bss	    dec	    hex	filename
-  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
-Finished building: default.size.stdout
- 
-20:26:10 **** Incremental Build of configuration Debug for project LAB7 ****
-make -j12 all 
-arm-none-eabi-size  LAB7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  36564	   4028	   4732	  45324	   b10c	LAB7.elf
-Finished building: default.size.stdout
- 
-20:26:11 **** Incremental Build of configuration Debug for project Proyecto2 ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
-Finished building: default.size.stdout
- 
-20:26:11 **** Incremental Build of configuration Debug for project Proyecto_controles ****
-make -j12 all 
-arm-none-eabi-size  Proyecto_controles.elf 
-   text	   data	    bss	    dec	    hex	filename
-  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
-Finished building: default.size.stdout
- 
-20:26:11 **** Incremental Build of configuration Debug for project diente_de_sierra ****
-make -j12 all 
-arm-none-eabi-size  diente_de_sierra.elf 
-   text	   data	    bss	    dec	    hex	filename
-  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
-Finished building: default.size.stdout
- 
-20:26:14 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+00:48:10 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
 make -j12 all 
 arm-none-eabi-size  ADC_TIMER_UART.elf 
    text	   data	    bss	    dec	    hex	filename
   35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
 Finished building: default.size.stdout
  
-20:27:05 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC2_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:27:05 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ADC_TIMER_UART.elf
- 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-arm-none-eabi-objdump -h -S ADC_TIMER_UART.elf  > "ADC_TIMER_UART.list"
-   text	   data	    bss	    dec	    hex	filename
-  35796	    472	   2160	  38428	   961c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-Finished building: ADC_TIMER_UART.list
- 
-20:27:06 **** Incremental Build of configuration Debug for project LAB5 ****
+00:48:10 **** Incremental Build of configuration Debug for project LAB5 ****
 make -j12 all 
 arm-none-eabi-size  LAB5.elf 
    text	   data	    bss	    dec	    hex	filename
   37868	    468	   2212	  40548	   9e64	LAB5.elf
 Finished building: default.size.stdout
  
-20:27:06 **** Incremental Build of configuration Debug for project LAB6.1 ****
+00:48:11 **** Incremental Build of configuration Debug for project LAB6.1 ****
 make -j12 all 
 arm-none-eabi-size  LAB6.1.elf 
    text	   data	    bss	    dec	    hex	filename
   16712	     92	   2172	  18976	   4a20	LAB6.1.elf
 Finished building: default.size.stdout
  
-20:27:07 **** Incremental Build of configuration Debug for project LAB7 ****
+00:48:11 **** Incremental Build of configuration Debug for project LAB7 ****
 make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
 arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
    text	   data	    bss	    dec	    hex	filename
-  36564	   4028	   4732	  45324	   b10c	LAB7.elf
+  36940	   4028	   4828	  45796	   b2e4	LAB7.elf
 Finished building: default.size.stdout
  
-20:27:07 **** Incremental Build of configuration Debug for project Proyecto2 ****
+Finished building: LAB7.list
+ 
+00:48:12 **** Incremental Build of configuration Debug for project Proyecto2 ****
 make -j12 all 
 arm-none-eabi-size  Proyecto2.elf 
    text	   data	    bss	    dec	    hex	filename
   17724	     92	   2220	  20036	   4e44	Proyecto2.elf
 Finished building: default.size.stdout
  
-20:27:07 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+00:48:13 **** Incremental Build of configuration Debug for project Proyecto_controles ****
 make -j12 all 
 arm-none-eabi-size  Proyecto_controles.elf 
    text	   data	    bss	    dec	    hex	filename
   15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
 Finished building: default.size.stdout
  
-20:27:08 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+00:48:13 **** Incremental Build of configuration Debug for project diente_de_sierra ****
 make -j12 all 
 arm-none-eabi-size  diente_de_sierra.elf 
    text	   data	    bss	    dec	    hex	filename
   10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
 Finished building: default.size.stdout
  
-20:27:12 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  35796	    472	   2160	  38428	   961c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:27:57 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC2_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:27:57 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ADC_TIMER_UART.elf
- 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-arm-none-eabi-objdump -h -S ADC_TIMER_UART.elf  > "ADC_TIMER_UART.list"
-   text	   data	    bss	    dec	    hex	filename
-  35796	    472	   2160	  38428	   961c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-Finished building: ADC_TIMER_UART.list
- 
-20:27:58 **** Incremental Build of configuration Debug for project LAB5 ****
-make -j12 all 
-arm-none-eabi-size  LAB5.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37868	    468	   2212	  40548	   9e64	LAB5.elf
-Finished building: default.size.stdout
- 
-20:27:59 **** Incremental Build of configuration Debug for project LAB6.1 ****
-make -j12 all 
-arm-none-eabi-size  LAB6.1.elf 
-   text	   data	    bss	    dec	    hex	filename
-  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
-Finished building: default.size.stdout
- 
-20:27:59 **** Incremental Build of configuration Debug for project LAB7 ****
+00:48:20 **** Incremental Build of configuration Debug for project LAB7 ****
 make -j12 all 
 arm-none-eabi-size  LAB7.elf 
    text	   data	    bss	    dec	    hex	filename
-  36564	   4028	   4732	  45324	   b10c	LAB7.elf
+  36940	   4028	   4828	  45796	   b2e4	LAB7.elf
 Finished building: default.size.stdout
  
-20:27:59 **** Incremental Build of configuration Debug for project Proyecto2 ****
+00:49:35 **** Incremental Build of configuration Debug for project LAB7 ****
 make -j12 all 
-arm-none-eabi-size  Proyecto2.elf 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
    text	   data	    bss	    dec	    hex	filename
-  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+  36964	   4028	   4828	  45820	   b2fc	LAB7.elf
 Finished building: default.size.stdout
  
-20:28:00 **** Incremental Build of configuration Debug for project Proyecto_controles ****
-make -j12 all 
-arm-none-eabi-size  Proyecto_controles.elf 
-   text	   data	    bss	    dec	    hex	filename
-  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
-Finished building: default.size.stdout
+Finished building: LAB7.list
  
-20:28:00 **** Incremental Build of configuration Debug for project diente_de_sierra ****
-make -j12 all 
-arm-none-eabi-size  diente_de_sierra.elf 
-   text	   data	    bss	    dec	    hex	filename
-  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
-Finished building: default.size.stdout
- 
-20:28:09 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  35796	    472	   2160	  38428	   961c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-20:35:14 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+00:51:48 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
 make -j12 all 
 arm-none-eabi-size  ADC2_TIMER_UART.elf 
    text	   data	    bss	    dec	    hex	filename
   18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
 Finished building: default.size.stdout
  
-20:35:15 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+00:51:48 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ADC_TIMER_UART.elf
- 
 arm-none-eabi-size  ADC_TIMER_UART.elf 
-arm-none-eabi-objdump -h -S ADC_TIMER_UART.elf  > "ADC_TIMER_UART.list"
    text	   data	    bss	    dec	    hex	filename
   35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
 Finished building: default.size.stdout
  
-Finished building: ADC_TIMER_UART.list
- 
-20:35:16 **** Incremental Build of configuration Debug for project LAB5 ****
+00:51:49 **** Incremental Build of configuration Debug for project LAB5 ****
 make -j12 all 
 arm-none-eabi-size  LAB5.elf 
    text	   data	    bss	    dec	    hex	filename
   37868	    468	   2212	  40548	   9e64	LAB5.elf
 Finished building: default.size.stdout
  
-20:35:16 **** Incremental Build of configuration Debug for project LAB6.1 ****
+00:51:49 **** Incremental Build of configuration Debug for project LAB6.1 ****
 make -j12 all 
 arm-none-eabi-size  LAB6.1.elf 
    text	   data	    bss	    dec	    hex	filename
   16712	     92	   2172	  18976	   4a20	LAB6.1.elf
 Finished building: default.size.stdout
  
-20:35:16 **** Incremental Build of configuration Debug for project LAB7 ****
+00:51:49 **** Incremental Build of configuration Debug for project LAB7 ****
 make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
 arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
    text	   data	    bss	    dec	    hex	filename
-  36564	   4028	   4732	  45324	   b10c	LAB7.elf
+  36868	   4028	   4828	  45724	   b29c	LAB7.elf
 Finished building: default.size.stdout
  
-20:35:17 **** Incremental Build of configuration Debug for project Proyecto2 ****
+Finished building: LAB7.list
+ 
+00:51:51 **** Incremental Build of configuration Debug for project Proyecto2 ****
 make -j12 all 
 arm-none-eabi-size  Proyecto2.elf 
    text	   data	    bss	    dec	    hex	filename
   17724	     92	   2220	  20036	   4e44	Proyecto2.elf
 Finished building: default.size.stdout
  
-20:35:17 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+00:51:51 **** Incremental Build of configuration Debug for project Proyecto_controles ****
 make -j12 all 
 arm-none-eabi-size  Proyecto_controles.elf 
    text	   data	    bss	    dec	    hex	filename
   15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
 Finished building: default.size.stdout
  
-20:35:18 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+00:51:52 **** Incremental Build of configuration Debug for project diente_de_sierra ****
 make -j12 all 
 arm-none-eabi-size  diente_de_sierra.elf 
    text	   data	    bss	    dec	    hex	filename
   10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
 Finished building: default.size.stdout
  
-20:35:31 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+00:51:57 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36868	   4028	   4828	  45724	   b29c	LAB7.elf
+Finished building: default.size.stdout
+ 
+00:56:45 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+00:56:45 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
 make -j12 all 
 arm-none-eabi-size  ADC_TIMER_UART.elf 
    text	   data	    bss	    dec	    hex	filename
   35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+00:56:46 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:56:46 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:56:46 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  36868	   4028	   4804	  45700	   b284	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+00:56:47 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+00:56:48 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+00:56:48 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+00:56:51 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36868	   4028	   4804	  45700	   b284	LAB7.elf
+Finished building: default.size.stdout
+ 
+00:57:00 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36868	   4028	   4804	  45700	   b284	LAB7.elf
+Finished building: default.size.stdout
+ 
+00:57:47 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+00:57:47 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+00:57:48 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:57:48 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:57:49 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  36876	   4028	   4804	  45708	   b28c	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+00:57:50 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+00:57:50 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+00:57:51 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+00:57:54 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36876	   4028	   4804	  45708	   b28c	LAB7.elf
+Finished building: default.size.stdout
+ 
+00:59:14 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+00:59:15 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+00:59:15 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+00:59:16 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+00:59:16 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  36908	   4028	   4828	  45764	   b2c4	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+00:59:17 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+00:59:18 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+00:59:18 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+00:59:20 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36908	   4028	   4828	  45764	   b2c4	LAB7.elf
+Finished building: default.size.stdout
+ 
+01:00:17 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:00:18 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:00:18 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+01:00:19 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+01:00:19 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  36908	   4028	   4828	  45764	   b2c4	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:00:20 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+01:00:20 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+01:00:21 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+01:00:24 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36908	   4028	   4828	  45764	   b2c4	LAB7.elf
+Finished building: default.size.stdout
+ 
+01:00:51 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:00:51 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:00:51 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+01:00:52 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+01:00:52 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  37004	   4028	   4828	  45860	   b324	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:00:53 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+01:00:53 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+01:00:54 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+01:00:56 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37004	   4028	   4828	  45860	   b324	LAB7.elf
+Finished building: default.size.stdout
+ 
+01:01:36 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:01:37 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:01:37 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+01:01:37 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+01:01:38 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4828	  45868	   b32c	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:01:39 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+01:01:39 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+01:01:40 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+01:02:48 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  36972	   4028	   4884	  45884	   b33c	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:03:19 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:03:20 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:03:20 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+01:03:20 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+01:03:21 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4884	  45924	   b364	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:03:22 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+01:03:22 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+01:03:23 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+01:03:30 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4884	  45924	   b364	LAB7.elf
+Finished building: default.size.stdout
+ 
+01:04:55 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:04:55 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:04:55 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+01:04:56 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+01:04:56 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  37028	   4028	   4884	  45940	   b374	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:04:57 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+01:04:58 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+01:04:58 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+01:05:01 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37028	   4028	   4884	  45940	   b374	LAB7.elf
+Finished building: default.size.stdout
+ 
+01:05:34 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:05:34 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:05:35 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+01:05:35 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+01:05:35 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  37036	   4028	   4884	  45948	   b37c	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:05:36 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+01:05:37 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+01:05:37 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+01:05:38 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37036	   4028	   4884	  45948	   b37c	LAB7.elf
+Finished building: default.size.stdout
+ 
+01:10:11 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:10:12 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:10:12 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+01:10:12 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+01:10:13 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4884	  45924	   b364	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:10:14 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+01:10:14 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+01:10:14 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+01:10:17 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4884	  45924	   b364	LAB7.elf
+Finished building: default.size.stdout
+ 
+01:11:18 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:11:19 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:11:19 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+01:11:20 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+01:11:20 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4884	  45924	   b364	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:11:21 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+01:11:22 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+01:11:22 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+01:11:23 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4884	  45924	   b364	LAB7.elf
+Finished building: default.size.stdout
+ 
+01:15:14 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:15:14 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:15:14 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+01:15:15 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+01:15:15 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32f4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f4xx_hal_msp.d" -MT"Core/Src/stm32f4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f4xx_hal_msp.o"
+arm-none-eabi-gcc "../Core/Src/stm32f4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f4xx_it.d" -MT"Core/Src/stm32f4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f4xx_it.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4884	  45924	   b364	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:15:17 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+01:15:17 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+01:15:18 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+01:15:23 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4884	  45924	   b364	LAB7.elf
+Finished building: default.size.stdout
+ 
+01:16:10 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC2_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:16:10 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
+make -j12 all 
+arm-none-eabi-size  ADC_TIMER_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
+Finished building: default.size.stdout
+ 
+01:16:11 **** Incremental Build of configuration Debug for project LAB5 ****
+make -j12 all 
+arm-none-eabi-size  LAB5.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37868	    468	   2212	  40548	   9e64	LAB5.elf
+Finished building: default.size.stdout
+ 
+01:16:11 **** Incremental Build of configuration Debug for project LAB6.1 ****
+make -j12 all 
+arm-none-eabi-size  LAB6.1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
+Finished building: default.size.stdout
+ 
+01:16:11 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
+ 
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4884	  45924	   b364	LAB7.elf
+Finished building: default.size.stdout
+ 
+Finished building: LAB7.list
+ 
+01:16:12 **** Incremental Build of configuration Debug for project Proyecto2 ****
+make -j12 all 
+arm-none-eabi-size  Proyecto2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
+Finished building: default.size.stdout
+ 
+01:16:13 **** Incremental Build of configuration Debug for project Proyecto_controles ****
+make -j12 all 
+arm-none-eabi-size  Proyecto_controles.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
+Finished building: default.size.stdout
+ 
+01:16:13 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+make -j12 all 
+arm-none-eabi-size  diente_de_sierra.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
+Finished building: default.size.stdout
+ 
+01:16:15 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37012	   4028	   4884	  45924	   b364	LAB7.elf
 Finished building: default.size.stdout
  
