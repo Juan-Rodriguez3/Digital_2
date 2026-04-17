@@ -50,6 +50,7 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
+//Variables de comunicacion con controles UART1&3
 char bufferU1[20];
 uint8_t idx = 0;
 uint8_t rx_char;
@@ -61,17 +62,54 @@ char linea[50];
 volatile uint8_t newDataU1 = 0;
 volatile uint8_t newDataU3 = 0;
 uint8_t move=0;
-
+//Variables de comunicacion con controles UART1&3
 
 uint8_t bufferR[20];
 uint8_t rxByte;
 uint8_t rxIndex = 0;
 uint8_t F_Start = 0;
-uint8_t pX1 = 0;
-uint8_t pY1 = 0;
-uint8_t pX1_O = 0;
-uint8_t pY1_O = 0;
 uint8_t M1_F = 0;
+uint8_t blqT[] = {32,192,64,16};
+uint8_t sChange_F1 = 0;
+uint8_t sChange_F2 = 0;
+uint8_t Score1 = 0;
+uint8_t Score2 = 0;
+
+struct P_objeto {
+	uint16_t px;
+	uint8_t py;
+	uint8_t w;
+	uint8_t h;
+};
+
+struct P_objeto j1;
+struct P_objeto j1o;
+struct P_objeto blq1_j1;
+struct P_objeto par1;
+struct P_objeto par2;
+struct P_objeto par3;
+struct P_objeto par4;
+struct P_objeto blq2_j1;
+struct P_objeto blq3_j1;
+struct P_objeto blq4_j1;
+struct P_objeto blq5_j1;
+struct P_objeto blq6_j1;
+struct P_objeto blq7_j1;
+struct P_objeto blq8_j1;
+struct P_objeto blq9_j1;
+struct P_objeto blq10_j1;
+struct P_objeto blq11_j1;
+struct P_objeto blq12_j1;
+struct P_objeto blq13_j1;
+struct P_objeto blq14_j1;
+struct P_objeto blq15_j1;
+struct P_objeto blq16_j1;
+struct P_objeto blq17_j1;
+struct P_objeto star1;
+
+
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -82,12 +120,27 @@ static void MX_USART2_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+uint8_t ColCheck(struct P_objeto ob1, struct P_objeto ob2);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+	{
+	    if (huart->Instance == USART3)
+	    {
+	        if (rx_char3 == '\n') {
+	            bufferU3[idx3] = '\0';
+	            idx3 = 0;
+	            newDataU3 = 1;
+	        } else {
+	            if (idx3 < sizeof(bufferU3) - 1)
+	                bufferU3[idx3++] = rx_char3;
+	        }
 
+	        HAL_UART_Receive_IT(&huart3, &rx_char3, 1);
+	    }
+	}
 /* USER CODE END 0 */
 
 /**
@@ -99,6 +152,126 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
+	j1.px = 128;
+	j1.py = 208;
+	j1.w = 16;
+	j1.h = 16;
+
+
+	j1o.px = 128;
+	j1o.py = 208;
+	j1o.w = 16;
+	j1o.h = 16;
+
+	blq1_j1.px = 32;
+	blq1_j1.py = 192;
+	blq1_j1.w = 64;
+	blq1_j1.h = 16;
+
+	blq2_j1.px = 64;
+	blq2_j1.py = 176;
+	blq2_j1.w = 64;
+	blq2_j1.h = 16;
+
+	blq3_j1.px = 64;
+	blq3_j1.py = 160;
+	blq3_j1.w = 16;
+	blq3_j1.h = 16;
+
+	blq4_j1.px = 32;
+	blq4_j1.py = 128;
+	blq4_j1.w = 16;
+	blq4_j1.h = 48;
+
+	blq5_j1.px = 48;
+	blq5_j1.py = 128;
+	blq5_j1.w = 16;
+	blq5_j1.h = 16;
+
+	blq6_j1.px = 80;
+	blq6_j1.py = 144;
+	blq6_j1.w = 48;
+	blq6_j1.h = 16;
+
+	blq7_j1.px = 112;
+	blq7_j1.py = 112;
+	blq7_j1.w = 16;
+	blq7_j1.h = 48;
+
+	blq8_j1.px = 64;
+	blq8_j1.py = 96;
+	blq8_j1.w = 16;
+	blq8_j1.h = 48;
+
+	blq9_j1.px = 32;
+	blq9_j1.py = 80;
+	blq9_j1.w = 16;
+	blq9_j1.h = 32;
+
+	blq10_j1.px = 48;
+	blq10_j1.py = 80;
+	blq10_j1.w = 16;
+	blq10_j1.h = 16;
+
+	blq11_j1.px = 80;
+	blq11_j1.py = 80;
+	blq11_j1.w = 16;
+	blq11_j1.h = 48;
+
+	blq12_j1.px = 96;
+	blq12_j1.py = 80;
+	blq12_j1.w = 32;
+	blq12_j1.h = 16;
+
+	blq13_j1.px = 112;
+	blq13_j1.py = 48;
+	blq13_j1.w = 16;
+	blq13_j1.h = 32;
+
+	blq14_j1.px = 128;
+	blq14_j1.py = 32;
+	blq14_j1.w = 16;
+	blq14_j1.h = 16;
+
+	blq15_j1.px = 32;
+	blq15_j1.py = 48;
+	blq15_j1.w = 64;
+	blq15_j1.h = 16;
+
+	blq16_j1.px = 32;
+	blq16_j1.py = 16;
+	blq16_j1.w = 80;
+	blq16_j1.h = 16;
+
+	blq17_j1.px = 80;
+	blq17_j1.py = 32;
+	blq17_j1.w = 16;
+	blq17_j1.h = 16;
+
+	par1.px = 0;
+	par1.py = 0;
+	par1.w = 144;
+	par1.h = 16;
+
+	par2.px = 0;
+	par2.py = 16;
+	par2.w = 16;
+	par2.h = 208;
+
+	par3.px = 0;
+	par3.py = 224;
+	par3.w = 144;
+	par3.h = 16;
+
+	par4.px = 144;
+	par4.py = 0;
+	par4.w = 32;
+	par4.h = 240;
+
+	star1.px = 128;
+	star1.py = 16;
+	star1.w = 16;
+	star1.h = 16;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -129,71 +302,172 @@ int main(void)
   LCD_Clear(0x00);
 
   LCD_Bitmap(0, 0, 320, 240, niv1);
+  LCD_Bitmap(112, 224, 16, 16, zero1);
 
   HAL_UART_Receive_IT(&huart2, &rxByte, 1);
   HAL_UART_Receive_IT(&huart1, &rx_char, 1);
-  HAL_UART_Receive_IT(&huart3, &rx_char, 1);
+  HAL_UART_Receive_IT(&huart3, &rx_char3, 1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
 	  if (newDataU3) {
-		  // Imprimir por USART2 para debug
-		  char debug[30];
-		  sprintf(debug, "U3: %s\r\n", bufferU3);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)debug, strlen(debug), 100);
-		  newDataU3 = 0;
+	      char debug[30];
+	      sprintf(debug, "U3: %s\r\n", bufferU3);
+	      HAL_UART_Transmit(&huart2, (uint8_t*)debug, strlen(debug), 100);
+	      newDataU3 = 0;
 
-		  int X, B, A, Y;
-		  sscanf(bufferU3, "J1:X%dB%dA%dY%d", &X, &B, &A, &Y);
+	      int X, B, A, Y;
+	      sscanf(bufferU3, "J1:X%dB%dA%dY%d", &X, &B, &A, &Y);
 
-		  // Lógica de movimiento basada en los botones
-		  if (X == 1) {  // botón X presionado → mover abajo
-			 int suma = pY1 + 16;
-			 if (suma <= 240) pY1 = suma;
-		  }
-		  if (Y == 1) {  // botón Y presionado → mover arriba
-			 int suma = pY1 - 16;
-			 if (suma >= 0) pY1 = suma;
-		  }
-			 // Agrega A y B para los otros movimientos
+	      if (X == 1) {
+	         j1.py = j1.py+16;
+	      }
+	      if (Y == 1) {
+	    	  j1.py = j1.py-16;
+	      }
+	      if (A == 1) {
+	    	  j1.px = j1.px-16;
+	      }
+	      if (B == 1) {
+	    	  j1.px = j1.px+16;
+	      }
 
-		  if (A==1){
-			  //Mover a la izquierda
-			  int suma = pX1 - 16;
-			  if (suma >= 0) pX1 = suma;
-		  }
-
-		  if (B==1){
-			  //mover a la derecha
-			  int suma = pX1 + 16;
-			  if (suma >= 0) pX1 = suma;
-		  }
-
-
-		  if (pX1 != pX1_O || pY1 != pY1_O){
-			 M1_F = 1;
-		  }
+	      /*if (j1.px != j1o.px || j1.py != j1o.py) {
+	          M1_F = 1;
+	      }*/
 	  }
 
+	  if (j1o.py!=j1.py || j1o.px != j1.px){
+		  int8_t coli = 1;
+		  uint8_t coliW = 1;
+
+		  switch (j1.py)
+		  {
+		  case 224:
+			  coli &= ColCheck(j1, par3);
+			  break;
+
+		  case 208:
+		  case 192:
+			  coli &= ColCheck(j1, blq1_j1);
+			  break;
+
+		  case 176:
+			  coli &= ColCheck(j1, blq2_j1);
+			  break;
+
+		  case 160:
+			  coli &= ColCheck(j1, blq3_j1);
+			  coli &= ColCheck(j1, blq4_j1);
+			  break;
+
+		  case 144:
+			  coli &= ColCheck(j1, blq4_j1);
+			  coli &= ColCheck(j1, blq6_j1);
+			  break;
+
+		  case 128:
+			  coli &= ColCheck(j1, blq4_j1);
+			  coli &= ColCheck(j1, blq5_j1);
+			  break;
+
+		  case 112:
+			  coli &= ColCheck(j1, blq7_j1);
+			  coli &= ColCheck(j1, blq11_j1);
+			  break;
+
+		  case 96:
+			  coli &= ColCheck(j1, blq9_j1);
+			  coli &= ColCheck(j1, blq11_j1);
+			  break;
+
+		  case 80:
+			//coli &= ColCheck(j1, blq8_j1);
+			  coli &= ColCheck(j1, blq9_j1);
+			  coli &= ColCheck(j1, blq10_j1);
+			  coli &= ColCheck(j1, blq11_j1);
+			  coli &= ColCheck(j1, blq12_j1);
+			  break;
+
+		  case 64:
+			  coli &= ColCheck(j1, blq11_j1);
+			  coli &= ColCheck(j1, blq13_j1);
+			  break;
+
+		  case 48:
+			  coli &= ColCheck(j1, blq13_j1);
+			  coli &= ColCheck(j1, blq15_j1);
+			  break;
+
+		  case 32:
+			  coli &= ColCheck(j1, blq14_j1);
+			  coli &= ColCheck(j1, blq17_j1);
+			  break;
+
+		  case 16:
+			  coli &= ColCheck(j1, blq16_j1);
+			  coliW &= ColCheck(j1, star1);
+			  break;
+
+		  case 0:
+			  coli &= ColCheck(j1, par1);
+			  break;
+		  }
+		  coli &= ColCheck(j1,par2);
+		  coli &= ColCheck(j1,par4);
+
+
+
+
+		  if (coli)
+		  {
+			M1_F = 1;
+		  }
+		  else
+		  {
+			j1.px = j1o.px;
+			j1.py = j1o.py;
+		  }
+
+		  if (coliW == 0)
+		  {
+			sChange_F1 = 1;
+			Score1++;
+		  }
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
 	  if (F_Start == 1)
 	  {
 		  LCD_Bitmap(0, 0, 320, 240, israel);
 		  F_Start = 0;
 	  }
-	  LCD_Sprite(pX1, pY1, 16, 16, slime, 1, 1, 0, 0);
+	  LCD_Sprite(j1.px, j1.py, 16, 16, slime, 1, 1, 0, 0);
 	  if (M1_F == 1)
 	  {
-		  LCD_Bitmap(pX1_O, pY1_O, 16, 16, tile);
-		  pX1_O = pX1;
-		  pY1_O = pY1;
+		  LCD_Bitmap(j1o.px, j1o.py, 16, 16, tile);
+		  j1o.px = j1.px;
+		  j1o.py = j1.py;
 		  M1_F = 0;
+	  }
+	  if(sChange_F1 == 1)
+	  {
+		  switch (Score1)
+		  {
+		  case 1:
+			  LCD_Bitmap(112, 224, 16, 16, uno1);
+			  break;
+		  case 2:
+			  LCD_Bitmap(112, 224, 16, 16, dos1);
+			  break;
+		  }
+		  sChange_F1 = 0;
 	  }
   }
   /* USER CODE END 3 */
@@ -450,6 +724,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     {
         bufferR[rxIndex++] = rxByte;
 
+
         if (rxByte == '\n' || rxIndex >= sizeof(bufferR)-1)
         {
             bufferR[rxIndex] = '\0';
@@ -459,30 +734,115 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
             {
                 F_Start = 1;
             }
-            if (strcmp((char*)bufferR, "D") == 0)
+            if (strcmp((char*)bufferR, "aba") == 0)
             {
-                int suma = pY1 + 16;
-                if (suma <= 240) pY1 = suma;
+            	j1.py = j1.py + 16;
             }
-            else if (strcmp((char*)bufferR, "A") == 0)
+            else if (strcmp((char*)bufferR, "arr") == 0)
             {
-                int suma = pY1 - 16;
-                if (suma >= 0) pY1 = suma;
+            	j1.py = j1.py - 16;
             }
-            else if (strcmp((char*)bufferR, "L") == 0)
+            else if (strcmp((char*)bufferR, "izq") == 0)
             {
-                int suma = pX1 - 16;
-                if (suma >= 0) pX1 = suma;
+            	j1.px = j1.px - 16;
             }
-            else if (strcmp((char*)bufferR, "R") == 0)
+            else if (strcmp((char*)bufferR, "der") == 0)
             {
-                int suma = pX1 + 16;
-                if (suma <= 360) pX1 = suma;
+            	j1.px = j1.px + 16;
             }
 
-            if (pX1 != pX1_O || pY1 != pY1_O)
+            switch (j1.py)
+            {
+            case 224:
+                coli &= ColCheck(j1, par3);
+                break;
+
+            case 208:
+            case 192:
+                coli &= ColCheck(j1, blq1_j1);
+                break;
+
+            case 176:
+                coli &= ColCheck(j1, blq2_j1);
+                break;
+
+            case 160:
+                coli &= ColCheck(j1, blq3_j1);
+                coli &= ColCheck(j1, blq4_j1);
+                break;
+
+            case 144:
+                coli &= ColCheck(j1, blq4_j1);
+                coli &= ColCheck(j1, blq6_j1);
+                break;
+
+            case 128:
+                coli &= ColCheck(j1, blq4_j1);
+                coli &= ColCheck(j1, blq5_j1);
+                break;
+
+            case 112:
+                coli &= ColCheck(j1, blq7_j1);
+                coli &= ColCheck(j1, blq11_j1);
+                break;
+
+            case 96:
+                coli &= ColCheck(j1, blq9_j1);
+                coli &= ColCheck(j1, blq11_j1);
+                break;
+
+            case 80:
+            	//coli &= ColCheck(j1, blq8_j1);
+                coli &= ColCheck(j1, blq9_j1);
+                coli &= ColCheck(j1, blq10_j1);
+                coli &= ColCheck(j1, blq11_j1);
+                coli &= ColCheck(j1, blq12_j1);
+                break;
+
+            case 64:
+                coli &= ColCheck(j1, blq11_j1);
+                coli &= ColCheck(j1, blq13_j1);
+                break;
+
+            case 48:
+                coli &= ColCheck(j1, blq13_j1);
+                coli &= ColCheck(j1, blq15_j1);
+                break;
+
+            case 32:
+                coli &= ColCheck(j1, blq14_j1);
+                coli &= ColCheck(j1, blq17_j1);
+                break;
+
+            case 16:
+                coli &= ColCheck(j1, blq16_j1);
+                coliW &= ColCheck(j1, star1);
+                break;
+
+            case 0:
+                coli &= ColCheck(j1, par1);
+                break;
+            }
+            coli &= ColCheck(j1,par2);
+            coli &= ColCheck(j1,par4);
+
+
+
+
+            if (coli)
             {
             	M1_F = 1;
+            }
+            else
+            {
+            	j1.px = j1o.px;
+            	j1.py = j1o.py;
+            }
+
+            if (coliW == 0)
+            {
+            	sChange_F1 = 1;
+            	Score1++;
             }
 
             rxIndex = 0;
@@ -492,73 +852,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     }
 }
 */
-/*
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+uint8_t ColCheck(struct P_objeto o1, struct P_objeto o2)
 {
-    if (huart->Instance == USART1)
-    {
-        bufferR[rxIndex++] = rxByte;
-
-        if (rxByte == '\n' || rxIndex >= sizeof(bufferR)-1)
-        {
-            bufferR[rxIndex] = '\0';
-            bufferR[strcspn((char*)bufferR, "\r\n")] = '\0';
-
-            if (strcmp((char*)bufferR, "start") == 0)
-            {
-                F_Start = 1;
-            }
-            if (strcmp((char*)bufferR, "D") == 0)
-            {
-                int suma = pY1 + 16;
-                if (suma <= 240) pY1 = suma;
-            }
-            else if (strcmp((char*)bufferR, "A") == 0)
-            {
-                int suma = pY1 - 16;
-                if (suma >= 0) pY1 = suma;
-            }
-            else if (strcmp((char*)bufferR, "L") == 0)
-            {
-                int suma = pX1 - 16;
-                if (suma >= 0) pX1 = suma;
-            }
-            else if (strcmp((char*)bufferR, "R") == 0)
-            {
-                int suma = pX1 + 16;
-                if (suma <= 360) pX1 = suma;
-            }
-
-            if (pX1 != pX1_O || pY1 != pY1_O)
-            {
-            	M1_F = 1;
-            }
-
-            rxIndex = 0;
-        }
-
-        HAL_UART_Receive_IT(&huart1, &rx_char, 1);
-    }
+	if ((o1.px + o1.w - 1>= o2.px) && (o2.px + o2.w - 1>= o1.px) && (o1.py + o1.h - 1>= o2.py) && (o2.py + o2.h - 1>= o1.py))
+	{
+		return 0;
+	}
+	else{
+		return 1;
+	}
 }
-*/
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-    if (huart->Instance == USART3)
-    {
-        if (rx_char3 == '\n') {
-            bufferU3[idx3] = '\0';
-            idx3 = 0;
-            newDataU3 = 1;  // bandera: llegó mensaje completo
-        } else {
-            if (idx3 < sizeof(bufferU3) - 1)
-                bufferU3[idx3++] = rx_char3;
-        }
-
-        HAL_UART_Receive_IT(&huart3, &rx_char3, 1);
-    }
-}
-
 /* USER CODE END 4 */
 
 /**
@@ -575,6 +878,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
+
 #ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number

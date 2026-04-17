@@ -1,252 +1,48 @@
-21:08:13 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
+20:32:24 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
 make -j12 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:85:17: warning: built-in function 'j1' declared as non-function [-Wbuiltin-declaration-mismatch]
+   85 | struct P_objeto j1;
+      |                 ^~
 arm-none-eabi-gcc -o "Proyecto2Pantalla.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Proyecto2Pantalla\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Proyecto2Pantalla.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: Proyecto2Pantalla.elf
  
 arm-none-eabi-size  Proyecto2Pantalla.elf 
 arm-none-eabi-objdump -h -S Proyecto2Pantalla.elf  > "Proyecto2Pantalla.list"
    text	   data	    bss	    dec	    hex	filename
- 326776	     92	   2244	 329112	  50598	Proyecto2Pantalla.elf
+ 332604	    604	   2428	 335636	  51f14	Proyecto2Pantalla.elf
 Finished building: default.size.stdout
  
 Finished building: Proyecto2Pantalla.list
  
-21:08:17 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
+20:32:29 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
 make -j12 all 
 arm-none-eabi-size  Proyecto2Pantalla.elf 
    text	   data	    bss	    dec	    hex	filename
- 326776	     92	   2244	 329112	  50598	Proyecto2Pantalla.elf
+ 332604	    604	   2428	 335636	  51f14	Proyecto2Pantalla.elf
 Finished building: default.size.stdout
  
-21:11:38 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
+20:32:52 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
 make -j12 all 
-arm-none-eabi-size  ADC2_TIMER_UART.elf 
+arm-none-eabi-size  Proyecto2Pantalla.elf 
    text	   data	    bss	    dec	    hex	filename
-  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
+ 332604	    604	   2428	 335636	  51f14	Proyecto2Pantalla.elf
 Finished building: default.size.stdout
  
-21:11:38 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-21:11:38 **** Incremental Build of configuration Debug for project LAB5 ****
-make -j12 all 
-arm-none-eabi-size  LAB5.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37868	    468	   2212	  40548	   9e64	LAB5.elf
-Finished building: default.size.stdout
- 
-21:11:39 **** Incremental Build of configuration Debug for project LAB6.1 ****
-make -j12 all 
-arm-none-eabi-size  LAB6.1.elf 
-   text	   data	    bss	    dec	    hex	filename
-  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
-Finished building: default.size.stdout
- 
-21:11:39 **** Incremental Build of configuration Debug for project LAB7 ****
-make -j12 all 
-arm-none-eabi-size  LAB7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37012	   4028	   4884	  45924	   b364	LAB7.elf
-Finished building: default.size.stdout
- 
-21:11:40 **** Incremental Build of configuration Debug for project Proyecto2 ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
-Finished building: default.size.stdout
- 
-21:11:40 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
+20:34:11 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
 make -j12 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:85:17: warning: built-in function 'j1' declared as non-function [-Wbuiltin-declaration-mismatch]
+   85 | struct P_objeto j1;
+      |                 ^~
 arm-none-eabi-gcc -o "Proyecto2Pantalla.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Proyecto2Pantalla\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Proyecto2Pantalla.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: Proyecto2Pantalla.elf
  
 arm-none-eabi-size  Proyecto2Pantalla.elf 
 arm-none-eabi-objdump -h -S Proyecto2Pantalla.elf  > "Proyecto2Pantalla.list"
    text	   data	    bss	    dec	    hex	filename
- 329608	     92	   2244	 331944	  510a8	Proyecto2Pantalla.elf
+ 332604	    604	   2428	 335636	  51f14	Proyecto2Pantalla.elf
 Finished building: default.size.stdout
  
 Finished building: Proyecto2Pantalla.list
- 
-21:11:41 **** Incremental Build of configuration Debug for project Proyecto_controles ****
-make -j12 all 
-arm-none-eabi-size  Proyecto_controles.elf 
-   text	   data	    bss	    dec	    hex	filename
-  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
-Finished building: default.size.stdout
- 
-21:11:42 **** Incremental Build of configuration Debug for project diente_de_sierra ****
-make -j12 all 
-arm-none-eabi-size  diente_de_sierra.elf 
-   text	   data	    bss	    dec	    hex	filename
-  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
-Finished building: default.size.stdout
- 
-21:11:45 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2Pantalla.elf 
-   text	   data	    bss	    dec	    hex	filename
- 329608	     92	   2244	 331944	  510a8	Proyecto2Pantalla.elf
-Finished building: default.size.stdout
- 
-21:13:09 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC2_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-21:13:10 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-21:13:10 **** Incremental Build of configuration Debug for project LAB5 ****
-make -j12 all 
-arm-none-eabi-size  LAB5.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37868	    468	   2212	  40548	   9e64	LAB5.elf
-Finished building: default.size.stdout
- 
-21:13:10 **** Incremental Build of configuration Debug for project LAB6.1 ****
-make -j12 all 
-arm-none-eabi-size  LAB6.1.elf 
-   text	   data	    bss	    dec	    hex	filename
-  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
-Finished building: default.size.stdout
- 
-21:13:11 **** Incremental Build of configuration Debug for project LAB7 ****
-make -j12 all 
-arm-none-eabi-size  LAB7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37012	   4028	   4884	  45924	   b364	LAB7.elf
-Finished building: default.size.stdout
- 
-21:13:11 **** Incremental Build of configuration Debug for project Proyecto2 ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
-Finished building: default.size.stdout
- 
-21:13:11 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "Proyecto2Pantalla.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Proyecto2Pantalla\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Proyecto2Pantalla.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: Proyecto2Pantalla.elf
- 
-arm-none-eabi-size  Proyecto2Pantalla.elf 
-arm-none-eabi-objdump -h -S Proyecto2Pantalla.elf  > "Proyecto2Pantalla.list"
-   text	   data	    bss	    dec	    hex	filename
- 329608	     92	   2244	 331944	  510a8	Proyecto2Pantalla.elf
-Finished building: default.size.stdout
- 
-Finished building: Proyecto2Pantalla.list
- 
-21:13:13 **** Incremental Build of configuration Debug for project Proyecto_controles ****
-make -j12 all 
-arm-none-eabi-size  Proyecto_controles.elf 
-   text	   data	    bss	    dec	    hex	filename
-  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
-Finished building: default.size.stdout
- 
-21:13:13 **** Incremental Build of configuration Debug for project diente_de_sierra ****
-make -j12 all 
-arm-none-eabi-size  diente_de_sierra.elf 
-   text	   data	    bss	    dec	    hex	filename
-  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
-Finished building: default.size.stdout
- 
-21:13:17 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2Pantalla.elf 
-   text	   data	    bss	    dec	    hex	filename
- 329608	     92	   2244	 331944	  510a8	Proyecto2Pantalla.elf
-Finished building: default.size.stdout
- 
-21:16:48 **** Incremental Build of configuration Debug for project ADC2_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC2_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  18356	     96	   2192	  20644	   50a4	ADC2_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-21:16:49 **** Incremental Build of configuration Debug for project ADC_TIMER_UART ****
-make -j12 all 
-arm-none-eabi-size  ADC_TIMER_UART.elf 
-   text	   data	    bss	    dec	    hex	filename
-  35780	    472	   2160	  38412	   960c	ADC_TIMER_UART.elf
-Finished building: default.size.stdout
- 
-21:16:49 **** Incremental Build of configuration Debug for project LAB5 ****
-make -j12 all 
-arm-none-eabi-size  LAB5.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37868	    468	   2212	  40548	   9e64	LAB5.elf
-Finished building: default.size.stdout
- 
-21:16:50 **** Incremental Build of configuration Debug for project LAB6.1 ****
-make -j12 all 
-arm-none-eabi-size  LAB6.1.elf 
-   text	   data	    bss	    dec	    hex	filename
-  16712	     92	   2172	  18976	   4a20	LAB6.1.elf
-Finished building: default.size.stdout
- 
-21:16:50 **** Incremental Build of configuration Debug for project LAB7 ****
-make -j12 all 
-arm-none-eabi-size  LAB7.elf 
-   text	   data	    bss	    dec	    hex	filename
-  37012	   4028	   4884	  45924	   b364	LAB7.elf
-Finished building: default.size.stdout
- 
-21:16:50 **** Incremental Build of configuration Debug for project Proyecto2 ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  17724	     92	   2220	  20036	   4e44	Proyecto2.elf
-Finished building: default.size.stdout
- 
-21:16:51 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "Proyecto2Pantalla.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Proyecto2Pantalla\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Proyecto2Pantalla.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: Proyecto2Pantalla.elf
- 
-arm-none-eabi-size  Proyecto2Pantalla.elf 
-arm-none-eabi-objdump -h -S Proyecto2Pantalla.elf  > "Proyecto2Pantalla.list"
-   text	   data	    bss	    dec	    hex	filename
- 329668	     92	   2244	 332004	  510e4	Proyecto2Pantalla.elf
-Finished building: default.size.stdout
- 
-Finished building: Proyecto2Pantalla.list
- 
-21:16:52 **** Incremental Build of configuration Debug for project Proyecto_controles ****
-make -j12 all 
-arm-none-eabi-size  Proyecto_controles.elf 
-   text	   data	    bss	    dec	    hex	filename
-  15060	     12	   1884	  16956	   423c	Proyecto_controles.elf
-Finished building: default.size.stdout
- 
-21:16:53 **** Incremental Build of configuration Debug for project diente_de_sierra ****
-make -j12 all 
-arm-none-eabi-size  diente_de_sierra.elf 
-   text	   data	    bss	    dec	    hex	filename
-  10964	     16	   1744	  12724	   31b4	diente_de_sierra.elf
-Finished building: default.size.stdout
- 
-21:16:55 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2Pantalla.elf 
-   text	   data	    bss	    dec	    hex	filename
- 329668	     92	   2244	 332004	  510e4	Proyecto2Pantalla.elf
-Finished building: default.size.stdout
  
