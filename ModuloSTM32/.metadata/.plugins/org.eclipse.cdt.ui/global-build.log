@@ -1,48 +1,35 @@
-20:32:24 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
+21:03:20 **** Incremental Build of configuration Debug for project LAB7 ****
 make -j12 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c:85:17: warning: built-in function 'j1' declared as non-function [-Wbuiltin-declaration-mismatch]
-   85 | struct P_objeto j1;
-      |                 ^~
-arm-none-eabi-gcc -o "Proyecto2Pantalla.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Proyecto2Pantalla\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Proyecto2Pantalla.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: Proyecto2Pantalla.elf
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
  
-arm-none-eabi-size  Proyecto2Pantalla.elf 
-arm-none-eabi-objdump -h -S Proyecto2Pantalla.elf  > "Proyecto2Pantalla.list"
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
    text	   data	    bss	    dec	    hex	filename
- 332604	    604	   2428	 335636	  51f14	Proyecto2Pantalla.elf
+  37124	    104	   3880	  41108	   a094	LAB7.elf
 Finished building: default.size.stdout
  
-Finished building: Proyecto2Pantalla.list
+Finished building: LAB7.list
  
-20:32:29 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
+21:03:25 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37124	    104	   3880	  41108	   a094	LAB7.elf
+Finished building: default.size.stdout
+ 
+21:04:13 **** Incremental Build of configuration Debug for project LAB7 ****
+make -j12 all 
+arm-none-eabi-size  LAB7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37124	    104	   3880	  41108	   a094	LAB7.elf
+Finished building: default.size.stdout
+ 
+21:04:38 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
 make -j12 all 
 arm-none-eabi-size  Proyecto2Pantalla.elf 
    text	   data	    bss	    dec	    hex	filename
  332604	    604	   2428	 335636	  51f14	Proyecto2Pantalla.elf
 Finished building: default.size.stdout
- 
-20:32:52 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
-make -j12 all 
-arm-none-eabi-size  Proyecto2Pantalla.elf 
-   text	   data	    bss	    dec	    hex	filename
- 332604	    604	   2428	 335636	  51f14	Proyecto2Pantalla.elf
-Finished building: default.size.stdout
- 
-20:34:11 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c:85:17: warning: built-in function 'j1' declared as non-function [-Wbuiltin-declaration-mismatch]
-   85 | struct P_objeto j1;
-      |                 ^~
-arm-none-eabi-gcc -o "Proyecto2Pantalla.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Proyecto2Pantalla\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Proyecto2Pantalla.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: Proyecto2Pantalla.elf
- 
-arm-none-eabi-size  Proyecto2Pantalla.elf 
-arm-none-eabi-objdump -h -S Proyecto2Pantalla.elf  > "Proyecto2Pantalla.list"
-   text	   data	    bss	    dec	    hex	filename
- 332604	    604	   2428	 335636	  51f14	Proyecto2Pantalla.elf
-Finished building: default.size.stdout
- 
-Finished building: Proyecto2Pantalla.list
  

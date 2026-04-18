@@ -3,10 +3,12 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="replacehistory">
+		<item value="player1"/>
 		<item value="bufferU3"/>
 		<item value="21"/>
 	</list>
 	<list key="searchhistory">
+		<item value="j1"/>
 		<item value="bufferR"/>
 		<item value="freq_timer"/>
 		<item value="15"/>

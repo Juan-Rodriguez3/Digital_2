@@ -38,11 +38,6 @@
 #define size 128
 #define pi 3.1415926
 #define TIM_FREQ 84000000
-
-
-
-
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -62,28 +57,57 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
-char buffer[600]; // seguro para 20 líneas
-volatile uint8_t S_audio=0;
-
+//Variables de comunicacion con controles UART1&3
 char bufferU1[20];
 uint8_t idx = 0;
 uint8_t rx_char;
-
 char bufferU3[20];
 uint8_t idx3 = 0;
 uint8_t rx_char3;
-
 char linea[50];
-
 //Banderas
 volatile uint8_t newDataU1 = 0;
 volatile uint8_t newDataU3 = 0;
+uint8_t move=0;
+//Variables de comunicacion con controles UART1&3
 
 uint8_t rxData;
 uint32_t Ysine[size];
 uint32_t Ysilencio[size];
 uint32_t Ysine_scaled[size];
 uint16_t Ynoise[size];
+
+struct P_objeto {
+	uint16_t px;
+	uint8_t py;
+	uint8_t w;
+	uint8_t h;
+};
+
+struct P_objeto player1;
+struct P_objeto player1o;
+struct P_objeto blq1_player1;
+struct P_objeto par1;
+struct P_objeto par2;
+struct P_objeto par3;
+struct P_objeto par4;
+struct P_objeto blq2_player1;
+struct P_objeto blq3_player1;
+struct P_objeto blq4_player1;
+struct P_objeto blq5_player1;
+struct P_objeto blq6_player1;
+struct P_objeto blq7_player1;
+struct P_objeto blq8_player1;
+struct P_objeto blq9_player1;
+struct P_objeto blq10_player1;
+struct P_objeto blq11_player1;
+struct P_objeto blq12_player1;
+struct P_objeto blq13_player1;
+struct P_objeto blq14_player1;
+struct P_objeto blq15_player1;
+struct P_objeto blq16_player1;
+struct P_objeto blq17_player1;
+struct P_objeto star1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -113,6 +137,7 @@ void loading_tick_progressive();
 void loading_tick_pro();
 void loading_tick_complete();
 void loading_brbr();
+void footstep();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -377,6 +402,34 @@ void loading_brbr()
         HAL_Delay(100);
     }
 }
+
+void footstep()
+{
+    // 1. IMPACTO — ataque rápido ascendente (golpe del talón)
+    for(uint32_t arr = 800; arr < 1400; arr += 60)
+    {
+        playToneDAC(arr);
+        HAL_Delay(1);
+    }
+
+    // 2. PESO — caída de frecuencia (peso del cuerpo sobre el pie)
+    for(uint32_t arr = 1400; arr > 300; arr -= 40)
+    {
+        playToneDAC(arr);
+        HAL_Delay(2);
+    }
+
+    // 3. TEXTURA — ruido de fricción del suelo
+    generateNoise();
+    HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
+    HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+                      (uint32_t*)Ynoise, size, DAC_ALIGN_12B_R);
+    HAL_Delay(20);
+
+    // 4. SILENCIO — separación entre pasos
+    playToneDAC(0);
+    HAL_Delay(180);
+}
 /*
 void playNotePWM(uint16_t psc)
 {
@@ -429,7 +482,126 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+		player1.px = 128;
+		player1.py = 208;
+		player1.w = 16;
+		player1.h = 16;
 
+
+		player1o.px = 128;
+		player1o.py = 208;
+		player1o.w = 16;
+		player1o.h = 16;
+
+		blq1_player1.px = 32;
+		blq1_player1.py = 192;
+		blq1_player1.w = 64;
+		blq1_player1.h = 16;
+
+		blq2_player1.px = 64;
+		blq2_player1.py = 176;
+		blq2_player1.w = 64;
+		blq2_player1.h = 16;
+
+		blq3_player1.px = 64;
+		blq3_player1.py = 160;
+		blq3_player1.w = 16;
+		blq3_player1.h = 16;
+
+		blq4_player1.px = 32;
+		blq4_player1.py = 128;
+		blq4_player1.w = 16;
+		blq4_player1.h = 48;
+
+		blq5_player1.px = 48;
+		blq5_player1.py = 128;
+		blq5_player1.w = 16;
+		blq5_player1.h = 16;
+
+		blq6_player1.px = 80;
+		blq6_player1.py = 144;
+		blq6_player1.w = 48;
+		blq6_player1.h = 16;
+
+		blq7_player1.px = 112;
+		blq7_player1.py = 112;
+		blq7_player1.w = 16;
+		blq7_player1.h = 48;
+
+		blq8_player1.px = 64;
+		blq8_player1.py = 96;
+		blq8_player1.w = 16;
+		blq8_player1.h = 48;
+
+		blq9_player1.px = 32;
+		blq9_player1.py = 80;
+		blq9_player1.w = 16;
+		blq9_player1.h = 32;
+
+		blq10_player1.px = 48;
+		blq10_player1.py = 80;
+		blq10_player1.w = 16;
+		blq10_player1.h = 16;
+
+		blq11_player1.px = 80;
+		blq11_player1.py = 80;
+		blq11_player1.w = 16;
+		blq11_player1.h = 48;
+
+		blq12_player1.px = 96;
+		blq12_player1.py = 80;
+		blq12_player1.w = 32;
+		blq12_player1.h = 16;
+
+		blq13_player1.px = 112;
+		blq13_player1.py = 48;
+		blq13_player1.w = 16;
+		blq13_player1.h = 32;
+
+		blq14_player1.px = 128;
+		blq14_player1.py = 32;
+		blq14_player1.w = 16;
+		blq14_player1.h = 16;
+
+		blq15_player1.px = 32;
+		blq15_player1.py = 48;
+		blq15_player1.w = 64;
+		blq15_player1.h = 16;
+
+		blq16_player1.px = 32;
+		blq16_player1.py = 16;
+		blq16_player1.w = 80;
+		blq16_player1.h = 16;
+
+		blq17_player1.px = 80;
+		blq17_player1.py = 32;
+		blq17_player1.w = 16;
+		blq17_player1.h = 16;
+
+		par1.px = 0;
+		par1.py = 0;
+		par1.w = 144;
+		par1.h = 16;
+
+		par2.px = 0;
+		par2.py = 16;
+		par2.w = 16;
+		par2.h = 208;
+
+		par3.px = 0;
+		par3.py = 224;
+		par3.w = 144;
+		par3.h = 16;
+
+		par4.px = 144;
+		par4.py = 0;
+		par4.w = 32;
+		par4.h = 240;
+
+		star1.px = 128;
+		star1.py = 16;
+		star1.w = 16;
+		star1.h = 16;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -459,30 +631,6 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   //Desplegar el menu
-  sprintf(buffer,
-  		  "Seleccione el audio a reproducir:\r\n"
-  		  "1) Audio 1\r\n"
-  		  "2) Audio 2\r\n"
-  		  "3) Audio 3\r\n"
-  		  "4) Audio 4\r\n"
-  		  "5) Audio 5\r\n"
-  		  "6) Audio 6\r\n"
-  		  "7) Audio 7\r\n"
-  		  "8) Audio 8\r\n"
-  		  "9) Audio 9\r\n"
-  		  "10) Audio 10\r\n"
-  		  "11) Audio 11\r\n"
-  		  "12) Audio 12\r\n"
-  		  "13) Audio 13\r\n"
-  		  "14) Audio 14\r\n"
-  		  "15) Audio 15\r\n"
-  		  "16) Audio 16\r\n"
-  		  "17) Audio 17\r\n"
-  		  "18) Audio 18\r\n"
-  		  "19) Audio 19\r\n"
-  		  "20) Audio 20\r\n"
-  		  );
-  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
   generarSin();
   //Esperar respuesta
   HAL_UART_Receive_IT(&huart2, &rxData, 1);
@@ -493,203 +641,40 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if (newDataU3) {
+		  char debug[30];
+		  sprintf(debug, "U3: %s\r\n", bufferU3);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)debug, strlen(debug), 100);
+		  newDataU3 = 0;
+
+		  int X, B, A, Y;
+		  sscanf(bufferU3, "player1:X%dB%dA%dY%d", &X, &B, &A, &Y);
+
+		  if (X == 1) {
+			 player1.py = player1.py+16;
+			 footstep();
+		  }
+		  if (Y == 1) {
+			  player1.py = player1.py-16;
+			  footstep();
+		  }
+		  if (A == 1) {
+			  player1.px = player1.px-16;
+			  footstep();
+		  }
+		  if (B == 1) {
+			  player1.px = player1.px+16;
+			  footstep();
+		  }
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  // --- ESP32 #1 via USART1 ---
-	  if (HAL_UART_Receive(&huart3, &rx_char3, 1, 0) == HAL_OK) {
-
-	 	      if (rx_char3 == '\n') {
-	 	          bufferU3[idx3] = '\0';
-
-	 	          // imprimir línea completa en USART2
-	 	          //HAL_UART_Transmit(&huart2, (uint8_t*)bufferU3, idx3, 100);
-	 	          //HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, 100);
-	 	          newDataU3=1;
-	 	         //idx3 = 0; // reset bxuffer
-	 	      }
-	 	      else {
-	 	          if (idx3 < sizeof(bufferU3)-1) {
-	 	              bufferU3[idx3++] = rx_char3;
-	 	          }
-	 	      }
-	 	  }
-	  if (HAL_UART_Receive(&huart1, &rx_char, 1, 0) == HAL_OK) {
-
-		  if (rx_char == '\n') {
-			  bufferU1[idx] = '\0';
-
-			  // imprimir línea completa en USART2
-			  //HAL_UART_Transmit(&huart2, (uint8_t*)bufferU1, idx, 100);
-			  //HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, 100);
-			  newDataU1=1;
-			  //idx=0;
-		  }
-		  else {
-		  	  if (idx < sizeof(bufferU1)-1) {
-			  bufferU1[idx++] = rx_char;
-		  	  }
-	  	  }
-	  }
-
-	  if (newDataU1==1 && newDataU3==1 ){
 
 
-		  bufferU3[idx3] = '\0';
-		  bufferU1[idx] = '\0';
-
-		  idx3 = 0; // reset bxuffer
-		  idx = 0; // reset bxuffer
-
-		  sprintf(linea, "%s,%s\r\n",bufferU3, bufferU1);
-		  //sprintf(linea, "%s\r\n", bufferU3);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)linea, strlen(linea), 100);
-		  newDataU3=0;
-		  newDataU1=0;
-	  }
+	  //footstep();
 
 
-	  if (S_audio==1){
-		  sprintf(buffer, "Reproduciendo audio 1\r\n");
-		  HAL_TIM_Base_Start(&htim6);
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  playSon(Final_Battle_2_notes, Final_Battle_2_duration , Final_Battle_2_size);
-		  S_audio=21;
-	  }
-	  else if (S_audio==2){
-		  sprintf(buffer, "Reproduciendo audio 2\r\n");
-		  HAL_TIM_Base_Start(&htim6);
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  //playSon(starwars_notes,starwars_duration, starwars_size);
-		  S_audio=21;
-	  }
-	  else if (S_audio==3){
-		  sprintf(buffer, "Reproduciendo audio 3\r\n");
-		  HAL_TIM_Base_Start(&htim6);
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  //playSon(mario_notes,mario_duration, mario_size);
-		  playSon(DuelFates_notes, DuelFates_duration, DuelFates_size);
-
-		  S_audio=21;
-	  }
-	  else if (S_audio==4){
-		  sprintf(buffer, "Reproduciendo audio 4\r\n");
-		  HAL_TIM_Base_Start(&htim6);
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  //playSon(game_over_notes,game_over_duration,game_over_size);
-		  playSon(Fantasmic_notes, Fantasmic_duration, Fantasmic_size);
-		  S_audio=21;
-	  }
-	  else if (S_audio==5){
-		  sprintf(buffer, "Reproduciendo audio 5\r\n");
-		  HAL_TIM_Base_Start(&htim6);
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  //playSon(labrynth_crystal_notes,labrynth_crystal_duration,labrynth_crystal_size);
-		  playSon(Electrical_notes, Electrical_duration, Electrical_size);
-		  S_audio=21;
-	  }
-	  else if (S_audio==6){
-		  sprintf(buffer, "Reproduciendo audio 6\r\n");
-		  HAL_TIM_Base_Start(&htim6);
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  playSon(game_over_remix_notes,game_over_remix_duration,game_over_size);
-		  S_audio=21;
-	  }
-	  else if (S_audio==7){
-		  sprintf(buffer, "Reproduciendo audio 7\r\n");
-		  HAL_TIM_Base_Start(&htim6);
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  playSon(Overworld_1_notes,Overworld_1_duration,Overworld_1_size);
-		  S_audio=21;
-	  }
-	  else if (S_audio==8){
-		  sprintf(buffer, "Reproduciendo audio 8\r\n");
-		  HAL_TIM_Base_Start(&htim6);
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  playSon(LOTR_notes,LOTR_duration,LOTR_size);
-		  S_audio=21;
-	  }
-	  else if (S_audio==9){
-		  sprintf(buffer, "Reproduciendo audio 9\r\n");
-		  HAL_TIM_Base_Start(&htim6);
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  playSon(Jurassic_notes, Jurassic_duration, Jurassic_size);
-		  S_audio=21;
-	  }
-	  else if (S_audio==10){
-		  sprintf(buffer, "Reproduciendo audio 10\r\n");
-		  HAL_TIM_Base_Start(&htim6);
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  playSon(Start_notes, Start_duration, Start_size);
-		  S_audio=21;
-	  }
-	  else if (S_audio==11){
-		  loading_tick_complete();
-		  S_audio=21;
-	  }
-	  else if( S_audio==12){
-		  loading_brbr();
-		  S_audio=21;
-	  }
-	  else if (S_audio==16){
-		  swordSlash(800, 3000, 50, 80);
-		  S_audio=21;
-	  }
-	  else if (S_audio==17){
-		  unsheath();
-		  S_audio=21;
-	  }
-	  else if (S_audio==18){
-		  StarPower();
-		 // S_audio=21;
-	  }
-	  else if (S_audio==19){
-		  //impact();
-		  loading_tick_pro();
-		  S_audio=21;
-	  }
-	  else if (S_audio==20){
-		  //Disparos();
-		 loading_tick_progressive();
-		  S_audio=21;
-	  }
-	  else if (S_audio==21){
-		  sprintf(buffer,
-		  "Seleccione el audio a reproducir:\r\n"
-		  "1) Audio 1\r\n"
-		  "2) Audio 2\r\n"
-		  "3) Audio 3\r\n"
-		  "4) Audio 4\r\n"
-		  "5) Audio 5\r\n"
-		  "6) Audio 6\r\n"
-		  "7) Audio 7\r\n"
-		  "8) Audio 8\r\n"
-		  "9) Audio 9\r\n"
-		  "10) Audio 10\r\n"
-		  "11) Audio 11\r\n"
-		  "12) Audio 12\r\n"
-		  "13) Audio 13\r\n"
-		  "14) Audio 14\r\n"
-		  "15) Audio 15\r\n"
-		  "16) Audio 16\r\n"
-		  "17) Audio 17\r\n"
-		  "18) Audio 18\r\n"
-		  "19) Audio 19\r\n"
-		  "20) Audio 20\r\n"
-		  );
-		  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-		  S_audio=0;
-	  }
 
 
 
@@ -1035,72 +1020,23 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5); // Cambia estado del LED
     	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 
-    	if(rxData=='1'){
-    	    S_audio=1;
-    	}
-    	else if(rxData=='2'){
-    	    S_audio=2;
-    	}
-    	else if(rxData=='3'){
-    	    S_audio=3;
-    	}
-    	else if(rxData=='4'){
-    	    S_audio=4;
-    	}
-    	else if(rxData=='5'){
-    	    S_audio=5;
-    	}
-    	else if(rxData=='6'){
-    	    S_audio=6;
-    	}
-    	else if(rxData=='7'){
-    	    S_audio=7;
-    	}
-    	else if(rxData=='8'){
-    	    S_audio=8;
-    	}
-    	else if(rxData=='9'){
-    	    S_audio=9;
-    	}
-    	else if(rxData=='A'){
-    	    S_audio=10;
-    	}
-    	else if(rxData=='B'){
-    	    S_audio=11;
-    	}
-    	else if(rxData=='C'){
-    	    S_audio=12;
-    	}
-    	else if(rxData=='D'){
-    	    S_audio=13;
-    	}
-    	else if(rxData=='E'){
-    	    S_audio=14;
-    	}
-    	else if(rxData=='F'){
-    	    S_audio=15;
-    	}
-    	else if(rxData=='Q'){
-			S_audio=16;
-		}
-		else if(rxData=='J'){
-			S_audio=17;
-		}
-		else if(rxData=='U'){
-			S_audio=18;
-		}
-		else if(rxData=='N'){
-			S_audio=19;
-		}
-		else if(rxData=='M'){
-			S_audio=20;
-		}
-    	else{
-    	    S_audio=0;
-    	}
+
 
         HAL_UART_Receive_IT(&huart2, &rxData, 1);
     }
+    if (huart->Instance == USART3)
+   	    {
+   	        if (rx_char3 == '\n') {
+   	            bufferU3[idx3] = '\0';
+   	            idx3 = 0;
+   	            newDataU3 = 1;
+   	        } else {
+   	            if (idx3 < sizeof(bufferU3) - 1)
+   	                bufferU3[idx3++] = rx_char3;
+   	        }
+
+   	        HAL_UART_Receive_IT(&huart3, &rx_char3, 1);
+   	    }
 }
 /* USER CODE END 4 */
 
