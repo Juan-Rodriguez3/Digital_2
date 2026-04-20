@@ -3,11 +3,18 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="replacehistory">
+		<item value="PJ1"/>
+		<item value="PJ"/>
 		<item value="player1"/>
 		<item value="bufferU3"/>
 		<item value="21"/>
 	</list>
 	<list key="searchhistory">
+		<item value="transmit"/>
+		<item value="uart"/>
+		<item value="init"/>
+		<item value="LCD_CMD"/>
+		<item value="CMD"/>
 		<item value="j1"/>
 		<item value="bufferR"/>
 		<item value="freq_timer"/>

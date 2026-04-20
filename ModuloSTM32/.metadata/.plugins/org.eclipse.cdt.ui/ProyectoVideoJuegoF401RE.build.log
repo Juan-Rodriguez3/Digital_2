@@ -1,0 +1,10 @@
+01:18:33 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
+make -j12 all 
+arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  40744	    628	   3012	  44384	   ad60	ProyectoVideoJuegoF401RE.elf
+Finished building: default.size.stdout
+ 
+
+01:18:33 Build Finished. 0 errors, 0 warnings. (took 253ms)
+

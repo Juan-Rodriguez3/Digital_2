@@ -1,4 +1,4 @@
-21:02:51 **** Incremental Build of configuration Debug for project diente_de_sierra ****
+01:15:55 **** Incremental Build of configuration Debug for project diente_de_sierra ****
 make -j12 all 
 arm-none-eabi-size  diente_de_sierra.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size  diente_de_sierra.elf
 Finished building: default.size.stdout
  
 
-21:02:52 Build Finished. 0 errors, 0 warnings. (took 309ms)
+01:15:55 Build Finished. 0 errors, 0 warnings. (took 256ms)
 
