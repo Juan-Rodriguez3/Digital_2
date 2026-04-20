@@ -74,7 +74,6 @@ volatile uint8_t newDataU1 = 0;
 volatile uint8_t newDataU6 = 0;
 uint8_t move=0;
 //Variables de comunicacion con controles UART1&3
-
 uint8_t bufferR[20];
 uint8_t rxByte;
 uint8_t rxIndex = 0;
@@ -85,6 +84,14 @@ uint8_t sChange_F1 = 0;
 uint8_t sChange_F2 = 0;
 uint8_t Score1 = 0;
 uint8_t Score2 = 0;
+
+//Variables de SD
+uint8_t nivelA=1;
+
+//Variables del juego
+uint8_t llaveGet = 0;
+uint16_t counterT = 0;
+uint8_t dir = 0;
 
 struct P_objeto {
 	uint16_t px;
@@ -117,6 +124,19 @@ struct P_objeto blq15_PJ1;
 struct P_objeto blq16_PJ1;
 struct P_objeto blq17_PJ1;
 struct P_objeto star1;
+struct P_objeto llaveO;
+struct P_objeto reja;
+struct P_objeto spike1;
+struct P_objeto spike2;
+struct P_objeto mushroom1;
+struct P_objeto shell1;
+struct P_objeto shell2;
+struct P_objeto shell3;
+struct P_objeto shell4;
+struct P_objeto shell5;
+struct P_objeto shell6;
+struct P_objeto shell7;
+struct P_objeto shell8;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -128,6 +148,7 @@ static void MX_USART2_UART_Init(void);
 static void MX_USART6_UART_Init(void);
 /* USER CODE BEGIN PFP */
 uint8_t ColCheck(struct P_objeto ob1, struct P_objeto ob2);
+void Draw_Level_Background(uint8_t nivel);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -278,6 +299,72 @@ int main(void)
 		star1.py = 16;
 		star1.w = 16;
 		star1.h = 16;
+		//Lógica de nivel 2 y 3
+		llaveO.px = 16;  llaveO.py = 192; llaveO.w = 16;  llaveO.h = 16;
+		reja.px = 128;   reja.py = 192;   reja.w = 16;    reja.h = 16;
+		spike1.px = 96;  spike1.py = 16;  spike1.w = 16;  spike1.h = 16;
+		spike2.px = 32;  spike2.py = 64;  spike2.w = 16;  spike2.h = 16;
+
+		mushroom1.px = 128; mushroom1.py = 208; mushroom1.h = 128; mushroom1.w = 128;
+
+		shell1.px = 48;  shell1.py = 160; shell1.w = 16;  shell1.h = 16;
+		shell2.px = 80;  shell2.py = 176; shell2.w = 16;  shell2.h = 16;
+		shell3.px = 96;  shell3.py = 144; shell3.w = 16;  shell3.h = 16;
+		shell4.px = 64;  shell4.py = 128; shell4.w = 16;  shell4.h = 16;
+		shell5.px = 48;  shell5.py = 80;  shell5.w = 16;  shell5.h = 16;
+		shell6.px = 80;  shell6.py = 96;  shell6.w = 16;  shell6.h = 16;
+		shell7.px = 96;  shell7.py = 64;  shell7.w = 16;  shell7.h = 16;
+		shell8.px = 64;  shell8.py = 48;  shell8.w = 16;  shell8.h = 16;
+
+		// Bloques nivel 2
+		struct P_objeto blq18_PJ1; // declarar arriba en PV también
+		blq18_PJ1.px = 16;  blq18_PJ1.py = 16;  blq18_PJ1.w = 80;  blq18_PJ1.h = 16;
+		// blq19 ya existe como blq16 en el doc2, renombrar o agregar:
+		struct P_objeto blq19_PJ1;
+		blq19_PJ1.px = 32;  blq19_PJ1.py = 16;  blq19_PJ1.w = 80;  blq19_PJ1.h = 16;
+
+		struct P_objeto blq20_PJ1;
+		blq20_PJ1.px = 48;  blq20_PJ1.py = 64;  blq20_PJ1.w = 64;  blq20_PJ1.h = 16;
+
+		struct P_objeto blq21_PJ1;
+		blq21_PJ1.px = 32;  blq21_PJ1.py = 96;  blq21_PJ1.w = 112; blq21_PJ1.h = 32;
+
+		struct P_objeto blq22_PJ1;
+		blq22_PJ1.px = 16;  blq22_PJ1.py = 144; blq22_PJ1.w = 112; blq22_PJ1.h = 16;
+
+		struct P_objeto blq23_PJ1;
+		blq23_PJ1.px = 112; blq23_PJ1.py = 192; blq23_PJ1.w = 16;  blq23_PJ1.h = 32;
+
+		// Bloques nivel 3
+		struct P_objeto blq24_PJ1;
+		blq24_PJ1.px = 16;  blq24_PJ1.py = 16;  blq24_PJ1.w = 32;  blq24_PJ1.h = 208;
+
+		struct P_objeto blq25_PJ1;
+		blq25_PJ1.px = 112; blq25_PJ1.py = 16;  blq25_PJ1.w = 32;  blq25_PJ1.h = 208;
+
+		struct P_objeto blq26_PJ1;
+		blq26_PJ1.px = 48;  blq26_PJ1.py = 208; blq26_PJ1.w = 16;  blq26_PJ1.h = 16;
+
+		struct P_objeto blq27_PJ1;
+		blq27_PJ1.px = 96;  blq27_PJ1.py = 208; blq27_PJ1.w = 16;  blq27_PJ1.h = 16;
+
+		struct P_objeto blq28_PJ1;
+		blq28_PJ1.px = 64;  blq28_PJ1.py = 144; blq28_PJ1.w = 32;  blq28_PJ1.h = 32;
+
+		struct P_objeto blq29_PJ1;
+		blq29_PJ1.px = 64;  blq29_PJ1.py = 64;  blq29_PJ1.w = 32;  blq29_PJ1.h = 32;
+
+		struct P_objeto blq30_PJ1;
+		blq30_PJ1.px = 48;  blq30_PJ1.py = 112; blq30_PJ1.w = 16;  blq30_PJ1.h = 16;
+
+		struct P_objeto blq31_PJ1;
+		blq31_PJ1.px = 96;  blq31_PJ1.py = 112; blq31_PJ1.w = 16;  blq31_PJ1.h = 16;
+
+		struct P_objeto blq32_PJ1;
+		blq32_PJ1.px = 48;  blq32_PJ1.py = 16;  blq32_PJ1.w = 16;  blq32_PJ1.h = 32;
+
+		struct P_objeto blq33_PJ1;
+		blq33_PJ1.px = 96;  blq33_PJ1.py = 16;  blq33_PJ1.w = 16;  blq33_PJ1.h = 32;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -309,130 +396,8 @@ int main(void)
   HAL_UART_Receive_IT(&huart6, &rx_char6, 1);
 
   /* USER CODE BEGIN 2 */
-
-  char dbg[80];
-
-  // ============================
-  // 1. SPI LENTO - INIT SD
-  // ============================
-  HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-  HAL_Delay(100);
-
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
-  HAL_SPI_Init(&hspi1);
-  HAL_Delay(100);
-
-  // ============================
-  // 2. MONTAR SD
-  // ============================
-  FATFS fs_test;
-  FRESULT res = f_mount(&fs_test, "", 1);
-  sprintf(dbg, "Mount: %d\r\n", res);
-  HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
-
-  if (res != FR_OK) {
-      sprintf(dbg, "SD FAIL\r\n");
-      HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
-      while(1);
-  }
-
-  // Subir velocidad para lectura
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
-  HAL_SPI_Init(&hspi1);
-
-  // ============================
-  // 3. ABRIR ARCHIVO
-  // ============================
-  FIL imgFile;
-  res = f_open(&imgFile, "niv1.bin", FA_READ | FA_OPEN_EXISTING);
-  sprintf(dbg, "Open: %d\r\n", res);
-  HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
-
-  if (res != FR_OK) {
-      sprintf(dbg, "Archivo no encontrado\r\n");
-      HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
-      while(1);
-  }
-
-  // ============================
-  // 4. INIT LCD
-  // ============================
-  HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-  HAL_SPI_Init(&hspi1);
-
-  LCD_Init();
-  LCD_Clear(0x0000);
-
-  // ============================
-  // 5. DIBUJAR FILA POR FILA
-  // ============================
-  static uint16_t rowBuf[320];
-
-  for (int row = 0; row < 240; row++) {
-
-      // --- LEER FILA DESDE SD ---
-      HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
-      HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_RESET);
-
-      hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
-      HAL_SPI_Init(&hspi1);
-
-      UINT bytesRead;
-      f_read(&imgFile, rowBuf, 320 * 2, &bytesRead);
-
-      if (bytesRead != 640) {
-          sprintf(dbg, "Error fila %d: %d bytes\r\n", row, bytesRead);
-          HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
-          break;
-      }
-
-      // --- DIBUJAR FILA EN LCD ---
-      HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-      HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
-
-      hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-      HAL_SPI_Init(&hspi1);
-
-      SetWindows(0, row, 319, row);
-
-      HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(LCD_DC_GPIO_Port, LCD_DC_Pin, GPIO_PIN_SET);
-
-      for (int i = 0; i < 320; i++) {
-          uint8_t lo = rowBuf[i] & 0xFF;
-          uint8_t hi = rowBuf[i] >> 8;
-          HAL_SPI_Transmit(&hspi1, &lo, 1, 1);  // lo primero
-          HAL_SPI_Transmit(&hspi1, &hi, 1, 1);  // hi segundo
-      }
-
-      HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
-  }
-
-  // ============================
-  // 6. CERRAR SD SIN SYNC
-  // ============================
-  HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_RESET);
-  HAL_Delay(5);
-  imgFile.obj.fs = 0;
-  f_mount(NULL, "", 0);
-  HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-
-  sprintf(dbg, "SD cerrada OK\r\n");
-  HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
-
-  // ============================
-  // 7. LCD LISTA PARA EL JUEGO
-  // ============================
-  HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-  HAL_SPI_Init(&hspi1);
-
+  Draw_Level_Background(nivelA);
   LCD_Bitmap(112, 224, 16, 16, zero1);
-
   /* USER CODE END 2 */
   //LCD_Init();
  // LCD_Clear(0x0000);
@@ -866,6 +831,143 @@ uint8_t ColCheck(struct P_objeto o1, struct P_objeto o2)
 		return 1;
 	}
 }
+
+/* USER CODE BEGIN 4 */
+
+/**
+ * @brief Dibuja el fondo del nivel leyendo el archivo .bin desde la SD
+ * @param nivel: número de nivel (1, 2, 3, ...)
+ *               Busca archivos: niv1.bin, niv2.bin, niv3.bin, etc.
+ */
+void Draw_Level_Background(uint8_t nivel)
+{
+    char dbg[80];
+    char filename[20];
+
+    // Construir nombre de archivo según el nivel
+    sprintf(filename, "niv%d.bin", nivel);
+
+    // ============================
+    // 1. SPI LENTO - INIT SD
+    // ============================
+    HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
+    HAL_Delay(100);
+
+    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
+    HAL_SPI_Init(&hspi1);
+    HAL_Delay(100);
+
+    // ============================
+    // 2. MONTAR SD
+    // ============================
+    FATFS fs_lvl;
+    FRESULT res = f_mount(&fs_lvl, "", 1);
+    sprintf(dbg, "Mount: %d\r\n", res);
+    HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
+
+    if (res != FR_OK) {
+        sprintf(dbg, "SD FAIL\r\n");
+        HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
+        return; // No colgamos el micro, solo salimos
+    }
+
+    // Subir velocidad para lectura
+    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+    HAL_SPI_Init(&hspi1);
+
+    // ============================
+    // 3. ABRIR ARCHIVO DEL NIVEL
+    // ============================
+    FIL imgFile;
+    res = f_open(&imgFile, filename, FA_READ | FA_OPEN_EXISTING);
+    sprintf(dbg, "Open %s: %d\r\n", filename, res);
+    HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
+
+    if (res != FR_OK) {
+        sprintf(dbg, "Archivo %s no encontrado\r\n", filename);
+        HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
+        f_mount(NULL, "", 0);
+        return;
+    }
+
+    // ============================
+    // 4. INIT LCD
+    // ============================
+    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
+
+    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+    HAL_SPI_Init(&hspi1);
+
+    LCD_Init();
+    LCD_Clear(0x0000);
+
+    // ============================
+    // 5. DIBUJAR FILA POR FILA
+    // ============================
+    static uint16_t rowBuf[320];
+
+    for (int row = 0; row < 240; row++)
+    {
+        // --- LEER FILA DESDE SD ---
+        HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_RESET);
+
+        hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+        HAL_SPI_Init(&hspi1);
+
+        UINT bytesRead;
+        f_read(&imgFile, rowBuf, 320 * 2, &bytesRead);
+
+        if (bytesRead != 640) {
+            sprintf(dbg, "Error fila %d: %d bytes\r\n", row, bytesRead);
+            HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
+            break;
+        }
+
+        // --- DIBUJAR FILA EN LCD ---
+        HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
+
+        hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+        HAL_SPI_Init(&hspi1);
+
+        SetWindows(0, row, 319, row);
+
+        HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(LCD_DC_GPIO_Port, LCD_DC_Pin, GPIO_PIN_SET);
+
+        for (int i = 0; i < 320; i++) {
+            uint8_t lo = rowBuf[i] & 0xFF;
+            uint8_t hi = rowBuf[i] >> 8;
+            HAL_SPI_Transmit(&hspi1, &lo, 1, 1);
+            HAL_SPI_Transmit(&hspi1, &hi, 1, 1);
+        }
+
+        HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
+    }
+
+    // ============================
+    // 6. CERRAR SD
+    // ============================
+    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_RESET);
+    HAL_Delay(5);
+    imgFile.obj.fs = 0;
+    f_mount(NULL, "", 0);
+    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
+
+    sprintf(dbg, "Nivel %d dibujado OK\r\n", nivel);
+    HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
+
+    // ============================
+    // 7. LCD LISTA PARA EL JUEGO
+    // ============================
+    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
+    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+    HAL_SPI_Init(&hspi1);
+}
+
+/* USER CODE END 4 */
 /* USER CODE END 4 */
 
 /**

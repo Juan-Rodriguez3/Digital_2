@@ -1,22 +1,20 @@
-01:15:53 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
+10:42:52 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/ili9341.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ili9341.d" -MT"Core/Src/ili9341.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ili9341.o"
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-In file included from ../Core/Src/main.c:24:
-../Core/Inc/ili9341.h:28:25: error: unknown type name 'FIL'
-   28 | void LCD_BitmapFromFile(FIL *f, SPI_HandleTypeDef *hspi);
-      |                         ^~~
-In file included from ../Core/Src/ili9341.c:13:
-../Core/Inc/ili9341.h:28:25: error: unknown type name 'FIL'
-   28 | void LCD_BitmapFromFile(FIL *f, SPI_HandleTypeDef *hspi);
-      |                         ^~~
-make: *** [Core/Src/subdir.mk:43: Core/Src/ili9341.o] Error 1
-make: *** Waiting for unfinished jobs....
-../Core/Src/main.c:85:17: warning: built-in function 'j1' declared as non-function [-Wbuiltin-declaration-mismatch]
-   85 | struct P_objeto j1;
+../Core/Src/main.c:73:17: warning: built-in function 'j1' declared as non-function [-Wbuiltin-declaration-mismatch]
+   73 | struct P_objeto j1;
       |                 ^~
-make: *** [Core/Src/subdir.mk:43: Core/Src/main.o] Error 1
-"make -j12 all" terminated with exit code 2. Build might be incomplete.
+arm-none-eabi-gcc -o "Proyecto2Pantalla.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Proyecto2Pantalla\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Proyecto2Pantalla.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Proyecto2Pantalla.elf
+ 
+arm-none-eabi-size  Proyecto2Pantalla.elf 
+arm-none-eabi-objdump -h -S Proyecto2Pantalla.elf  > "Proyecto2Pantalla.list"
+   text	   data	    bss	    dec	    hex	filename
+ 486580	     16	   2184	 488780	  7754c	Proyecto2Pantalla.elf
+Finished building: default.size.stdout
+ 
+Finished building: Proyecto2Pantalla.list
+ 
 
-01:15:54 Build Failed. 5 errors, 1 warnings. (took 450ms)
+10:42:54 Build Finished. 0 errors, 1 warnings. (took 1s.879ms)
 

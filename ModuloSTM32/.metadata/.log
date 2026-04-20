@@ -5620,3 +5620,26 @@ COM8
 
 !ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-04-20 01:29:20.067
 !MESSAGE port: 
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-04-20 10:08:51.750
+!MESSAGE Indexed 'Proyecto2Pantalla' (24 sources, 128 headers) in 4.37 sec: 12,681 declarations; 56,240 references; 1 unresolved inclusions; 92 syntax errors; 240 unresolved names (0.35%)
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-04-20 10:32:53.759
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM8
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-04-20 10:32:53.761
+!MESSAGE port: COM8
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-04-20 10:32:58.662
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM8
+COM9
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-04-20 10:32:58.662
+!MESSAGE port: COM8
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-04-20 10:32:58.662
+!MESSAGE port: COM9

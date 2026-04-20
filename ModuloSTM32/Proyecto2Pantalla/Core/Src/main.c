@@ -45,35 +45,23 @@
 /* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi1;
 
-UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
-UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
-//Variables de comunicacion con controles UART1&3
-char bufferU1[20];
-uint8_t idx = 0;
-uint8_t rx_char;
-char bufferU3[20];
-uint8_t idx3 = 0;
-uint8_t rx_char3;
-char linea[50];
-//Banderas
-volatile uint8_t newDataU1 = 0;
-volatile uint8_t newDataU3 = 0;
-uint8_t move=0;
-//Variables de comunicacion con controles UART1&3
-
 uint8_t bufferR[20];
 uint8_t rxByte;
 uint8_t rxIndex = 0;
 uint8_t F_Start = 0;
 uint8_t M1_F = 0;
-uint8_t blqT[] = {32,192,64,16};
 uint8_t sChange_F1 = 0;
 uint8_t sChange_F2 = 0;
 uint8_t Score1 = 0;
 uint8_t Score2 = 0;
+uint8_t nivS = 1;
+uint8_t llaveGet = 0;
+uint16_t counterT = 0;
+uint8_t dir = 0;
+
 
 struct P_objeto {
 	uint16_t px;
@@ -105,7 +93,36 @@ struct P_objeto blq14_j1;
 struct P_objeto blq15_j1;
 struct P_objeto blq16_j1;
 struct P_objeto blq17_j1;
+struct P_objeto blq18_j1;
+struct P_objeto blq19_j1;
+struct P_objeto blq20_j1;
+struct P_objeto blq21_j1;
+struct P_objeto blq22_j1;
+struct P_objeto blq23_j1;
+struct P_objeto blq24_j1;
+struct P_objeto blq25_j1;
+struct P_objeto blq26_j1;
+struct P_objeto blq27_j1;
+struct P_objeto blq28_j1;
+struct P_objeto blq29_j1;
+struct P_objeto blq30_j1;
+struct P_objeto blq31_j1;
+struct P_objeto blq32_j1;
+struct P_objeto blq33_j1;
 struct P_objeto star1;
+struct P_objeto llaveO;
+struct P_objeto reja;
+struct P_objeto spike1;
+struct P_objeto spike2;
+struct P_objeto mushroom1;
+struct P_objeto shell1;
+struct P_objeto shell2;
+struct P_objeto shell3;
+struct P_objeto shell4;
+struct P_objeto shell5;
+struct P_objeto shell6;
+struct P_objeto shell7;
+struct P_objeto shell8;
 
 
 
@@ -117,30 +134,13 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_USART2_UART_Init(void);
-static void MX_USART1_UART_Init(void);
-static void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
 uint8_t ColCheck(struct P_objeto ob1, struct P_objeto ob2);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-	{
-	    if (huart->Instance == USART3)
-	    {
-	        if (rx_char3 == '\n') {
-	            bufferU3[idx3] = '\0';
-	            idx3 = 0;
-	            newDataU3 = 1;
-	        } else {
-	            if (idx3 < sizeof(bufferU3) - 1)
-	                bufferU3[idx3++] = rx_char3;
-	        }
 
-	        HAL_UART_Receive_IT(&huart3, &rx_char3, 1);
-	    }
-	}
 /* USER CODE END 0 */
 
 /**
@@ -248,6 +248,86 @@ int main(void)
 	blq17_j1.w = 16;
 	blq17_j1.h = 16;
 
+	blq18_j1.px = 16;
+	blq18_j1.py = 16;
+	blq18_j1.w = 80;
+	blq18_j1.h = 16;
+
+	blq19_j1.px = 32;
+	blq19_j1.py = 16;
+	blq19_j1.w = 80;
+	blq19_j1.h = 16;
+
+	blq20_j1.px = 48;
+	blq20_j1.py = 64;
+	blq20_j1.w = 64;
+	blq20_j1.h = 16;
+
+	blq21_j1.px = 32;
+	blq21_j1.py = 96;
+	blq21_j1.w = 112;
+	blq21_j1.h = 32;
+
+	blq22_j1.px = 16;
+	blq22_j1.py = 144;
+	blq22_j1.w = 112;
+	blq22_j1.h = 16;
+
+	blq23_j1.px = 112;
+	blq23_j1.py = 192;
+	blq23_j1.w = 16;
+	blq23_j1.h = 32;
+
+	blq24_j1.px = 16;
+	blq24_j1.py = 16;
+	blq24_j1.w = 32;
+	blq24_j1.h = 208;
+
+	blq25_j1.px = 112;
+	blq25_j1.py = 16;
+	blq25_j1.w = 32;
+	blq25_j1.h = 208;
+
+	blq26_j1.px = 48;
+	blq26_j1.py = 208;
+	blq26_j1.w = 16;
+	blq26_j1.h = 16;
+
+	blq27_j1.px = 96;
+	blq27_j1.py = 208;
+	blq27_j1.w = 16;
+	blq27_j1.h = 16;
+
+	blq28_j1.px = 64;
+	blq28_j1.py = 144;
+	blq28_j1.w = 32;
+	blq28_j1.h = 32;
+
+	blq29_j1.px = 64;
+	blq29_j1.py = 64;
+	blq29_j1.w = 32;
+	blq29_j1.h = 32;
+
+	blq30_j1.px = 48;
+	blq30_j1.py = 112;
+	blq30_j1.w = 16;
+	blq30_j1.h = 16;
+
+	blq31_j1.px = 96;
+	blq31_j1.py = 112;
+	blq31_j1.w = 16;
+	blq31_j1.h = 16;
+
+	blq32_j1.px = 48;
+	blq32_j1.py = 16;
+	blq32_j1.w = 16;
+	blq32_j1.h = 32;
+
+	blq33_j1.px = 96;
+	blq33_j1.py = 16;
+	blq33_j1.w = 16;
+	blq33_j1.h = 32;
+
 	par1.px = 0;
 	par1.py = 0;
 	par1.w = 144;
@@ -272,6 +352,71 @@ int main(void)
 	star1.py = 16;
 	star1.w = 16;
 	star1.h = 16;
+
+	llaveO.px = 16;
+	llaveO.py = 192;
+	llaveO.w = 16;
+	llaveO.h = 16;
+
+	reja.px = 128;
+	reja.py = 192;
+	reja.w = 16;
+	reja.h = 16;
+
+	spike1.px = 96;
+	spike1.py = 16;
+	spike1.w = 16;
+	spike1.h = 16;
+
+	spike2.px = 32;
+	spike2.py = 64;
+	spike2.w = 16;
+	spike2.h = 16;
+
+	mushroom1.px = 128;
+	mushroom1.py = 208;
+	mushroom1.h = 128;
+	mushroom1.w = 128;
+
+	shell1.px = 48;
+	shell1.py = 160;
+	shell1.w = 16;
+	shell1.h = 16;
+
+	shell2.px = 80;
+	shell2.py = 176;
+	shell2.w = 16;
+	shell2.h = 16;
+
+	shell3.px = 96;
+	shell3.py = 144;
+	shell3.w = 16;
+	shell3.h = 16;
+
+	shell4.px = 64;
+	shell4.py = 128;
+	shell4.w = 16;
+	shell4.h = 16;
+
+	shell5.px = 48;
+	shell5.py = 80;
+	shell5.w = 16;
+	shell5.h = 16;
+
+	shell6.px = 80;
+	shell6.py = 96;
+	shell6.w = 16;
+	shell6.h = 16;
+
+	shell7.px = 96;
+	shell7.py = 64;
+	shell7.w = 16;
+	shell7.h = 16;
+
+	shell8.px = 64;
+	shell8.py = 48;
+	shell8.w = 16;
+	shell8.h = 16;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -294,8 +439,6 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   MX_USART2_UART_Init();
-  MX_USART1_UART_Init();
-  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   LCD_Init();
 
@@ -305,8 +448,6 @@ int main(void)
   LCD_Bitmap(112, 224, 16, 16, zero1);
 
   HAL_UART_Receive_IT(&huart2, &rxByte, 1);
-  HAL_UART_Receive_IT(&huart1, &rx_char, 1);
-  HAL_UART_Receive_IT(&huart3, &rx_char3, 1);
 
   /* USER CODE END 2 */
 
@@ -314,140 +455,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-	  if (newDataU3) {
-	      char debug[30];
-	      sprintf(debug, "U3: %s\r\n", bufferU3);
-	      HAL_UART_Transmit(&huart2, (uint8_t*)debug, strlen(debug), 100);
-	      newDataU3 = 0;
-
-	      int X, B, A, Y;
-	      sscanf(bufferU3, "J1:X%dB%dA%dY%d", &X, &B, &A, &Y);
-
-	      if (X == 1) {
-	         j1.py = j1.py+16;
-	      }
-	      if (Y == 1) {
-	    	  j1.py = j1.py-16;
-	      }
-	      if (A == 1) {
-	    	  j1.px = j1.px-16;
-	      }
-	      if (B == 1) {
-	    	  j1.px = j1.px+16;
-	      }
-
-	      /*if (j1.px != j1o.px || j1.py != j1o.py) {
-	          M1_F = 1;
-	      }*/
-	  }
-
-	  if (j1o.py!=j1.py || j1o.px != j1.px){
-		  int8_t coli = 1;
-		  uint8_t coliW = 1;
-
-		  switch (j1.py)
-		  {
-		  case 224:
-			  coli &= ColCheck(j1, par3);
-			  break;
-
-		  case 208:
-		  case 192:
-			  coli &= ColCheck(j1, blq1_j1);
-			  break;
-
-		  case 176:
-			  coli &= ColCheck(j1, blq2_j1);
-			  break;
-
-		  case 160:
-			  coli &= ColCheck(j1, blq3_j1);
-			  coli &= ColCheck(j1, blq4_j1);
-			  break;
-
-		  case 144:
-			  coli &= ColCheck(j1, blq4_j1);
-			  coli &= ColCheck(j1, blq6_j1);
-			  break;
-
-		  case 128:
-			  coli &= ColCheck(j1, blq4_j1);
-			  coli &= ColCheck(j1, blq5_j1);
-			  break;
-
-		  case 112:
-			  coli &= ColCheck(j1, blq7_j1);
-			  coli &= ColCheck(j1, blq11_j1);
-			  break;
-
-		  case 96:
-			  coli &= ColCheck(j1, blq9_j1);
-			  coli &= ColCheck(j1, blq11_j1);
-			  break;
-
-		  case 80:
-			//coli &= ColCheck(j1, blq8_j1);
-			  coli &= ColCheck(j1, blq9_j1);
-			  coli &= ColCheck(j1, blq10_j1);
-			  coli &= ColCheck(j1, blq11_j1);
-			  coli &= ColCheck(j1, blq12_j1);
-			  break;
-
-		  case 64:
-			  coli &= ColCheck(j1, blq11_j1);
-			  coli &= ColCheck(j1, blq13_j1);
-			  break;
-
-		  case 48:
-			  coli &= ColCheck(j1, blq13_j1);
-			  coli &= ColCheck(j1, blq15_j1);
-			  break;
-
-		  case 32:
-			  coli &= ColCheck(j1, blq14_j1);
-			  coli &= ColCheck(j1, blq17_j1);
-			  break;
-
-		  case 16:
-			  coli &= ColCheck(j1, blq16_j1);
-			  coliW &= ColCheck(j1, star1);
-			  break;
-
-		  case 0:
-			  coli &= ColCheck(j1, par1);
-			  break;
-		  }
-		  coli &= ColCheck(j1,par2);
-		  coli &= ColCheck(j1,par4);
-
-
-
-
-		  if (coli)
-		  {
-			M1_F = 1;
-		  }
-		  else
-		  {
-			j1.px = j1o.px;
-			j1.py = j1o.py;
-		  }
-
-		  if (coliW == 0)
-		  {
-			sChange_F1 = 1;
-			Score1++;
-		  }
-	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  if (F_Start == 1)
-	  {
-		  LCD_Bitmap(0, 0, 320, 240, israel);
-		  F_Start = 0;
-	  }
 	  LCD_Sprite(j1.px, j1.py, 16, 16, slime, 1, 1, 0, 0);
 	  if (M1_F == 1)
 	  {
@@ -461,14 +471,173 @@ int main(void)
 		  switch (Score1)
 		  {
 		  case 1:
+			  LCD_Bitmap(0,0,320,240,niv2);
 			  LCD_Bitmap(112, 224, 16, 16, uno1);
+			  LCD_Bitmap(llaveO.px, llaveO.py, 16, 16, llave);
+			  LCD_Bitmap(spike1.px, spike1.py, 16, 16, spikeS);
+			  LCD_Bitmap(spike2.px, spike2.py, 16, 16, spikeS);
+			  j1.px = 16;
+			  j1.py = 32;
+			  j1o.px = j1.px;
+			  j1o.py = j1.py;
+			  nivS = 2;
 			  break;
 		  case 2:
+			  LCD_Bitmap(0,0,320,240,niv3);
 			  LCD_Bitmap(112, 224, 16, 16, dos1);
+			  j1.px = 64;
+			  j1.py = 208;
+			  j1o.px = j1.px;
+			  j1o.py = j1.py;
+			  nivS = 3;
 			  break;
 		  }
 		  sChange_F1 = 0;
 	  }
+	  if(nivS == 2)
+	  {
+		  counterT++;
+		  if (counterT == 150)
+		  {
+			  uint8_t coli = 1;
+			  if(spike1.py == 16)
+			  {
+				  LCD_Bitmap(spike1.px, spike1.py, 16, 16, tile);
+				  LCD_Bitmap(spike2.px, spike2.py, 16, 16, tile);
+				  spike1.py = spike1.py + 16;
+				  spike2.py = spike2.py + 16;
+				  LCD_Bitmap(spike1.px, spike1.py, 16, 16, spikeS);
+				  LCD_Bitmap(spike2.px, spike2.py, 16, 16, spikeS);
+			  }
+			  else
+			  {
+				  LCD_Bitmap(spike1.px, spike1.py, 16, 16, tile);
+				  LCD_Bitmap(spike2.px, spike2.py, 16, 16, tile);
+				  spike1.py = spike1.py - 16;
+				  spike2.py = spike2.py - 16;
+				  LCD_Bitmap(spike1.px, spike1.py, 16, 16, spikeS);
+				  LCD_Bitmap(spike2.px, spike2.py, 16, 16, spikeS);
+			  }
+			  coli &= ColCheck(j1, spike1);
+			  coli &= ColCheck(j1, spike2);
+
+			  if (coli == 0)
+			  {
+				  j1.px = 16;
+				  j1.py = 32;
+				  j1o.px = j1.px;
+				  j1o.py = j1.py;
+			  }
+
+			  counterT = 0;
+		  }
+	  }
+	  else if (nivS == 3)
+	  {
+		  counterT++;
+		  if (counterT == 250)
+		  {
+			  LCD_Bitmap(shell1.px, shell1.py, 16, 16, tile);
+			  LCD_Bitmap(shell2.px, shell2.py, 16, 16, tile);
+			  LCD_Bitmap(shell3.px, shell3.py, 16, 16, tile);
+			  LCD_Bitmap(shell4.px, shell4.py, 16, 16, tile);
+			  LCD_Bitmap(shell5.px, shell5.py, 16, 16, tile);
+			  LCD_Bitmap(shell6.px, shell6.py, 16, 16, tile);
+			  LCD_Bitmap(shell7.px, shell7.py, 16, 16, tile);
+			  LCD_Bitmap(shell8.px, shell8.py, 16, 16, tile);
+			  switch (dir)
+			  {
+			  case 0: // subir
+			      shell1.py -= 16;
+			      shell2.px -= 16;
+			      shell3.py += 16;
+			      shell4.px += 16;
+
+			      shell5.py -= 16;
+			      shell6.px -= 16;
+			      shell7.py += 16;
+			      shell8.px += 16;
+
+			      if (shell1.py == 128)
+			          dir = 1;
+			      break;
+
+			  case 1: // derecha
+			      shell1.px += 16;
+			      shell2.py -= 16;
+			      shell3.px -= 16;
+			      shell4.py += 16;
+
+			      shell5.px += 16;
+			      shell6.py -= 16;
+			      shell7.px -= 16;
+			      shell8.py += 16;
+
+
+			      if (shell1.px == 96)
+			          dir = 2;
+			      break;
+
+			  case 2: // bajar
+			      shell1.py += 16;
+			      shell2.px += 16;
+			      shell3.py -= 16;
+			      shell4.px -= 16;
+
+			      shell5.py += 16;
+			      shell6.px += 16;
+			      shell7.py -= 16;
+			      shell8.px -= 16;
+
+			      if (shell1.py == 176)
+			          dir = 3;
+			      break;
+
+			  case 3: // izquierda
+			      shell1.px -= 16;
+			      shell2.py += 16;
+			      shell3.px += 16;
+			      shell4.py -= 16;
+
+			      shell5.px -= 16;
+			      shell6.py += 16;
+			      shell7.px += 16;
+			      shell8.py -= 16;
+
+			      if (shell1.px == 48)
+			          dir = 0;
+			      break;
+			  }
+			  LCD_Bitmap(shell1.px, shell1.py, 16, 16, shellS);
+			  LCD_Bitmap(shell2.px, shell2.py, 16, 16, shellS);
+			  LCD_Bitmap(shell3.px, shell3.py, 16, 16, shellS);
+			  LCD_Bitmap(shell4.px, shell4.py, 16, 16, shellS);
+			  LCD_Bitmap(shell5.px, shell5.py, 16, 16, shellS);
+			  LCD_Bitmap(shell6.px, shell6.py, 16, 16, shellS);
+			  LCD_Bitmap(shell7.px, shell7.py, 16, 16, shellS);
+			  LCD_Bitmap(shell8.px, shell8.py, 16, 16, shellS);
+
+			  uint8_t coliD = 1;
+			  coliD &= ColCheck(j1, shell1);
+			  coliD &= ColCheck(j1, shell2);
+			  coliD &= ColCheck(j1, shell3);
+			  coliD &= ColCheck(j1, shell4);
+			  coliD &= ColCheck(j1, shell5);
+			  coliD &= ColCheck(j1, shell6);
+			  coliD &= ColCheck(j1, shell7);
+			  coliD &= ColCheck(j1, shell8);
+              if (coliD == 0)
+              {
+    			  j1.px = 64;
+    			  j1.py = 208;
+    			  j1o.px = j1.px;
+    			  j1o.py = j1.py;
+              }
+			  counterT = 0;
+		  }
+
+	  }
+
   }
   /* USER CODE END 3 */
 }
@@ -559,39 +728,6 @@ static void MX_SPI1_Init(void)
 }
 
 /**
-  * @brief USART1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USART1_UART_Init(void)
-{
-
-  /* USER CODE BEGIN USART1_Init 0 */
-
-  /* USER CODE END USART1_Init 0 */
-
-  /* USER CODE BEGIN USART1_Init 1 */
-
-  /* USER CODE END USART1_Init 1 */
-  huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
-  huart1.Init.WordLength = UART_WORDLENGTH_8B;
-  huart1.Init.StopBits = UART_STOPBITS_1;
-  huart1.Init.Parity = UART_PARITY_NONE;
-  huart1.Init.Mode = UART_MODE_TX_RX;
-  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART1_Init 2 */
-
-  /* USER CODE END USART1_Init 2 */
-
-}
-
-/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
@@ -621,39 +757,6 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE BEGIN USART2_Init 2 */
 
   /* USER CODE END USART2_Init 2 */
-
-}
-
-/**
-  * @brief USART3 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USART3_UART_Init(void)
-{
-
-  /* USER CODE BEGIN USART3_Init 0 */
-
-  /* USER CODE END USART3_Init 0 */
-
-  /* USER CODE BEGIN USART3_Init 1 */
-
-  /* USER CODE END USART3_Init 1 */
-  huart3.Instance = USART3;
-  huart3.Init.BaudRate = 115200;
-  huart3.Init.WordLength = UART_WORDLENGTH_8B;
-  huart3.Init.StopBits = UART_STOPBITS_1;
-  huart3.Init.Parity = UART_PARITY_NONE;
-  huart3.Init.Mode = UART_MODE_TX_RX;
-  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart3) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART3_Init 2 */
-
-  /* USER CODE END USART3_Init 2 */
 
 }
 
@@ -717,13 +820,14 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-/*
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     if (huart->Instance == USART2)
     {
         bufferR[rxIndex++] = rxByte;
-
+        uint8_t coli = 1;
+        uint8_t coliW = 1;
+        uint8_t coliK = 1;
 
         if (rxByte == '\n' || rxIndex >= sizeof(bufferR)-1)
         {
@@ -750,6 +854,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
             {
             	j1.px = j1.px + 16;
             }
+
+            if (nivS == 1)
+            {
 
             switch (j1.py)
             {
@@ -815,7 +922,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
                 break;
 
             case 16:
-                coli &= ColCheck(j1, blq16_j1);
+                coli &= ColCheck(j1, blq19_j1);
                 coliW &= ColCheck(j1, star1);
                 break;
 
@@ -823,11 +930,169 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
                 coli &= ColCheck(j1, par1);
                 break;
             }
+            }
+            else if (nivS == 2)
+            {
+                switch (j1.py)
+                {
+                case 224:
+                    coli &= ColCheck(j1, par3);
+                    break;
+
+                case 208:
+                	coli &= ColCheck(j1, blq23_j1);
+                	coliW &= ColCheck(j1,mushroom1);
+                case 192:
+                	coli &= ColCheck(j1, blq23_j1);
+                	coliK &= ColCheck(j1, llaveO);
+                	if (llaveGet == 0)
+                	{
+                		coli &= ColCheck(j1, reja);
+                	}
+                    break;
+
+                case 176:
+
+                case 160:
+
+                case 144:
+                    coli &= ColCheck(j1, blq22_j1);
+                    break;
+
+                case 128:
+
+                case 112:
+                    coli &= ColCheck(j1, blq21_j1);
+                    break;
+
+                case 96:
+                    coli &= ColCheck(j1, blq21_j1);
+                    break;
+
+                case 80:
+                	coli &= ColCheck(j1, spike2);
+                case 64:
+                    coli &= ColCheck(j1, blq20_j1);
+                    coli &= ColCheck(j1, spike2);
+                    break;
+
+                case 48:
+                    coli &= ColCheck(j1, blq19_j1);
+                    break;
+
+                case 32:
+                	coli &= ColCheck(j1, spike1);
+                case 16:
+                    coli &= ColCheck(j1, blq18_j1);
+                    coli &= ColCheck(j1, spike1);
+                case 0:
+                    coli &= ColCheck(j1, par1);
+                    break;
+                }
+                if (coliK == 0)
+                {
+                	llaveGet = 1;
+                }
+            }
+            else if (nivS == 3)
+            {
+            	uint8_t coliD = 1;
+                switch (j1.py)
+                {
+                case 224:
+                    coli &= ColCheck(j1, par3);
+                    break;
+
+                case 208:
+                	coli &= ColCheck(j1, blq26_j1);
+                	coli &= ColCheck(j1,blq27_j1);
+                case 192:
+
+                case 176:
+                	coliD &= ColCheck(j1, shell1);
+                	coliD &= ColCheck(j1, shell2);
+                	coliD &= ColCheck(j1, shell3);
+                	coliD &= ColCheck(j1, shell4);
+                	break;
+
+                case 160:
+                	coli &=  ColCheck(j1, blq28_j1);
+                	coliD &= ColCheck(j1, shell1);
+                	coliD &= ColCheck(j1, shell2);
+                	coliD &= ColCheck(j1, shell3);
+                	coliD &= ColCheck(j1, shell4);
+                	break;
+                case 144:
+                	coli &=  ColCheck(j1, blq28_j1);
+                	coliD &= ColCheck(j1, shell1);
+                	coliD &= ColCheck(j1, shell2);
+                	coliD &= ColCheck(j1, shell3);
+                	coliD &= ColCheck(j1, shell4);
+                    break;
+
+                case 128:
+                	coliD &= ColCheck(j1, shell1);
+                	coliD &= ColCheck(j1, shell2);
+                	coliD &= ColCheck(j1, shell3);
+                	coliD &= ColCheck(j1, shell4);
+                	break;
+                case 112:
+                    coli &= ColCheck(j1, blq30_j1);
+                    coli &= ColCheck(j1, blq31_j1);
+                    break;
+
+                case 96:
+                	coliD &= ColCheck(j1, shell5);
+                	coliD &= ColCheck(j1, shell6);
+                	coliD &= ColCheck(j1, shell7);
+                	coliD &= ColCheck(j1, shell8);
+                	break;
+                case 80:
+                	coli &= ColCheck(j1, blq29_j1);
+                	coliD &= ColCheck(j1, shell5);
+                	coliD &= ColCheck(j1, shell6);
+                	coliD &= ColCheck(j1, shell7);
+                	coliD &= ColCheck(j1, shell8);
+                	break;
+                case 64:
+                	coli &= ColCheck(j1, blq29_j1);
+                	coliD &= ColCheck(j1, shell5);
+                	coliD &= ColCheck(j1, shell6);
+                	coliD &= ColCheck(j1, shell7);
+                	coliD &= ColCheck(j1, shell8);
+                    break;
+
+                case 48:
+                	coliD &= ColCheck(j1, shell5);
+                	coliD &= ColCheck(j1, shell6);
+                	coliD &= ColCheck(j1, shell7);
+                	coliD &= ColCheck(j1, shell8);
+                	break;
+
+                case 32:
+                	coli &= ColCheck(j1, blq32_j1);
+                	coli &= ColCheck(j1, blq33_j1);
+                	break;
+                case 16:
+                	coli &= ColCheck(j1, blq32_j1);
+                	coli &= ColCheck(j1, blq33_j1);
+                	break;
+                case 0:
+                    coli &= ColCheck(j1, par1);
+                    break;
+                }
+                coli &= ColCheck(j1, blq24_j1);
+                coli &= ColCheck(j1, blq25_j1);
+                if (coliD == 0)
+                {
+      			  j1.px = 64;
+      			  j1.py = 208;
+      			  j1o.px = j1.px;
+      			  j1o.py = j1.py;
+                }
+            }
             coli &= ColCheck(j1,par2);
             coli &= ColCheck(j1,par4);
-
-
-
 
             if (coli)
             {
@@ -851,7 +1116,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         HAL_UART_Receive_IT(&huart2, &rxByte, 1);
     }
 }
-*/
+
 uint8_t ColCheck(struct P_objeto o1, struct P_objeto o2)
 {
 	if ((o1.px + o1.w - 1>= o2.px) && (o2.px + o2.w - 1>= o1.px) && (o1.py + o1.h - 1>= o2.py) && (o2.py + o2.h - 1>= o1.py))
@@ -878,7 +1143,6 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
 #ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
