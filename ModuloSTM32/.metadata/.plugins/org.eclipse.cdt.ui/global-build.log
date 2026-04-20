@@ -1,63 +1,21 @@
-10:49:44 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
+11:06:35 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
 make -j12 all 
-arm-none-eabi-gcc "C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../../Core/Inc -I../../Drivers/STM32F4xx_HAL_Driver/Inc -I../../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../../Drivers/CMSIS/Include -I../../FATFS/Target -I../../FATFS/App -I../../Middlewares/Third_Party/FatFs/src -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Application/User/Core/main.d" -MT"Application/User/Core/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Application/User/Core/main.o"
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c: In function 'main':
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:366:33: warning: variable 'blq33_PJ1' set but not used [-Wunused-but-set-variable]
-  366 |                 struct P_objeto blq33_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:363:33: warning: variable 'blq32_PJ1' set but not used [-Wunused-but-set-variable]
-  363 |                 struct P_objeto blq32_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:360:33: warning: variable 'blq31_PJ1' set but not used [-Wunused-but-set-variable]
-  360 |                 struct P_objeto blq31_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:357:33: warning: variable 'blq30_PJ1' set but not used [-Wunused-but-set-variable]
-  357 |                 struct P_objeto blq30_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:354:33: warning: variable 'blq29_PJ1' set but not used [-Wunused-but-set-variable]
-  354 |                 struct P_objeto blq29_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:351:33: warning: variable 'blq28_PJ1' set but not used [-Wunused-but-set-variable]
-  351 |                 struct P_objeto blq28_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:348:33: warning: variable 'blq27_PJ1' set but not used [-Wunused-but-set-variable]
-  348 |                 struct P_objeto blq27_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:345:33: warning: variable 'blq26_PJ1' set but not used [-Wunused-but-set-variable]
-  345 |                 struct P_objeto blq26_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:342:33: warning: variable 'blq25_PJ1' set but not used [-Wunused-but-set-variable]
-  342 |                 struct P_objeto blq25_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:339:33: warning: variable 'blq24_PJ1' set but not used [-Wunused-but-set-variable]
-  339 |                 struct P_objeto blq24_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:335:33: warning: variable 'blq23_PJ1' set but not used [-Wunused-but-set-variable]
-  335 |                 struct P_objeto blq23_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:332:33: warning: variable 'blq22_PJ1' set but not used [-Wunused-but-set-variable]
-  332 |                 struct P_objeto blq22_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:329:33: warning: variable 'blq21_PJ1' set but not used [-Wunused-but-set-variable]
-  329 |                 struct P_objeto blq21_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:326:33: warning: variable 'blq20_PJ1' set but not used [-Wunused-but-set-variable]
-  326 |                 struct P_objeto blq20_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:323:33: warning: variable 'blq19_PJ1' set but not used [-Wunused-but-set-variable]
-  323 |                 struct P_objeto blq19_PJ1;
-      |                                 ^~~~~~~~~
-C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:320:33: warning: variable 'blq18_PJ1' set but not used [-Wunused-but-set-variable]
-  320 |                 struct P_objeto blq18_PJ1; // declarar arriba en PV también
-      |                                 ^~~~~~~~~
-arm-none-eabi-gcc -o "ProyectoVideoJuegoF401RE.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\ProyectoVideoJuegoF401RE\STM32CubeIDE\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ProyectoVideoJuegoF401RE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ProyectoVideoJuegoF401RE.elf
- 
 arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
-arm-none-eabi-objdump -h -S ProyectoVideoJuegoF401RE.elf  > "ProyectoVideoJuegoF401RE.list"
    text	   data	    bss	    dec	    hex	filename
-  42884	    116	   3756	  46756	   b6a4	ProyectoVideoJuegoF401RE.elf
+  48388	    116	   3756	  52260	   cc24	ProyectoVideoJuegoF401RE.elf
 Finished building: default.size.stdout
  
-Finished building: ProyectoVideoJuegoF401RE.list
+11:06:40 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
+make -j12 all 
+arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  48388	    116	   3756	  52260	   cc24	ProyectoVideoJuegoF401RE.elf
+Finished building: default.size.stdout
+ 
+11:11:15 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
+make -j12 all 
+arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  48388	    116	   3756	  52260	   cc24	ProyectoVideoJuegoF401RE.elf
+Finished building: default.size.stdout
  
