@@ -397,19 +397,21 @@ int main(void)
       HAL_SPI_Init(&hspi1);
 
       SetWindows(0, row, 319, row);
-
-      HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(LCD_DC_GPIO_Port, LCD_DC_Pin, GPIO_PIN_SET);
+      LCD_CS_L();
+      LCD_DC_H();
 
       for (int i = 0; i < 320; i++) {
-          uint8_t lo = rowBuf[i] & 0xFF;
           uint8_t hi = rowBuf[i] >> 8;
-          HAL_SPI_Transmit(&hspi1, &lo, 1, 1);  // lo primero
-          HAL_SPI_Transmit(&hspi1, &hi, 1, 1);  // hi segundo
+          uint8_t lo = rowBuf[i] & 0xFF;
+          HAL_SPI_Transmit(&hspi1, &hi, 1, 1);
+          HAL_SPI_Transmit(&hspi1, &lo, 1, 1);
       }
 
-      HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
+      LCD_CS_H();
   }
+
+  sprintf(dbg, "Dibujo OK\r\n");
+  HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
 
   // ============================
   // 6. CERRAR SD SIN SYNC
