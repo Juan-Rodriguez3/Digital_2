@@ -61,7 +61,8 @@ uint8_t nivS = 1;
 uint8_t llaveGet = 0;
 uint16_t counterT = 0;
 uint8_t dir = 0;
-
+uint8_t plyrCount = 0;
+uint8_t credit = 0;
 
 struct P_objeto {
 	uint16_t px;
@@ -70,6 +71,8 @@ struct P_objeto {
 	uint8_t h;
 };
 
+struct P_objeto cursor;
+struct P_objeto cursorO;
 struct P_objeto j1;
 struct P_objeto j1o;
 struct P_objeto blq1_j1;
@@ -151,6 +154,16 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+
+	cursor.px = 112;
+	cursor.py = 128;
+	cursor.w = 16;
+	cursor.h = 16;
+
+	cursorO.px = 112;
+	cursorO.py = 128;
+	cursorO.w = 16;
+	cursorO.h = 16;
 
 	j1.px = 128;
 	j1.py = 208;
@@ -444,8 +457,8 @@ int main(void)
 
   LCD_Clear(0x00);
 
-  LCD_Bitmap(0, 0, 320, 240, niv1);
-  LCD_Bitmap(112, 224, 16, 16, zero1);
+  LCD_Bitmap(0, 0, 320, 240, HS);
+  //LCD_Bitmap(112, 224, 16, 16, zero1);
 
   HAL_UART_Receive_IT(&huart2, &rxByte, 1);
 
@@ -458,14 +471,66 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  LCD_Sprite(j1.px, j1.py, 16, 16, slime, 1, 1, 0, 0);
+	  if (nivS == 0 && credit == 0)
+	  {
+		  LCD_Bitmap(cursor.px, cursor.py, 16, 16, cursorS);
+	  }
+	  else if (credit == 0)
+	  {
+		  LCD_Sprite(j1.px, j1.py, 16, 16, slime, 1, 1, 0, 0);
+	  }
+
 	  if (M1_F == 1)
 	  {
-		  LCD_Bitmap(j1o.px, j1o.py, 16, 16, tile);
-		  j1o.px = j1.px;
-		  j1o.py = j1.py;
-		  M1_F = 0;
+		  if (nivS == 0 && credit == 0)
+		  {
+			  LCD_Bitmap(cursorO.px, cursor.py, 16, 16, cursorT);
+			  cursorO.px = cursor.px;
+			  cursorO.py = cursor.py;
+			  M1_F = 0;
+		  }
+		  else
+		  {
+			  LCD_Bitmap(j1o.px, j1o.py, 16, 16, tile);
+			  j1o.px = j1.px;
+			  j1o.py = j1.py;
+			  M1_F = 0;
+		  }
+
 	  }
+
+	  if(F_Start == 1)
+	  {
+		  if (cursor.py == 128)
+		  {
+			  plyrCount = 1;
+			  nivS = 1;
+			  LCD_Bitmap(0,0,320,240,niv1);
+			  LCD_Bitmap(112, 224, 16, 16, zero1);
+		  }
+		  else if (cursor.py == 144)
+		  {
+			  plyrCount = 2;
+			  nivS = 1;
+			  LCD_Bitmap(0,0,320,240,niv1);
+		  }
+		  else
+		  {
+			  credit++;
+			  LCD_Bitmap(0,0,320,240,creditos);
+		  }
+	  }
+
+	  if (credit > 0)
+	  {
+		  credit++;
+		  if (credit == 255)
+		  {
+			  credit = 0;
+			  LCD_Bitmap(0, 0, 320, 240, HS);
+		  }
+	  }
+
 	  if(sChange_F1 == 1)
 	  {
 		  switch (Score1)
@@ -833,28 +898,52 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         {
             bufferR[rxIndex] = '\0';
             bufferR[strcspn((char*)bufferR, "\r\n")] = '\0';
+            if(nivS == 0 && credit == 0)
+            {
+                if (strcmp((char*)bufferR, "start") == 0)
+                {
+                    F_Start = 1;
+                }
+                if (strcmp((char*)bufferR, "aba") == 0)
+                {
+                	cursor.py = cursor.py + 16;
+                }
+                else if (strcmp((char*)bufferR, "arr") == 0)
+                {
+                	cursor.py = cursor.py - 16;
+                }
+                if (cursor.py > 160)
+                {
+                	cursor.py = 128;
+                }
+                if (cursor.py < 128)
+                {
+                	cursor.py = 160;
+                }
+                M1_F = 1;
+            }
+            else if (credit == 0)
+            {
 
-            if (strcmp((char*)bufferR, "start") == 0)
-            {
-                F_Start = 1;
-            }
-            if (strcmp((char*)bufferR, "aba") == 0)
-            {
-            	j1.py = j1.py + 16;
-            }
-            else if (strcmp((char*)bufferR, "arr") == 0)
-            {
-            	j1.py = j1.py - 16;
-            }
-            else if (strcmp((char*)bufferR, "izq") == 0)
-            {
-            	j1.px = j1.px - 16;
-            }
-            else if (strcmp((char*)bufferR, "der") == 0)
-            {
-            	j1.px = j1.px + 16;
-            }
 
+                if (strcmp((char*)bufferR, "aba") == 0)
+                {
+                	j1.py = j1.py + 16;
+                }
+                else if (strcmp((char*)bufferR, "arr") == 0)
+                {
+                	j1.py = j1.py - 16;
+                }
+                else if (strcmp((char*)bufferR, "izq") == 0)
+                {
+                	j1.px = j1.px - 16;
+                }
+                else if (strcmp((char*)bufferR, "der") == 0)
+                {
+                	j1.px = j1.px + 16;
+                }
+
+            }
             if (nivS == 1)
             {
 

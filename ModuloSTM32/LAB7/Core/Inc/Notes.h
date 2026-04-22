@@ -361,4 +361,151 @@ extern uint32_t DuelFates_notes[];
 extern uint16_t DuelFates_duration[];
 extern uint16_t DuelFates_size;
 
+// ================================================
+// FOOTSTEP SLIME — Movimiento estilo arcade
+// Sweep descendente + silencio entre pasos
+// ================================================
+static uint32_t footstep_notes[] = {
+    // Impacto: burbuja que baja de tono (slime)
+    ARR_Re5,  ARR_Do5,
+    ARR_La4,  ARR_Sol4,
+    ARR_Mi4,  ARR_Re4,
+    ARR_Do4,  ARR_Si3,
+    ARR_La3,
+    // Burbujeo final (efecto jelly)
+    ARR_Do4, ARR_Si3, ARR_Do4,
+    0                        // silencio entre pasos
+};
+static uint16_t footstep_duration[] = {
+    // Impacto descendente
+    18, 18,
+    20, 20,
+    22, 22,
+    25, 25,
+    30,
+    // Burbujeo
+    15, 15, 20,
+    220                      // pausa entre pasos
+};
+static uint16_t footstep_size = sizeof(footstep_notes) / sizeof(footstep_notes[0]);
+
+
+// ================================================
+// LOADING — Sonido de carga progresiva
+// Simula: tics acelerados que suben de tono
+// ================================================
+static uint32_t loading_notes[] = {
+    // Grupo de tics: nota corta + silencio, acelerando
+    1200, 0, 1210, 0, 1220, 0, 1230, 0, 1240, 0,
+    1250, 0, 1260, 0, 1270, 0, 1280, 0, 1290, 0,
+    1300, 0, 1320, 0, 1340, 0, 1360, 0, 1380, 0,
+    1400, 0, 1430, 0, 1460, 0, 1490, 0, 1520, 0,
+    // Tono final de completado
+    800, 600, 0
+};
+static uint16_t loading_duration[] = {
+    // Nota 10ms, silencios van de 120ms bajando a 10ms
+    10, 120,  10, 117,  10, 114,  10, 111,  10, 108,
+    10, 105,  10, 100,  10,  90,  10,  80,  10,  70,
+    10,  60,  10,  50,  10,  45,  10,  40,  10,  35,
+    10,  30,  10,  25,  10,  20,  10,  15,  10,  10,
+    // Final
+    100, 150, 50
+};
+static uint16_t loading_size = sizeof(loading_notes) / sizeof(loading_notes[0]);
+
+
+// ================================================
+// LLAVE — Sonido al agarrar la llave
+// Simula: dos tings metálicos ascendentes
+// ================================================
+static uint32_t llave_notes[] = {
+    // Primer ting
+    ARR_Sol5, ARR_La5, ARR_Si5, ARR_Do6, 0,
+    // Segundo ting más agudo
+    ARR_Do6, ARR_Re6, ARR_Mi6, ARR_Sol6, ARR_La6, 0,
+    // Resonancia que se apaga
+    ARR_La6, ARR_La6, ARR_La6, 0
+};
+static uint16_t llave_duration[] = {
+    // Primer ting
+    30, 30, 30, 60, 40,
+    // Segundo ting
+    25, 25, 25, 25, 80, 30,
+    // Resonancia
+    60, 80, 100, 50
+};
+static uint16_t llave_size = sizeof(llave_notes) / sizeof(llave_notes[0]);
+
+
+// ================================================
+// STAR POWER — Agarrar estrella / ganar nivel
+// Simula: impacto + cuerpo + brillo final
+// ================================================
+static uint32_t starpower_notes[] = {
+    // Impacto ascendente
+    500, 520, 540, 560, 580, 600, 620, 640, 660, 680, 700, 720, 740, 760, 780, 800,
+    // Cuerpo bajando
+    775, 750, 725, 700, 675, 650, 625, 600, 575, 550, 500, 450, 400, 350, 300, 250, 200,
+    // Brillo: arpeggio ascendente
+    ARR_Do5, ARR_Mi5, ARR_Sol5, ARR_Do6, ARR_Mi6, ARR_Sol6,
+    0
+};
+static uint16_t starpower_duration[] = {
+    // Impacto
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    // Cuerpo
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+    // Brillo
+    60, 60, 60, 80, 80, 120,
+    50
+};
+static uint16_t starpower_size = sizeof(starpower_notes) / sizeof(starpower_notes[0]);
+
+
+// ================================================
+// GAME OVER / MUERTE — Evento M
+// Simula: caída dramática de tono
+// ================================================
+static uint32_t muerte_notes[] = {
+    // Caída rápida
+    ARR_Sol4, ARR_Fa4, ARR_Mi4, ARR_Re4, ARR_Do4,
+    ARR_Si3,  ARR_La3, ARR_Sol3,ARR_Fa3, ARR_Mi3,
+    ARR_Re3,  ARR_Do3,
+    0,
+    // Golpe final
+    ARR_Do2, ARR_Si1, ARR_La1,
+    0
+};
+static uint16_t muerte_duration[] = {
+    // Caída
+    80, 80, 80, 100, 100,
+    120, 120, 150, 150, 180,
+    200, 250,
+    100,
+    // Golpe final
+    150, 200, 300,
+    200
+};
+static uint16_t muerte_size = sizeof(muerte_notes) / sizeof(muerte_notes[0]);
+
+
+// ================================================
+// ENTER — Inicio de nivel / entrada
+// Simula: fanfarria corta ascendente
+// ================================================
+static uint32_t enter_notes[] = {
+    ARR_Do4, ARR_Mi4, ARR_Sol4,
+    0,
+    ARR_Do5, ARR_Mi5, ARR_Sol5, ARR_Do6,
+    0
+};
+static uint16_t enter_duration[] = {
+    80, 80, 80,
+    40,
+    80, 80, 80, 200,
+    100
+};
+static uint16_t enter_size = sizeof(enter_notes) / sizeof(enter_notes[0]);
+
 #endif /* INC_NOTAS_MUSICALES_H_ */
