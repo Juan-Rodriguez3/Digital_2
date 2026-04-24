@@ -1,0 +1,1177 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2026 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include "Notes.h"
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+#define size 128
+#define pi 3.1415926
+#define TIM_FREQ 84000000
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+DAC_HandleTypeDef hdac;
+DMA_HandleTypeDef hdma_dac1;
+DMA_HandleTypeDef hdma_dac2;
+
+TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim6;
+TIM_HandleTypeDef htim7;
+
+UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
+
+/* USER CODE BEGIN PV */
+//Variables de comunicacion
+uint8_t rxByte1;
+uint8_t rxIndex1 = 0;
+uint8_t buffer1[20];
+
+uint8_t nivelR = 0;
+uint8_t moveR = 0;
+char eventR = 'N';
+char skinR = 'S';
+
+uint8_t newSonicData = 0;
+
+
+//Variables de comunicacion
+
+uint8_t rxData;
+uint32_t Ysine[size];
+uint32_t Ysilencio[size];
+uint32_t Ysine_scaled[size];
+uint16_t Ynoise[size];
+
+
+//FUnciones de canciones no bloqueantes.
+// --- Motor de canción BG no bloqueante (DAC_CHANNEL_1) ---
+uint32_t *song_notes    = NULL;
+uint16_t *song_duration = NULL;
+uint16_t  song_size     = 0;
+uint16_t  song_index    = 0;
+uint32_t  note_tick     = 0;
+uint32_t  note_ticks_on = 0;
+uint32_t  note_ticks_off= 0;
+uint8_t   note_phase    = 0;
+uint8_t   song_playing  = 0;
+uint8_t   song_slot     = 0;
+
+/*
+// --- Motor FX no bloqueante (DAC_CHANNEL_2) ---
+// Motor FX no bloqueante con SysTick
+uint32_t fx_last_tick = 0;   // timestamp HAL_GetTick() del último evento FX
+uint32_t  fx_tick       = 0;
+uint32_t  fx_ticks_on   = 0;
+uint32_t  fx_ticks_off  = 0;
+uint8_t   fx_phase      = 0;   // 0=nota, 1=silencio
+uint8_t   fx_playing    = 0;
+uint16_t  fx_index      = 0;
+uint16_t  fx_size       = 0;
+uint32_t *fx_notes      = NULL;
+uint16_t *fx_duration   = NULL;
+
+// Flag para efectos de un solo disparo (sweep/noise)
+uint8_t   fx_event      = 0;   // 0=nada, 1=StarPower, 2=footstep, etc.
+*/
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
+static void MX_USART2_UART_Init(void);
+static void MX_TIM2_Init(void);
+static void MX_DAC_Init(void);
+static void MX_TIM6_Init(void);
+static void MX_USART1_UART_Init(void);
+static void MX_TIM7_Init(void);
+/* USER CODE BEGIN PFP */
+void playNotePWM(uint16_t psc);
+void playMario();
+void generarSin();
+void playToneDAC(uint32_t ARR, uint8_t SDac);
+void playSon(uint32_t cancion[], uint16_t duracion[], uint16_t sizeM);
+void setAmplitude(float gain);
+void swordSlash(uint32_t frequencyI, uint32_t frequencyF,uint8_t sweepA,uint8_t sweepD);
+void unsheath();
+void StarPower();
+void impact();
+void generateNoise();
+void loading_soft();
+void loading_tick_progressive();
+void loading_tick_pro();
+void loading_tick_complete();
+void loading_brbr();
+void footstep();
+void blockHit(void);
+void Song_Start(uint32_t *notes, uint16_t *duration, uint16_t sizeO);
+void Song_Stop(void);
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+void generarSin(){
+    for (int x = 0; x < size; x++){
+    	Ysine[x] = (uint32_t)(2048+2047 * sin(2.0 * pi * x / size));
+    	Ysilencio[x] = 0;
+    }
+}
+
+void generateNoise()
+{
+    for(int i = 0; i < size; i++)
+    {
+        Ynoise[i] = rand() % 4096; // DAC 12 bits
+    }
+}
+
+// Corrección — silencio real:
+void playToneDAC(uint32_t ARR, uint8_t sDac)
+{
+	if (sDac==1){
+	    if(ARR == 0)
+	    {
+	        HAL_TIM_Base_Stop(&htim6);
+	        HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
+
+	        __HAL_TIM_SET_AUTORELOAD(&htim6, 99);
+	        __HAL_TIM_SET_COUNTER(&htim6, 0);
+	        HAL_TIM_Base_Start(&htim6);
+	        HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+	                          (uint32_t*)Ysilencio, size, DAC_ALIGN_12B_R);
+	        return;
+	    }
+
+	    HAL_TIM_Base_Stop(&htim6);
+	    HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
+
+	    __HAL_TIM_SET_AUTORELOAD(&htim6, ARR);
+	    __HAL_TIM_SET_COUNTER(&htim6, 0);
+
+	    HAL_TIM_Base_Start(&htim6);
+	    HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+	                      (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
+	}
+	else if (sDac==2){
+	    if(ARR == 0)
+	    {
+	        HAL_TIM_Base_Stop(&htim7);
+	        HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
+
+	        __HAL_TIM_SET_AUTORELOAD(&htim7, 99);
+	        __HAL_TIM_SET_COUNTER(&htim7, 0);
+	        HAL_TIM_Base_Start(&htim7);
+	        HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2,
+	                          (uint32_t*)Ysilencio, size, DAC_ALIGN_12B_R);
+	        return;
+	    }
+
+	    HAL_TIM_Base_Stop(&htim7);
+	    HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
+
+	    __HAL_TIM_SET_AUTORELOAD(&htim7, ARR);
+	    __HAL_TIM_SET_COUNTER(&htim7, 0);
+
+	    HAL_TIM_Base_Start(&htim7);
+	    HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2,
+	                      (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
+	}
+}
+
+void playSon(uint32_t cancion[], uint16_t duracion[], uint16_t sizeM)
+{
+    // Arrancar con silencio inicialmente
+    playToneDAC(0, 1);
+
+    for(int i = 0; i < sizeM; i++)
+    {
+        uint16_t dur_nota     = duracion[i] * 90 / 100UL;
+        uint16_t dur_silencio = duracion[i] * 10 / 100UL;
+        if(dur_silencio < 25) dur_silencio = 25;
+
+        // Tocar nota
+        playToneDAC(cancion[i],1);
+        HAL_Delay(dur_nota);
+
+        // Silencio entre notas con tabla plana
+        playToneDAC(0,1);
+        HAL_Delay(dur_silencio);
+    }
+
+    // Al final dejar en silencio
+    playToneDAC(0,1);
+}
+
+void setAmplitude(float gain)
+{
+    for(int i = 0; i < size; i++)
+    {
+        Ysine_scaled[i] = Ysine[i] * gain;
+    }
+}
+
+void swordSlash(uint32_t frequencyI, uint32_t frequencyF,uint8_t sweepA,uint8_t sweepD)
+{
+    for(uint32_t arr = frequencyI; arr < frequencyF; arr += sweepA)
+    {
+    	float gain = (float)(arr - frequencyI) / 2200.0f; // ataque
+		setAmplitude(gain);
+		playToneDAC(arr,2);
+		HAL_Delay(2);
+    }
+
+    for(uint32_t arr = frequencyF; arr > frequencyI; arr -= sweepD)
+    {
+    	float gain = (float)(arr - frequencyI) / 2500.0f; // decay
+		setAmplitude(gain);
+		playToneDAC(arr,2);
+		HAL_Delay(2);
+    }
+
+    playToneDAC(0,2); // silencio
+}
+
+void unsheath()
+{
+    for(uint32_t arr = 3000; arr > 500; arr -= 100)
+    {
+        playToneDAC(arr,2);
+        HAL_Delay(2);
+    }
+
+    for(uint32_t arr = 500; arr < 1500; arr += 30)
+    {
+        playToneDAC(arr,2);
+        HAL_Delay(3);
+    }
+
+    playToneDAC(0,2);
+}
+
+void StarPower()
+{
+    /*playToneDAC(2000);
+    HAL_Delay(30);
+
+    playToneDAC(1000);
+    HAL_Delay(40);
+
+    playToneDAC(0);*/
+	// 1. IMPACTO (golpe inicial)
+	for(uint32_t arr = 500; arr < 800; arr += 20)
+	{
+		playToneDAC(arr,2);
+		HAL_Delay(2);
+	}
+
+	// 2. CUERPO (peso del pie)
+	for(uint32_t arr = 800; arr > 200; arr -= 25)
+	{
+		playToneDAC(arr,2);
+		HAL_Delay(3);
+	}
+
+	// 3. FRICCIÓN (ruido)
+	generateNoise(); // tu función de ruido
+	HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
+
+	HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+					  (uint32_t*)Ynoise, size, DAC_ALIGN_12B_R);
+
+	HAL_Delay(15);
+
+	playToneDAC(0,2); // silencio
+}
+
+void impact()
+{
+    for(uint32_t arr = 500; arr < 3000; arr += 200)
+    {
+        playToneDAC(arr,2);
+        HAL_Delay(2);
+    }
+
+    playToneDAC(0,2);
+}
+
+void Disparos()
+{
+	for(int i = 0; i < 3; i++)
+	{
+		// sweep
+		for(uint32_t arr = 2500; arr > 1000; arr -= 80)
+		{
+			playToneDAC(arr,2);
+			HAL_Delay(5);
+		}
+
+		// ruido corto (textura)
+		generateNoise();
+		HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+						  (uint32_t*)Ynoise, size, DAC_ALIGN_12B_R);
+
+		HAL_Delay(20);
+	}
+
+	playToneDAC(0,2);
+}
+
+void loading_tick_progressive()
+{
+    uint16_t tone = 1200;
+
+    int delay_time = 120; // empieza lento
+
+    for(int i = 0; i < 30; i++)
+    {
+        playToneDAC(tone,2);
+        HAL_Delay(10); // tic corto
+
+        playToneDAC(0,2);
+        HAL_Delay(delay_time);
+
+        // acelerar progresivamente
+        if(delay_time > 20)
+            delay_time -= 3;
+    }
+}
+
+void loading_tick_pro()
+{
+    uint32_t base = 900;
+    int delay_time = 120;
+
+    for(int i = 0; i < 50; i++)
+    {
+        uint32_t tone = base + i * 10; // sube tono
+
+        playToneDAC(tone,2);
+        HAL_Delay(8);
+
+        playToneDAC(0,2);
+        HAL_Delay(delay_time);
+
+        if(delay_time > 10)
+            delay_time -= 2;
+    }
+}
+
+void loading_tick_complete()
+{
+    loading_tick_pro();
+
+    // sonido final
+    playToneDAC(800,2);
+    HAL_Delay(100);
+
+    playToneDAC(600,2);
+    HAL_Delay(150);
+
+    playToneDAC(0,2);
+}
+
+void loading_brbr()
+{
+    uint32_t tone = 1000;
+
+    for(int i = 0; i < 20; i++)
+    {
+        // BR
+        playToneDAC(tone,2);
+        HAL_Delay(20);
+
+        playToneDAC(0,2);
+        HAL_Delay(20);
+
+        // BR (segundo pulso)
+        playToneDAC(tone,2);
+        HAL_Delay(20);
+
+        playToneDAC(0,2);
+
+        // pausa entre grupos
+        HAL_Delay(100);
+    }
+}
+
+void footstep()
+{ // 1. IMPACTO — ataque rápido ascendente (golpe del talón)
+    for(uint32_t arr = 800; arr < 1400; arr += 60)
+    {
+        playToneDAC(arr,2);
+        HAL_Delay(1);
+    }
+
+    // 2. PESO — caída de frecuencia (peso del cuerpo sobre el pie)
+    for(uint32_t arr = 1400; arr > 300; arr -= 40)
+    {
+        playToneDAC(arr,2);
+        HAL_Delay(2);
+    }
+
+    // 3. TEXTURA — ruido de fricción del suelo
+    generateNoise();
+    HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_1);
+    HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+                      (uint32_t*)Ynoise, size, DAC_ALIGN_12B_R);
+    HAL_Delay(20);
+
+    // 4. SILENCIO — separación entre pasos
+    playToneDAC(0,2);
+    HAL_Delay(180);
+}
+
+void blockHit(void)
+{
+    // 1. IMPACTO — golpe seco descendente
+    for(uint32_t arr = ARR_La4; arr < ARR_Re3; arr += 120)
+    {
+        playToneDAC(arr, 2);
+        HAL_Delay(2);
+    }
+
+    // 2. REBOTE — sube un poco (sensación de choque)
+    for(uint32_t arr = ARR_Re3; arr > ARR_Sol3; arr -= 60)
+    {
+        playToneDAC(arr, 2);
+        HAL_Delay(2);
+    }
+
+    // 3. CORTE — silencio brusco tipo arcade
+    playToneDAC(0, 2);
+    HAL_Delay(20);
+
+    // 4. BUZZ corto — textura de bloque sólido
+    for(int i = 0; i < 3; i++)
+    {
+        playToneDAC(ARR_Do4, 2);
+        HAL_Delay(8);
+        playToneDAC(0, 2);
+        HAL_Delay(8);
+    }
+
+    playToneDAC(0, 2);
+}
+
+void Song_Start(uint32_t *notes, uint16_t *duration, uint16_t sizeO)
+{
+    song_notes    = notes;
+    song_duration = duration;
+    song_size     = sizeO;
+    song_index    = 0;
+    note_tick     = 0;
+    note_phase    = 0;
+    song_playing  = 1;
+
+    // Calcular duración primera nota
+    uint16_t dur = duration[0];
+    note_ticks_on  = dur * 90 / 100;
+    note_ticks_off = dur * 10 / 100;
+    if (note_ticks_off < 25) note_ticks_off = 25;
+
+    playToneDAC(notes[0],1);
+}
+
+void Song_Stop(void)
+{
+    song_playing = 0;
+    song_notes   = NULL;
+    playToneDAC(0,1);
+}
+/*
+// --- Tono en DAC_CHANNEL_2 (FX) ---
+// Tono en DAC_CHANNEL_2 — TIM7
+void playToneDAC_FX(uint32_t ARR)
+{
+    HAL_DAC_Stop_DMA(&hdac, DAC_CHANNEL_2);
+    HAL_TIM_Base_Stop(&htim7);
+
+    if (ARR == 0)
+    {
+        __HAL_TIM_SET_AUTORELOAD(&htim7, 99);
+        __HAL_TIM_SET_COUNTER(&htim7, 0);
+        HAL_TIM_Base_Start(&htim7);
+        HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2,
+                          (uint32_t*)Ysilencio, size, DAC_ALIGN_12B_R);
+        return;
+    }
+
+    __HAL_TIM_SET_AUTORELOAD(&htim7, ARR);
+    __HAL_TIM_SET_COUNTER(&htim7, 0);
+    HAL_TIM_Base_Start(&htim7);
+    HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_2,
+                      (uint32_t*)Ysine, size, DAC_ALIGN_12B_R);
+}
+
+// --- Iniciar canción FX no bloqueante en CH2 ---
+void FX_Start(uint32_t *notes, uint16_t *duration, uint16_t sizeO)
+{
+    fx_notes    = notes;
+    fx_duration = duration;
+    fx_size     = sizeO;
+    fx_index    = 0;
+    fx_phase    = 0;
+    fx_playing  = 1;
+
+    uint16_t dur   = duration[0];
+    fx_ticks_on    = dur * 90 / 100;
+    fx_ticks_off   = dur * 10 / 100;
+    if (fx_ticks_off < 25) fx_ticks_off = 25;
+
+    fx_last_tick = HAL_GetTick();   // anclar timestamp
+    playToneDAC_FX(notes[0]);
+}
+
+void FX_Stop(void)
+{
+    fx_playing = 0;
+    fx_notes   = NULL;
+    playToneDAC_FX(0);
+}
+*/
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_USART2_UART_Init();
+  MX_TIM2_Init();
+  MX_DAC_Init();
+  MX_TIM6_Init();
+  MX_USART1_UART_Init();
+  MX_TIM7_Init();
+  /* USER CODE BEGIN 2 */
+  generarSin();
+  HAL_UART_Receive_IT(&huart1, &rxByte1, 1);
+
+  // TIM2 ya tiene prescaler=83 y period=999 desde MX_TIM2_Init → 1ms por tick
+  HAL_TIM_Base_Start_IT(&htim2);
+
+  // Verificacion de que TIM2 interrumpe
+  HAL_UART_Transmit(&huart2, (uint8_t*)"TIM2 iniciado\r\n", 15, 100);
+
+  // Arrancar musica nivel 1 por defecto
+  loading_tick_complete();
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+	      if (newSonicData == 1)
+	      {
+	          newSonicData = 0;
+
+	          // --- MÚSICA DE FONDO según nivel (DAC_CH1) ---
+	          if (!song_playing)
+	          {
+	        	  //song_slot = 0;  // ← agregar esto para resetear playlist al iniciar nivel
+	              switch (nivelR)
+	              {
+	              case 1: Song_Start(Overworld_1_notes, Overworld_1_duration, Overworld_1_size); break;
+	              case 2: Song_Start(Fantasmic_notes,   Fantasmic_duration,   Fantasmic_size);   break;
+	              case 3: Song_Start(Final_Battle_2_notes, Final_Battle_2_duration, Final_Battle_2_size); break;
+	              }
+	          }
+
+	          // --- MOVIMIENTO: sonido de pasos (DAC_CH2) ---
+	          // Solo iniciar si no hay un FX de evento activo
+	          //Si hay movimiento y eventR no indica que hay colision entonces es porque es un camino normal.
+	          if (moveR == 1 && eventR!='K')
+	          {
+	              //FX_Start(footstep_notes, footstep_duration, footstep_size);
+	        	  footstep();
+	          }
+
+	          // --- EVENTOS (DAC_CH2, tienen prioridad sobre pasos) ---
+	          switch (eventR)
+	          {
+	          case 'C':
+
+	              break;
+
+	          case 'E':
+
+	              break;
+
+	          case 'M':
+
+	        	  HAL_UART_Transmit(&huart1, (uint8_t*)"K\n", 2, 100);
+	              eventR = 'N';
+	              break;
+
+	          case 'S':
+
+	              break;
+
+	          case 'L':
+
+	              break;
+	          case 'K':
+	        	  blockHit();
+	        	  HAL_UART_Transmit(&huart1, (uint8_t*)"K\n", 2, 100);
+				  eventR = 'N';
+	        	  break;
+
+	          case 'N':
+	          default:
+	              break;
+	          }
+	      }
+
+	      // ================================================
+	      // BLOQUE 2: Canción de fondo terminó → siguiente
+	      // ================================================
+	      if (newSonicData == 2)
+	      {
+	          newSonicData = 0;
+	          song_slot++;
+
+	          switch (nivelR)
+	          {
+	          case 0:  // Menu — una sola cancion en loop
+	                  Song_Start(labrynth_crystal_notes, labrynth_crystal_duration, labrynth_crystal_size );
+	                  break;
+	          case 1:
+	              switch (song_slot % 3)
+	              {
+	              case 0: Song_Start(Overworld_1_notes,  Overworld_1_duration,  Overworld_1_size);  break;
+	              case 1: Song_Start(mario_notes,         mario_duration,         mario_size);         break;
+	              case 2: Song_Start(Electrical_notes,    Electrical_duration,    Electrical_size);    break;
+	              }
+	              break;
+
+	          case 2:
+	              switch (song_slot % 3)
+	              {
+	              case 0: Song_Start(Fantasmic_notes, Fantasmic_duration, Fantasmic_size); break;
+	              case 1: Song_Start(Ganyu_notes,     Ganyu_duration,     Ganyu_size);     break;
+	              case 2: Song_Start(LOTR_notes,      LOTR_duration,      LOTR_size);      break;
+	              }
+	              break;
+
+	          case 3:
+	              switch (song_slot % 3)
+	              {
+	              case 0: Song_Start(Final_Battle_2_notes, Final_Battle_2_duration, Final_Battle_2_size); break;
+	              case 1: Song_Start(DuelFates_notes,      DuelFates_duration,      DuelFates_size);      break;
+	              case 2: Song_Start(Jurassic_notes,       Jurassic_duration,       Jurassic_size);       break;
+	              }
+	              break;
+	          }
+	      }
+
+
+
+
+  }
+  /* USER CODE END 3 */
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  /** Configure the main internal regulator output voltage
+  */
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = 16;
+  RCC_OscInitStruct.PLL.PLLN = 336;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+  RCC_OscInitStruct.PLL.PLLQ = 2;
+  RCC_OscInitStruct.PLL.PLLR = 2;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief DAC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_DAC_Init(void)
+{
+
+  /* USER CODE BEGIN DAC_Init 0 */
+
+  /* USER CODE END DAC_Init 0 */
+
+  DAC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN DAC_Init 1 */
+
+  /* USER CODE END DAC_Init 1 */
+
+  /** DAC Initialization
+  */
+  hdac.Instance = DAC;
+  if (HAL_DAC_Init(&hdac) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** DAC channel OUT1 config
+  */
+  sConfig.DAC_Trigger = DAC_TRIGGER_T6_TRGO;
+  sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
+  if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** DAC channel OUT2 config
+  */
+  sConfig.DAC_Trigger = DAC_TRIGGER_T7_TRGO;
+  if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN DAC_Init 2 */
+
+  /* USER CODE END DAC_Init 2 */
+
+}
+
+/**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 83;        // 84MHz / 84 = 1MHz
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 999;          // 1MHz / 1000 = 1kHz = 1ms por tick
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief TIM6 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM6_Init(void)
+{
+
+  /* USER CODE BEGIN TIM6_Init 0 */
+
+  /* USER CODE END TIM6_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM6_Init 1 */
+
+  /* USER CODE END TIM6_Init 1 */
+  htim6.Instance = TIM6;
+  htim6.Init.Prescaler = 0;
+  htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim6.Init.Period = 99;
+  htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim6, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM6_Init 2 */
+
+  /* USER CODE END TIM6_Init 2 */
+
+}
+
+/**
+  * @brief TIM7 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM7_Init(void)
+{
+
+  /* USER CODE BEGIN TIM7_Init 0 */
+
+  /* USER CODE END TIM7_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM7_Init 1 */
+
+  /* USER CODE END TIM7_Init 1 */
+  htim7.Instance = TIM7;
+  htim7.Init.Prescaler = 0;
+  htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim7.Init.Period = 99;
+  htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim7) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim7, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM7_Init 2 */
+
+  /* USER CODE END TIM7_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Stream5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
+  /* DMA1_Stream6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream6_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream6_IRQn);
+
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOH_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin : B1_Pin */
+  GPIO_InitStruct.Pin = B1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+  /* USER CODE END MX_GPIO_Init_2 */
+}
+
+/* USER CODE BEGIN 4 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == USART1)
+    {
+    	uint8_t nivelAnterior;
+        if (rxByte1 == '\n')
+        {
+            buffer1[rxIndex1] = '\0';
+            rxIndex1 = 0;
+
+            sscanf((char*)buffer1, "%d,%d,%c,%c", &nivelAnterior, &moveR, &eventR, &skinR);
+
+            newSonicData = 1;
+        }
+        else
+        {
+            if (rxIndex1 < sizeof(buffer1) - 1)
+                buffer1[rxIndex1++] = rxByte1;
+        }
+
+        if (nivelR != nivelAnterior)
+        {
+        	nivelAnterior=nivelR;
+            song_playing = 0;
+            song_notes   = NULL;
+            song_slot    = 0;
+            playToneDAC(0, 1);
+
+            // Sonido de carga al cambiar de nivel
+            loading_tick_complete();
+        }
+
+        HAL_UART_Receive_IT(&huart1, &rxByte1, 1);
+    }
+}
+
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance == TIM2)
+    {
+        // DEBUG TEMPORAL — quitar después de confirmar
+        static uint32_t cnt = 0;
+        cnt++;
+        if (cnt == 1000) {
+            HAL_UART_Transmit(&huart2, (uint8_t*)"TIM2 tick OK\r\n", 14, 10);
+            cnt = 0;
+        }
+
+        if (!song_playing || song_notes == NULL) return;
+
+        note_tick++;
+
+        if (note_phase == 0)
+        {
+            if (note_tick >= note_ticks_on)
+            {
+                playToneDAC(0, 1);
+                note_tick  = 0;
+                note_phase = 1;
+            }
+        }
+        else
+        {
+            if (note_tick >= note_ticks_off)
+            {
+                note_tick  = 0;
+                note_phase = 0;
+                song_index++;
+
+                if (song_index >= song_size)
+                {
+                    song_playing = 0;
+                    playToneDAC(0, 1);
+                    newSonicData = 2;
+                    return;
+                }
+
+                uint16_t dur   = song_duration[song_index];
+                note_ticks_on  = dur * 90 / 100;
+                note_ticks_off = dur * 10 / 100;
+                if (note_ticks_off < 25) note_ticks_off = 25;
+                playToneDAC(song_notes[song_index], 1);
+            }
+        }
+    }
+}
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+#ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */

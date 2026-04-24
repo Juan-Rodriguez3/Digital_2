@@ -1,31 +1,138 @@
-03:31:51 **** Build of configuration Debug for project Proyecto2Pantalla ****
+01:29:33 **** Incremental Build of configuration Debug for project Proyecto2Pantalla ****
 make -j12 all 
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o"
-arm-none-eabi-gcc "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.d" -MT"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o"
-arm-none-eabi-gcc "../Core/Src/ili9341.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ili9341.d" -MT"Core/Src/ili9341.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ili9341.o"
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc "../Core/Src/stm32f4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f4xx_hal_msp.d" -MT"Core/Src/stm32f4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f4xx_hal_msp.o"
-arm-none-eabi-gcc "../Core/Src/stm32f4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f4xx_it.d" -MT"Core/Src/stm32f4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f4xx_it.o"
-arm-none-eabi-gcc "../Core/Src/system_stm32f4xx.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/system_stm32f4xx.d" -MT"Core/Src/system_stm32f4xx.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/system_stm32f4xx.o"
-../Core/Src/main.c:76:17: warning: built-in function 'j1' declared as non-function [-Wbuiltin-declaration-mismatch]
-   76 | struct P_objeto j1;
-      |                 ^~
-arm-none-eabi-gcc -o "Proyecto2Pantalla.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Proyecto2Pantalla\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Proyecto2Pantalla.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-C:/Users/juana/Documents/STM32CubeIDE_2.1.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/bin/ld.exe: Proyecto2Pantalla.elf section `.rodata' will not fit in region `FLASH'
-C:/Users/juana/Documents/STM32CubeIDE_2.1.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/bin/ld.exe: region `FLASH' overflowed by 271060 bytes
-collect2.exe: error: ld returned 1 exit status
-make: *** [makefile:64: Proyecto2Pantalla.elf] Error 1
+arm-none-eabi-gcc "../Core/Src/fatfs_sd.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/fatfs_sd.d" -MT"Core/Src/fatfs_sd.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/fatfs_sd.o"
+In file included from ../Core/Src/fatfs_sd.c:8:
+../Core/Inc/fatfs_sd.h:29:1: error: unknown type name 'DSTATUS'
+   29 | DSTATUS SD_disk_initialize (BYTE pdrv);
+      | ^~~~~~~
+../Core/Inc/fatfs_sd.h:29:29: error: unknown type name 'BYTE'
+   29 | DSTATUS SD_disk_initialize (BYTE pdrv);
+      |                             ^~~~
+../Core/Inc/fatfs_sd.h:30:1: error: unknown type name 'DSTATUS'
+   30 | DSTATUS SD_disk_status (BYTE pdrv);
+      | ^~~~~~~
+../Core/Inc/fatfs_sd.h:30:25: error: unknown type name 'BYTE'
+   30 | DSTATUS SD_disk_status (BYTE pdrv);
+      |                         ^~~~
+../Core/Inc/fatfs_sd.h:31:1: error: unknown type name 'DRESULT'
+   31 | DRESULT SD_disk_read (BYTE pdrv, BYTE* buff, DWORD sector, UINT count);
+      | ^~~~~~~
+../Core/Inc/fatfs_sd.h:31:23: error: unknown type name 'BYTE'
+   31 | DRESULT SD_disk_read (BYTE pdrv, BYTE* buff, DWORD sector, UINT count);
+      |                       ^~~~
+../Core/Inc/fatfs_sd.h:31:34: error: unknown type name 'BYTE'
+   31 | DRESULT SD_disk_read (BYTE pdrv, BYTE* buff, DWORD sector, UINT count);
+      |                                  ^~~~
+../Core/Inc/fatfs_sd.h:31:46: error: unknown type name 'DWORD'
+   31 | DRESULT SD_disk_read (BYTE pdrv, BYTE* buff, DWORD sector, UINT count);
+      |                                              ^~~~~
+../Core/Inc/fatfs_sd.h:31:60: error: unknown type name 'UINT'
+   31 | DRESULT SD_disk_read (BYTE pdrv, BYTE* buff, DWORD sector, UINT count);
+      |                                                            ^~~~
+../Core/Inc/fatfs_sd.h:32:1: error: unknown type name 'DRESULT'
+   32 | DRESULT SD_disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);
+      | ^~~~~~~
+../Core/Inc/fatfs_sd.h:32:24: error: unknown type name 'BYTE'
+   32 | DRESULT SD_disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);
+      |                        ^~~~
+../Core/Inc/fatfs_sd.h:32:41: error: unknown type name 'BYTE'
+   32 | DRESULT SD_disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);
+      |                                         ^~~~
+../Core/Inc/fatfs_sd.h:32:53: error: unknown type name 'DWORD'
+   32 | DRESULT SD_disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);
+      |                                                     ^~~~~
+../Core/Inc/fatfs_sd.h:32:67: error: unknown type name 'UINT'
+   32 | DRESULT SD_disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);
+      |                                                                   ^~~~
+../Core/Inc/fatfs_sd.h:33:1: error: unknown type name 'DRESULT'
+   33 | DRESULT SD_disk_ioctl (BYTE pdrv, BYTE cmd, void* buff);
+      | ^~~~~~~
+../Core/Inc/fatfs_sd.h:33:24: error: unknown type name 'BYTE'
+   33 | DRESULT SD_disk_ioctl (BYTE pdrv, BYTE cmd, void* buff);
+      |                        ^~~~
+../Core/Inc/fatfs_sd.h:33:35: error: unknown type name 'BYTE'
+   33 | DRESULT SD_disk_ioctl (BYTE pdrv, BYTE cmd, void* buff);
+      |                                   ^~~~
+../Core/Src/fatfs_sd.c:14:17: error: unknown type name 'DSTATUS'
+   14 | static volatile DSTATUS Stat = STA_NOINIT;  /* Disk Status */
+      |                 ^~~~~~~
+../Core/Src/fatfs_sd.c:14:32: error: 'STA_NOINIT' undeclared here (not in a function)
+   14 | static volatile DSTATUS Stat = STA_NOINIT;  /* Disk Status */
+      |                                ^~~~~~~~~~
+../Core/Src/fatfs_sd.c:3:14: error: unknown type name 'BYTE'
+    3 | #define bool BYTE
+      |              ^~~~
+../Core/Src/fatfs_sd.c:139:8: note: in expansion of macro 'bool'
+  139 | static bool SD_RxDataBlock(BYTE *buff, UINT len)
+      |        ^~~~
+../Core/Src/fatfs_sd.c:139:28: error: unknown type name 'BYTE'
+  139 | static bool SD_RxDataBlock(BYTE *buff, UINT len)
+      |                            ^~~~
+../Core/Src/fatfs_sd.c:139:40: error: unknown type name 'UINT'
+  139 | static bool SD_RxDataBlock(BYTE *buff, UINT len)
+      |                                        ^~~~
+../Core/Src/fatfs_sd.c:215:8: error: unknown type name 'BYTE'
+  215 | static BYTE SD_SendCmd(BYTE cmd, uint32_t arg)
+      |        ^~~~
+../Core/Src/fatfs_sd.c:215:24: error: unknown type name 'BYTE'
+  215 | static BYTE SD_SendCmd(BYTE cmd, uint32_t arg)
+      |                        ^~~~
+../Core/Src/fatfs_sd.c:254:1: error: unknown type name 'DSTATUS'
+  254 | DSTATUS SD_disk_initialize(BYTE drv)
+      | ^~~~~~~
+../Core/Src/fatfs_sd.c:254:28: error: unknown type name 'BYTE'
+  254 | DSTATUS SD_disk_initialize(BYTE drv)
+      |                            ^~~~
+../Core/Src/fatfs_sd.c:354:1: error: unknown type name 'DSTATUS'
+  354 | DSTATUS SD_disk_status(BYTE drv)
+      | ^~~~~~~
+../Core/Src/fatfs_sd.c:354:24: error: unknown type name 'BYTE'
+  354 | DSTATUS SD_disk_status(BYTE drv)
+      |                        ^~~~
+../Core/Src/fatfs_sd.c:361:1: error: unknown type name 'DRESULT'
+  361 | DRESULT SD_disk_read(BYTE pdrv, BYTE* buff, DWORD sector, UINT count)
+      | ^~~~~~~
+../Core/Src/fatfs_sd.c:361:22: error: unknown type name 'BYTE'
+  361 | DRESULT SD_disk_read(BYTE pdrv, BYTE* buff, DWORD sector, UINT count)
+      |                      ^~~~
+../Core/Src/fatfs_sd.c:361:33: error: unknown type name 'BYTE'
+  361 | DRESULT SD_disk_read(BYTE pdrv, BYTE* buff, DWORD sector, UINT count)
+      |                                 ^~~~
+../Core/Src/fatfs_sd.c:361:45: error: unknown type name 'DWORD'
+  361 | DRESULT SD_disk_read(BYTE pdrv, BYTE* buff, DWORD sector, UINT count)
+      |                                             ^~~~~
+../Core/Src/fatfs_sd.c:361:59: error: unknown type name 'UINT'
+  361 | DRESULT SD_disk_read(BYTE pdrv, BYTE* buff, DWORD sector, UINT count)
+      |                                                           ^~~~
+../Core/Src/fatfs_sd.c:458:1: error: unknown type name 'DRESULT'
+  458 | DRESULT SD_disk_ioctl(BYTE drv, BYTE ctrl, void *buff)
+      | ^~~~~~~
+../Core/Src/fatfs_sd.c:458:23: error: unknown type name 'BYTE'
+  458 | DRESULT SD_disk_ioctl(BYTE drv, BYTE ctrl, void *buff)
+      |                       ^~~~
+../Core/Src/fatfs_sd.c:458:33: error: unknown type name 'BYTE'
+  458 | DRESULT SD_disk_ioctl(BYTE drv, BYTE ctrl, void *buff)
+      |                                 ^~~~
+../Core/Src/fatfs_sd.c:133:16: warning: 'SD_CheckPower' defined but not used [-Wunused-function]
+  133 | static uint8_t SD_CheckPower(void)
+      |                ^~~~~~~~~~~~~
+../Core/Src/fatfs_sd.c:127:13: warning: 'SD_PowerOff' defined but not used [-Wunused-function]
+  127 | static void SD_PowerOff(void)
+      |             ^~~~~~~~~~~
+../Core/Src/fatfs_sd.c:89:13: warning: 'SD_PowerOn' defined but not used [-Wunused-function]
+   89 | static void SD_PowerOn(void)
+      |             ^~~~~~~~~~
+../Core/Src/fatfs_sd.c:73:16: warning: 'SD_ReadyWait' defined but not used [-Wunused-function]
+   73 | static uint8_t SD_ReadyWait(void)
+      |                ^~~~~~~~~~~~
+../Core/Src/fatfs_sd.c:63:13: warning: 'SPI_RxBytePtr' defined but not used [-Wunused-function]
+   63 | static void SPI_RxBytePtr(uint8_t *buff)
+      |             ^~~~~~~~~~~~~
+../Core/Src/fatfs_sd.c:15:16: warning: 'CardType' defined but not used [-Wunused-variable]
+   15 | static uint8_t CardType;                    /* Type 0:MMC, 1:SDC, 2:Block addressing */
+      |                ^~~~~~~~
+make: *** [Core/Src/subdir.mk:46: Core/Src/fatfs_sd.o] Error 1
 "make -j12 all" terminated with exit code 2. Build might be incomplete.
 
-03:31:55 Build Failed. 3 errors, 1 warnings. (took 3s.133ms)
+01:29:34 Build Failed. 37 errors, 6 warnings. (took 459ms)
 

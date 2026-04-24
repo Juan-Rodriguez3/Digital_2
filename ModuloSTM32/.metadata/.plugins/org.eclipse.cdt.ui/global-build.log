@@ -1,63 +1,80 @@
-03:33:42 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
+05:26:05 **** Incremental Build of configuration Debug for project LAB7 ****
 make -j12 all 
-arm-none-eabi-gcc "C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../../Core/Inc -I../../Drivers/STM32F4xx_HAL_Driver/Inc -I../../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../../Drivers/CMSIS/Include -I../../FATFS/Target -I../../FATFS/App -I../../Middlewares/Third_Party/FatFs/src -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Application/User/Core/main.d" -MT"Application/User/Core/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Application/User/Core/main.o"
-arm-none-eabi-gcc -o "ProyectoVideoJuegoF401RE.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\ProyectoVideoJuegoF401RE\STM32CubeIDE\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ProyectoVideoJuegoF401RE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ProyectoVideoJuegoF401RE.elf
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/main.c:1152:38: warning: format '%d' expects argument of type 'int *', but argument 3 has type 'volatile uint8_t *' {aka 'volatile unsigned char *'} [-Wformat=]
+ 1152 |             sscanf((char*)buffer1, "%d,%d,%c,%c",
+      |                                     ~^
+      |                                      |
+      |                                      int *
+      |                                     %hhd
+ 1153 |                    &nivelAnterior, &moveR, &eventR, &skinR);
+      |                    ~~~~~~~~~~~~~~     
+      |                    |
+      |                    volatile uint8_t * {aka volatile unsigned char *}
+../Core/Src/main.c:1152:41: warning: format '%d' expects argument of type 'int *', but argument 4 has type 'uint8_t *' {aka 'unsigned char *'} [-Wformat=]
+ 1152 |             sscanf((char*)buffer1, "%d,%d,%c,%c",
+      |                                        ~^
+      |                                         |
+      |                                         int *
+      |                                        %hhd
+ 1153 |                    &nivelAnterior, &moveR, &eventR, &skinR);
+      |                                    ~~~~~~
+      |                                    |
+      |                                    uint8_t * {aka unsigned char *}
+In file included from ../Core/Src/main.c:28:
+../Core/Inc/Notes.h: At top level:
+../Core/Inc/Notes.h:509:17: warning: 'enter_size' defined but not used [-Wunused-variable]
+  509 | static uint16_t enter_size = sizeof(enter_notes) / sizeof(enter_notes[0]);
+      |                 ^~~~~~~~~~
+../Core/Inc/Notes.h:503:17: warning: 'enter_duration' defined but not used [-Wunused-variable]
+  503 | static uint16_t enter_duration[] = {
+      |                 ^~~~~~~~~~~~~~
+../Core/Inc/Notes.h:490:17: warning: 'muerte_size' defined but not used [-Wunused-variable]
+  490 | static uint16_t muerte_size = sizeof(muerte_notes) / sizeof(muerte_notes[0]);
+      |                 ^~~~~~~~~~~
+../Core/Inc/Notes.h:480:17: warning: 'muerte_duration' defined but not used [-Wunused-variable]
+  480 | static uint16_t muerte_duration[] = {
+      |                 ^~~~~~~~~~~~~~~
+../Core/Inc/Notes.h:463:17: warning: 'starpower_size' defined but not used [-Wunused-variable]
+  463 | static uint16_t starpower_size = sizeof(starpower_notes) / sizeof(starpower_notes[0]);
+      |                 ^~~~~~~~~~~~~~
+../Core/Inc/Notes.h:454:17: warning: 'starpower_duration' defined but not used [-Wunused-variable]
+  454 | static uint16_t starpower_duration[] = {
+      |                 ^~~~~~~~~~~~~~~~~~
+../Core/Inc/Notes.h:438:17: warning: 'llave_size' defined but not used [-Wunused-variable]
+  438 | static uint16_t llave_size = sizeof(llave_notes) / sizeof(llave_notes[0]);
+      |                 ^~~~~~~~~~
+../Core/Inc/Notes.h:430:17: warning: 'llave_duration' defined but not used [-Wunused-variable]
+  430 | static uint16_t llave_duration[] = {
+      |                 ^~~~~~~~~~~~~~
+../Core/Inc/Notes.h:415:17: warning: 'loading_size' defined but not used [-Wunused-variable]
+  415 | static uint16_t loading_size = sizeof(loading_notes) / sizeof(loading_notes[0]);
+      |                 ^~~~~~~~~~~~
+../Core/Inc/Notes.h:406:17: warning: 'loading_duration' defined but not used [-Wunused-variable]
+  406 | static uint16_t loading_duration[] = {
+      |                 ^~~~~~~~~~~~~~~~
+../Core/Inc/Notes.h:390:17: warning: 'footstep_size' defined but not used [-Wunused-variable]
+  390 | static uint16_t footstep_size = sizeof(footstep_notes) / sizeof(footstep_notes[0]);
+      |                 ^~~~~~~~~~~~~
+../Core/Inc/Notes.h:379:17: warning: 'footstep_duration' defined but not used [-Wunused-variable]
+  379 | static uint16_t footstep_duration[] = {
+      |                 ^~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LAB7.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LAB7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LAB7.elf
  
-arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
-arm-none-eabi-objdump -h -S ProyectoVideoJuegoF401RE.elf  > "ProyectoVideoJuegoF401RE.list"
+arm-none-eabi-size  LAB7.elf 
+arm-none-eabi-objdump -h -S LAB7.elf  > "LAB7.list"
    text	   data	    bss	    dec	    hex	filename
-  50440	    116	   3780	  54336	   d440	ProyectoVideoJuegoF401RE.elf
+  38508	   4360	   3888	  46756	   b6a4	LAB7.elf
 Finished building: default.size.stdout
  
-Finished building: ProyectoVideoJuegoF401RE.list
+Finished building: LAB7.list
  
-03:35:08 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
+05:26:10 **** Incremental Build of configuration Debug for project LAB7 ****
 make -j12 all 
-arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
+arm-none-eabi-size  LAB7.elf 
    text	   data	    bss	    dec	    hex	filename
-  50440	    116	   3780	  54336	   d440	ProyectoVideoJuegoF401RE.elf
+  38508	   4360	   3888	  46756	   b6a4	LAB7.elf
 Finished building: default.size.stdout
- 
-03:36:43 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
-make -j12 all 
-arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
-   text	   data	    bss	    dec	    hex	filename
-  50440	    116	   3780	  54336	   d440	ProyectoVideoJuegoF401RE.elf
-Finished building: default.size.stdout
- 
-03:43:16 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
-make -j12 all 
-arm-none-eabi-gcc "C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../../Core/Inc -I../../Drivers/STM32F4xx_HAL_Driver/Inc -I../../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../../Drivers/CMSIS/Include -I../../FATFS/Target -I../../FATFS/App -I../../Middlewares/Third_Party/FatFs/src -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Application/User/Core/main.d" -MT"Application/User/Core/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Application/User/Core/main.o"
-arm-none-eabi-gcc -o "ProyectoVideoJuegoF401RE.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\ProyectoVideoJuegoF401RE\STM32CubeIDE\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ProyectoVideoJuegoF401RE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ProyectoVideoJuegoF401RE.elf
- 
-arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
-arm-none-eabi-objdump -h -S ProyectoVideoJuegoF401RE.elf  > "ProyectoVideoJuegoF401RE.list"
-   text	   data	    bss	    dec	    hex	filename
-  50440	    116	   3780	  54336	   d440	ProyectoVideoJuegoF401RE.elf
-Finished building: default.size.stdout
- 
-Finished building: ProyectoVideoJuegoF401RE.list
- 
-11:42:16 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
-make -j12 all 
-arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
-   text	   data	    bss	    dec	    hex	filename
-  50440	    116	   3780	  54336	   d440	ProyectoVideoJuegoF401RE.elf
-Finished building: default.size.stdout
- 
-11:59:43 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
-make -j12 all 
-arm-none-eabi-gcc "C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../../Core/Inc -I../../Drivers/STM32F4xx_HAL_Driver/Inc -I../../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../../Drivers/CMSIS/Include -I../../FATFS/Target -I../../FATFS/App -I../../Middlewares/Third_Party/FatFs/src -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Application/User/Core/main.d" -MT"Application/User/Core/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Application/User/Core/main.o"
-arm-none-eabi-gcc -o "ProyectoVideoJuegoF401RE.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\ProyectoVideoJuegoF401RE\STM32CubeIDE\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ProyectoVideoJuegoF401RE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ProyectoVideoJuegoF401RE.elf
- 
-arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
-arm-none-eabi-objdump -h -S ProyectoVideoJuegoF401RE.elf  > "ProyectoVideoJuegoF401RE.list"
-   text	   data	    bss	    dec	    hex	filename
-  50500	    116	   3780	  54396	   d47c	ProyectoVideoJuegoF401RE.elf
-Finished building: default.size.stdout
- 
-Finished building: ProyectoVideoJuegoF401RE.list
  

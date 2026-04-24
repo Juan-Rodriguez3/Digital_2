@@ -1,8 +1,9 @@
-../Core/Src/main.c:153:5:main	30
-../Core/Src/main.c:714:6:SystemClock_Config	3
-../Core/Src/main.c:762:13:MX_SPI1_Init	2
-../Core/Src/main.c:800:13:MX_USART2_UART_Init	2
-../Core/Src/main.c:833:13:MX_GPIO_Init	1
-../Core/Src/main.c:888:6:HAL_UART_RxCpltCallback	108
-../Core/Src/main.c:1209:9:ColCheck	5
-../Core/Src/main.c:1225:6:Error_Handler	1
+../Core/Src/main.c:160:5:main	59
+../Core/Src/main.c:1031:6:SystemClock_Config	3
+../Core/Src/main.c:1079:13:MX_SPI1_Init	2
+../Core/Src/main.c:1117:13:MX_USART2_UART_Init	2
+../Core/Src/main.c:1150:13:MX_GPIO_Init	1
+../Core/Src/main.c:1205:6:HAL_UART_RxCpltCallback	209
+../Core/Src/main.c:1826:9:ColCheck	5
+../Core/Src/main.c:1837:9:ColCheckj2	5
+../Core/Src/main.c:1855:6:Error_Handler	1

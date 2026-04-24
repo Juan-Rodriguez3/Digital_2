@@ -10,14 +10,20 @@
 		<item value="21"/>
 	</list>
 	<list key="searchhistory">
-		<item value="transmit"/>
-		<item value="uart"/>
-		<item value="init"/>
-		<item value="LCD_CMD"/>
-		<item value="CMD"/>
-		<item value="j1"/>
-		<item value="bufferR"/>
-		<item value="freq_timer"/>
-		<item value="15"/>
+		<item value="Song_start"/>
+		<item value="skinR"/>
+		<item value="Draw_Level_Background"/>
+		<item value="Draw_Level_Backgorund"/>
+		<item value="if (coliW2 == 0) { sChange_F2 = 1; Score2++; }"/>
+		<item value="transmitSoni"/>
+		<item value="credit"/>
+		<item value="transmitSonic"/>
+		<item value="nivelA"/>
+		<item value="Sonic"/>
+		<item value="dra"/>
+		<item value="/* USER CODE BEGIN 2 */"/>
+		<item value="sonic"/>
+		<item value="Background"/>
+		<item value="coli"/>
 	</list>
 </section>

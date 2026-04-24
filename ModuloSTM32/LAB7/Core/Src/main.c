@@ -56,6 +56,7 @@ TIM_HandleTypeDef htim7;
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 //Variables de comunicacion
@@ -63,7 +64,10 @@ uint8_t rxByte1;
 uint8_t rxIndex1 = 0;
 uint8_t buffer1[20];
 
-uint8_t nivelR = 0;
+// Variable global — inicializar en 8 igual que nivelR
+volatile uint8_t nivelR= 8;
+volatile uint8_t nivelAnterior = 8;  // ← sacar del callback, hacerla global
+uint8_t doLoading = 0;
 uint8_t moveR = 0;
 char eventR = 'N';
 char skinR = 'S';
@@ -123,6 +127,7 @@ static void MX_DAC_Init(void);
 static void MX_TIM6_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_TIM7_Init(void);
+static void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
 void playNotePWM(uint16_t psc);
 void playMario();
@@ -166,6 +171,8 @@ void generateNoise()
 // Corrección — silencio real:
 void playToneDAC(uint32_t ARR, uint8_t sDac)
 {
+
+
 	if (sDac==1){
 	    if(ARR == 0)
 	    {
@@ -177,6 +184,9 @@ void playToneDAC(uint32_t ARR, uint8_t sDac)
 	        HAL_TIM_Base_Start(&htim6);
 	        HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
 	                          (uint32_t*)Ysilencio, size, DAC_ALIGN_12B_R);
+	        HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1,
+                    (uint32_t*)Ysilencio, size, DAC_ALIGN_12B_R);
+
 	        return;
 	    }
 
@@ -493,6 +503,7 @@ void blockHit(void)
 
 void Song_Start(uint32_t *notes, uint16_t *duration, uint16_t sizeO)
 {
+
     song_notes    = notes;
     song_duration = duration;
     song_size     = sizeO;
@@ -508,6 +519,7 @@ void Song_Start(uint32_t *notes, uint16_t *duration, uint16_t sizeO)
     if (note_ticks_off < 25) note_ticks_off = 25;
 
     playToneDAC(notes[0],1);
+
 }
 
 void Song_Stop(void)
@@ -605,19 +617,20 @@ int main(void)
   MX_TIM6_Init();
   MX_USART1_UART_Init();
   MX_TIM7_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   generarSin();
   HAL_UART_Receive_IT(&huart1, &rxByte1, 1);
 
-  // TIM2: tick de 1ms para motor de música BG
-  __HAL_TIM_SET_PRESCALER(&htim2, 83);
-  __HAL_TIM_SET_AUTORELOAD(&htim2, 999);
+  // TIM2 ya tiene prescaler=83 y period=999 desde MX_TIM2_Init → 1ms por tick
   HAL_TIM_Base_Start_IT(&htim2);
 
-  generarSin();
+  // Verificacion de que TIM2 interrumpe
+  HAL_UART_Transmit(&huart2, (uint8_t*)"TIM2 iniciado\r\n", 15, 100);
 
-  // Arrancar música del nivel 1 por defecto al inicio
-  Song_Start(Overworld_1_notes, Overworld_1_duration, Overworld_1_size);
+  // Arrancar musica nivel 1 por defecto
+  loading_tick_complete();
+  Song_Start(mario_notes,         mario_duration,         mario_size);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -628,26 +641,35 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	      if (newSonicData == 1)
-	      {
-	          newSonicData = 0;
+	  // Ejecutar loading fuera de la interrupcion
+	  if (nivelR != nivelAnterior)
+	  {
+		  nivelR=nivelAnterior;
+	      loading_tick_complete();
+	  }
 
-	          // --- MÚSICA DE FONDO según nivel (DAC_CH1) ---
-	          if (!song_playing)
+	  if (newSonicData == 1)
+	  {
+	      newSonicData = 0;
+
+	      // Arrancar musica si no hay nada sonando
+	      if (!song_playing)
+	      {
+	          song_slot = 0;
+	          switch (nivelR)
 	          {
-	              song_slot = 0;
-	              switch (nivelR)
-	              {
-	              case 1: Song_Start(Overworld_1_notes, Overworld_1_duration, Overworld_1_size); break;
-	              case 2: Song_Start(Fantasmic_notes,   Fantasmic_duration,   Fantasmic_size);   break;
-	              case 3: Song_Start(Final_Battle_2_notes, Final_Battle_2_duration, Final_Battle_2_size); break;
-	              }
+	          case 0: //|Song_Start(mario_notes, mario_duration, mario_size); break;
+	          case 1: Song_Start(Overworld_1_notes, Overworld_1_duration, Overworld_1_size); break;
+	          case 2: Song_Start(Fantasmic_notes, Fantasmic_duration, Fantasmic_size); break;
+	          case 3: Song_Start(Final_Battle_2_notes, Final_Battle_2_duration, Final_Battle_2_size); break;
 	          }
+	      }
+
 
 	          // --- MOVIMIENTO: sonido de pasos (DAC_CH2) ---
 	          // Solo iniciar si no hay un FX de evento activo
 	          //Si hay movimiento y eventR no indica que hay colision entonces es porque es un camino normal.
-	          if (moveR == 1 && eventR!='K')
+	          if (moveR == 1 && eventR!='K'&& skinR=='0')
 	          {
 	              //FX_Start(footstep_notes, footstep_duration, footstep_size);
 	        	  footstep();
@@ -665,8 +687,8 @@ int main(void)
 	              break;
 
 	          case 'M':
-
-	        	  HAL_UART_Transmit(&huart1, (uint8_t*)"K\n", 2, 100);
+				  if (skinR=='0'){ HAL_UART_Transmit(&huart1, (uint8_t*)"K\n", 2, 100);}
+				  else if(skinR=='1'){ HAL_UART_Transmit(&huart3, (uint8_t*)"K\n", 2, 100);}
 	              eventR = 'N';
 	              break;
 
@@ -699,11 +721,15 @@ int main(void)
 
 	          switch (nivelR)
 	          {
+	          case 0:  // Menu — una sola cancion en loop
+	        	  	  //Song_Start(mario_notes,         mario_duration,         mario_size);
+
+	                  break;
 	          case 1:
 	              switch (song_slot % 3)
 	              {
 	              case 0: Song_Start(Overworld_1_notes,  Overworld_1_duration,  Overworld_1_size);  break;
-	              case 1: Song_Start(mario_notes,         mario_duration,         mario_size);         break;
+	              case 1: Song_Start(labrynth_crystal_notes, labrynth_crystal_duration, labrynth_crystal_size ); break;
 	              case 2: Song_Start(Electrical_notes,    Electrical_duration,    Electrical_size);    break;
 	              }
 	              break;
@@ -1032,6 +1058,39 @@ static void MX_USART2_UART_Init(void)
 }
 
 /**
+  * @brief USART3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART3_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART3_Init 0 */
+
+  /* USER CODE END USART3_Init 0 */
+
+  /* USER CODE BEGIN USART3_Init 1 */
+
+  /* USER CODE END USART3_Init 1 */
+  huart3.Instance = USART3;
+  huart3.Init.BaudRate = 115200;
+  huart3.Init.WordLength = UART_WORDLENGTH_8B;
+  huart3.Init.StopBits = UART_STOPBITS_1;
+  huart3.Init.Parity = UART_PARITY_NONE;
+  huart3.Init.Mode = UART_MODE_TX_RX;
+  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART3_Init 2 */
+
+  /* USER CODE END USART3_Init 2 */
+
+}
+
+/**
   * Enable DMA controller clock
   */
 static void MX_DMA_Init(void)
@@ -1089,7 +1148,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
             buffer1[rxIndex1] = '\0';
             rxIndex1 = 0;
 
-            sscanf((char*)buffer1, "%d,%d,%c,%c", &nivelR, &moveR, &eventR, &skinR);
+
+            sscanf((char*)buffer1, "%d,%d,%c,%c",
+                   &nivelAnterior, &moveR, &eventR, &skinR);
 
             newSonicData = 1;
         }
@@ -1105,9 +1166,17 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    // --- TIM2: motor de música de fondo (DAC_CH1) ---
     if (htim->Instance == TIM2)
     {
+    	/*
+        // DEBUG TEMPORAL — quitar después de confirmar
+        static uint32_t cnt = 0;
+        cnt++;
+        if (cnt == 1000) {
+            HAL_UART_Transmit(&huart2, (uint8_t*)"TIM2 tick OK\r\n", 14, 10);
+            cnt = 0;
+        }*/
+
         if (!song_playing || song_notes == NULL) return;
 
         note_tick++;
@@ -1116,7 +1185,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         {
             if (note_tick >= note_ticks_on)
             {
-                playToneDAC(0,1);
+                playToneDAC(0, 1);
                 note_tick  = 0;
                 note_phase = 1;
             }
@@ -1132,8 +1201,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 if (song_index >= song_size)
                 {
                     song_playing = 0;
-                    playToneDAC(0,1);
-                    newSonicData = 2; // canción terminó → while carga la siguiente
+                    playToneDAC(0, 1);
+                    newSonicData = 2;
                     return;
                 }
 
@@ -1141,12 +1210,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 note_ticks_on  = dur * 90 / 100;
                 note_ticks_off = dur * 10 / 100;
                 if (note_ticks_off < 25) note_ticks_off = 25;
-                playToneDAC(song_notes[song_index],1);
+                playToneDAC(song_notes[song_index], 1);
             }
         }
     }
-
-
 }
 /* USER CODE END 4 */
 

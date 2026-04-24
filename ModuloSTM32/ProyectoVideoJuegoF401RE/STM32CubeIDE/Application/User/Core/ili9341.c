@@ -25,16 +25,6 @@ extern UART_HandleTypeDef huart2;
  *  SCK 	- PA5
  * */
 
-#define LCD_DC_PORT    GPIOA
-#define LCD_DC_PIN     GPIO_PIN_4
-#define LCD_DC_L()     (LCD_DC_PORT->BSRR = (LCD_DC_PIN<<16))	//
-#define LCD_DC_H()     (LCD_DC_PORT->BSRR =  LCD_DC_PIN)		//Poner el modo RS en high es para mandar dato
-
-#define LCD_CS_PORT    GPIOB
-#define LCD_CS_PIN     GPIO_PIN_0
-#define LCD_CS_L()     (LCD_CS_PORT->BSRR = (LCD_CS_PIN<<16)) 	//Pone el chip select en activo para empezar la comunicación con la pantalla
-#define LCD_CS_H()     (LCD_CS_PORT->BSRR =  LCD_CS_PIN)		//
-
 extern const uint8_t smallFont[1140];
 extern const uint16_t bigFont[1520];
 extern SPI_HandleTypeDef hspi1;
@@ -446,6 +436,7 @@ static void SetWindows_NoCS(unsigned int x1, unsigned int y1, unsigned int x2, u
 // Lee un bitmap .bin de la SD y lo dibuja en pantalla fila por fila
 // Lee un bitmap .bin de la SD y lo dibuja en pantalla fila por fila
 // Dibuja bitmap desde un archivo ya abierto
+/*
 void LCD_BitmapFromFile(FIL *f, SPI_HandleTypeDef *hspi) {
     uint16_t rowBuffer[320];
     UINT bytesRead;
@@ -486,6 +477,6 @@ void LCD_BitmapFromFile(FIL *f, SPI_HandleTypeDef *hspi) {
 
     LCD_CS_H();
 }
-
+*/
 
 

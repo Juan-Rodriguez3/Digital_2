@@ -22,8 +22,8 @@ void onConnectedController(ControllerPtr ctl) {
             foundEmptySlot = true;
             
             //Color de jugador
-            //ctl->setColorLED(255, 0, 0);
-            ctl->setColorLED(0, 0, 255);
+            ctl->setColorLED(255, 0, 0);
+            //ctl->setColorLED(0, 0, 255);
             break;
         }
     }
@@ -152,14 +152,14 @@ void processGamepad(ControllerPtr ctl)
     if (anyArrow && (now - lastMoveTime >= MOVE_DEBOUNCE))
     {
         lastMoveTime = now;
-        Serial1.printf("P1:U%dR%dL%dD%dX%dA%dB%dY%d\r\n",
+        Serial1.printf("P2:U%dR%dL%dD%dX%dA%dB%dY%d\r\n",
                         up, right, left, down,
                         cruz, circulo, cuadrado, triangulo);
     }
     else if (!anyArrow)
     {
         // Siempre enviar cuando no hay flechas (para botones X A B Y)
-        Serial1.printf("P1:U%dR%dL%dD%dX%dA%dB%dY%d\r\n",
+        Serial1.printf("P2:U%dR%dL%dD%dX%dA%dB%dY%d\r\n",
                         up, right, left, down,
                         cruz, circulo, cuadrado, triangulo);
     }

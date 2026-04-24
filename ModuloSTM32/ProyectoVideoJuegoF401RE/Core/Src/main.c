@@ -84,27 +84,32 @@ uint8_t sChange_F1 = 0;
 uint8_t sChange_F2 = 0;
 uint8_t Score1 = 0;
 uint8_t Score2 = 0;
-
 //Variables de SD
 uint8_t nivelA=0;
-
+uint8_t countAAA=0;
+//Sonidos
+uint8_t moveFlag  = 0;
+char    eventFlag = 'N';
+uint8_t lastNivel = 0;
+uint8_t lastMove  = 0;
+char    lastEvent = 'N';
+// Flags de juego
+uint8_t plyrCount = 1;
+uint8_t credit    = 0;
+uint8_t GAMEWIN   = 0;
+uint8_t llaveGet2 = 0;
+uint8_t M2_F      = 0;
 //Variables del juego
 uint8_t llaveGet = 0;
 uint16_t counterT = 0;
 uint8_t dir = 0;
-
-//Botones
-uint8_t btnX = 0;
-uint8_t btnA = 0;
-uint8_t btnB = 0;
-uint8_t btnY = 0;
-/* Variables de menu y pantallas */
-//uint8_t nivS = 0;
-uint8_t credit = 0;
-/* Cantidad de jugadores seleccionada en menu */
-uint8_t plyrCount = 0;
+// Contador de tiempo para creditos
+uint16_t creditTimer = 0;
 
 
+// Cursor del menu
+struct P_objeto cursor;
+struct P_objeto cursorO;
 struct P_objeto {
 	uint16_t px;
 	uint8_t py;
@@ -114,6 +119,9 @@ struct P_objeto {
 
 struct P_objeto PJ1;
 struct P_objeto PJ1o;
+// Jugador 2
+struct P_objeto j2;
+struct P_objeto j2o;
 struct P_objeto blq1_PJ1;
 struct P_objeto par1;
 struct P_objeto par2;
@@ -149,9 +157,7 @@ struct P_objeto shell5;
 struct P_objeto shell6;
 struct P_objeto shell7;
 struct P_objeto shell8;
-/* Objetos cursor del menu */
-struct P_objeto cursor;
-struct P_objeto cursorO;
+struct P_objeto par5;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -165,10 +171,23 @@ static void MX_USART6_UART_Init(void);
 uint8_t ColCheck(struct P_objeto ob1, struct P_objeto ob2);
 void Draw_Level_Background(uint8_t nivel);
 void transmitSonic(uint8_t nivel, uint8_t move, char event, char skin);
+uint8_t ColCheckj2(struct P_objeto o1, struct P_objeto o2);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void transmitSonic(uint8_t nivel, uint8_t move, char event, char skin){
+    char cadena[20];
+    sprintf(cadena, "%d,%d,%c,%c\r\n", nivel, move, event, skin);
+    HAL_UART_Transmit(&huart1, (uint8_t*)cadena, strlen(cadena), 200);
+    countAAA++;
+    if (countAAA==10){
+    	HAL_UART_Transmit(&huart2, (uint8_t*)cadena, strlen(cadena), 200);
+    	countAAA=0;
+    }
+
+}
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	{
 	    if (huart->Instance == USART6)
@@ -184,14 +203,20 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 	        HAL_UART_Receive_IT(&huart6, &rx_char6, 1);
 	    }
+	    // USART1 - Jugador 2
+	    if (huart->Instance == USART1)
+	    {
+	        if (rx_char == '\n') {
+	            bufferU1[idx] = '\0';
+	            idx = 0;
+	            newDataU1 = 1;
+	        } else {
+	            if (idx < sizeof(bufferU1) - 1)
+	                bufferU1[idx++] = rx_char;
+	        }
+	        HAL_UART_Receive_IT(&huart1, &rx_char, 1);
+	    }
 	}
-
-void transmitSonic(uint8_t nivel, uint8_t move, char event, char skin){
-    char cadena[20];
-    sprintf(cadena, "%d,%d,%c,%c\r\n", nivel, move, event, skin);
-    HAL_UART_Transmit(&huart1, (uint8_t*)cadena, strlen(cadena), 200);
-    HAL_UART_Transmit(&huart2, (uint8_t*)cadena, strlen(cadena), 200);
-}
 /* USER CODE END 0 */
 
 /**
@@ -202,203 +227,205 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	/* Posicion inicial del cursor en el menu */
-	cursor.px  = 112;
-	cursor.py  = 128;
-	cursor.w   = 16;
-	cursor.h   = 16;
-
-	cursorO.px = 112;
-	cursorO.py = 128;
-	cursorO.w  = 16;
-	cursorO.h  = 16;
+	// Cursor del menu
 
 	PJ1.px = 128;
-	PJ1.py = 208;
-	PJ1.w = 16;
-	PJ1.h = 16;
+		PJ1.py = 208;
+		PJ1.w = 16;
+		PJ1.h = 16;
 
 
-	PJ1o.px = 128;
-	PJ1o.py = 208;
-	PJ1o.w = 16;
-	PJ1o.h = 16;
+		PJ1o.px = 128;
+		PJ1o.py = 208;
+		PJ1o.w = 16;
+		PJ1o.h = 16;
 
-	blq1_PJ1.px = 32;
-	blq1_PJ1.py = 192;
-	blq1_PJ1.w = 64;
-	blq1_PJ1.h = 16;
+		blq1_PJ1.px = 32;
+		blq1_PJ1.py = 192;
+		blq1_PJ1.w = 64;
+		blq1_PJ1.h = 16;
 
-	blq2_PJ1.px = 64;
-	blq2_PJ1.py = 176;
-	blq2_PJ1.w = 64;
-	blq2_PJ1.h = 16;
+		blq2_PJ1.px = 64;
+		blq2_PJ1.py = 176;
+		blq2_PJ1.w = 64;
+		blq2_PJ1.h = 16;
 
-	blq3_PJ1.px = 64;
-	blq3_PJ1.py = 160;
-	blq3_PJ1.w = 16;
-	blq3_PJ1.h = 16;
+		blq3_PJ1.px = 64;
+		blq3_PJ1.py = 160;
+		blq3_PJ1.w = 16;
+		blq3_PJ1.h = 16;
 
-	blq4_PJ1.px = 32;
-	blq4_PJ1.py = 128;
-	blq4_PJ1.w = 16;
-	blq4_PJ1.h = 48;
+		blq4_PJ1.px = 32;
+		blq4_PJ1.py = 128;
+		blq4_PJ1.w = 16;
+		blq4_PJ1.h = 48;
 
-	blq5_PJ1.px = 48;
-	blq5_PJ1.py = 128;
-	blq5_PJ1.w = 16;
-	blq5_PJ1.h = 16;
+		blq5_PJ1.px = 48;
+		blq5_PJ1.py = 128;
+		blq5_PJ1.w = 16;
+		blq5_PJ1.h = 16;
 
-	blq6_PJ1.px = 80;
-	blq6_PJ1.py = 144;
-	blq6_PJ1.w = 48;
-	blq6_PJ1.h = 16;
+		blq6_PJ1.px = 80;
+		blq6_PJ1.py = 144;
+		blq6_PJ1.w = 48;
+		blq6_PJ1.h = 16;
 
-	blq7_PJ1.px = 112;
-	blq7_PJ1.py = 112;
-	blq7_PJ1.w = 16;
-	blq7_PJ1.h = 48;
+		blq7_PJ1.px = 112;
+		blq7_PJ1.py = 112;
+		blq7_PJ1.w = 16;
+		blq7_PJ1.h = 48;
 
-	blq8_PJ1.px = 64;
-	blq8_PJ1.py = 96;
-	blq8_PJ1.w = 16;
-	blq8_PJ1.h = 48;
+		blq8_PJ1.px = 64;
+		blq8_PJ1.py = 96;
+		blq8_PJ1.w = 16;
+		blq8_PJ1.h = 48;
 
-	blq9_PJ1.px = 32;
-	blq9_PJ1.py = 80;
-	blq9_PJ1.w = 16;
-	blq9_PJ1.h = 32;
+		blq9_PJ1.px = 32;
+		blq9_PJ1.py = 80;
+		blq9_PJ1.w = 16;
+		blq9_PJ1.h = 32;
 
-	blq10_PJ1.px = 48;
-	blq10_PJ1.py = 80;
-	blq10_PJ1.w = 16;
-	blq10_PJ1.h = 16;
+		blq10_PJ1.px = 48;
+		blq10_PJ1.py = 80;
+		blq10_PJ1.w = 16;
+		blq10_PJ1.h = 16;
 
-	blq11_PJ1.px = 80;
-	blq11_PJ1.py = 80;
-	blq11_PJ1.w = 16;
-	blq11_PJ1.h = 48;
+		blq11_PJ1.px = 80;
+		blq11_PJ1.py = 80;
+		blq11_PJ1.w = 16;
+		blq11_PJ1.h = 48;
 
-	blq12_PJ1.px = 96;
-	blq12_PJ1.py = 80;
-	blq12_PJ1.w = 32;
-	blq12_PJ1.h = 16;
+		blq12_PJ1.px = 96;
+		blq12_PJ1.py = 80;
+		blq12_PJ1.w = 32;
+		blq12_PJ1.h = 16;
 
-	blq13_PJ1.px = 112;
-	blq13_PJ1.py = 48;
-	blq13_PJ1.w = 16;
-	blq13_PJ1.h = 32;
+		blq13_PJ1.px = 112;
+		blq13_PJ1.py = 48;
+		blq13_PJ1.w = 16;
+		blq13_PJ1.h = 32;
 
-	blq14_PJ1.px = 128;
-	blq14_PJ1.py = 32;
-	blq14_PJ1.w = 16;
-	blq14_PJ1.h = 16;
+		blq14_PJ1.px = 128;
+		blq14_PJ1.py = 32;
+		blq14_PJ1.w = 16;
+		blq14_PJ1.h = 16;
 
-	blq15_PJ1.px = 32;
-	blq15_PJ1.py = 48;
-	blq15_PJ1.w = 64;
-	blq15_PJ1.h = 16;
+		blq15_PJ1.px = 32;
+		blq15_PJ1.py = 48;
+		blq15_PJ1.w = 64;
+		blq15_PJ1.h = 16;
 
-	blq16_PJ1.px = 32;
-	blq16_PJ1.py = 16;
-	blq16_PJ1.w = 80;
-	blq16_PJ1.h = 16;
+		blq16_PJ1.px = 32;
+		blq16_PJ1.py = 16;
+		blq16_PJ1.w = 80;
+		blq16_PJ1.h = 16;
 
-	blq17_PJ1.px = 80;
-	blq17_PJ1.py = 32;
-	blq17_PJ1.w = 16;
-	blq17_PJ1.h = 16;
+		blq17_PJ1.px = 80;
+		blq17_PJ1.py = 32;
+		blq17_PJ1.w = 16;
+		blq17_PJ1.h = 16;
 
-	par1.px = 0;
-	par1.py = 0;
-	par1.w = 144;
-	par1.h = 16;
+		par1.px = 0;
+		par1.py = 0;
+		par1.w = 144;
+		par1.h = 16;
 
-	par2.px = 0;
-	par2.py = 16;
-	par2.w = 16;
-	par2.h = 208;
+		par2.px = 0;
+		par2.py = 16;
+		par2.w = 16;
+		par2.h = 208;
 
-	par3.px = 0;
-	par3.py = 224;
-	par3.w = 144;
-	par3.h = 16;
+		par3.px = 0;
+		par3.py = 224;
+		par3.w = 144;
+		par3.h = 16;
 
-	par4.px = 144;
-	par4.py = 0;
-	par4.w = 32;
-	par4.h = 240;
+		par4.px = 144;
+		par4.py = 0;
+		par4.w = 32;
+		par4.h = 240;
 
-	star1.px = 128;
-	star1.py = 16;
-	star1.w = 16;
-	star1.h = 16;
-	//Lógica de nivel 2 y 3
-	llaveO.px = 16;  llaveO.py = 192; llaveO.w = 16;  llaveO.h = 16;
-	reja.px = 128;   reja.py = 192;   reja.w = 16;    reja.h = 16;
-	spike1.px = 96;  spike1.py = 16;  spike1.w = 16;  spike1.h = 16;
-	spike2.px = 32;  spike2.py = 64;  spike2.w = 16;  spike2.h = 16;
+		star1.px = 128;
+		star1.py = 16;
+		star1.w = 16;
+		star1.h = 16;
+		//Juagor 2 y menu
+		cursor.px = 112; cursor.py = 128; cursor.w = 16; cursor.h = 16;
+		cursorO.px = 112; cursorO.py = 128; cursorO.w = 16; cursorO.h = 16;
 
-	mushroom1.px = 128; mushroom1.py = 208; mushroom1.h = 128; mushroom1.w = 128;
+		// Jugador 2
+		j2.px = 288; j2.py = 208; j2.w = 16; j2.h = 16;
+		j2o.px = 288; j2o.py = 208; j2o.w = 16; j2o.h = 16;
 
-	shell1.px = 48;  shell1.py = 160; shell1.w = 16;  shell1.h = 16;
-	shell2.px = 80;  shell2.py = 176; shell2.w = 16;  shell2.h = 16;
-	shell3.px = 96;  shell3.py = 144; shell3.w = 16;  shell3.h = 16;
-	shell4.px = 64;  shell4.py = 128; shell4.w = 16;  shell4.h = 16;
-	shell5.px = 48;  shell5.py = 80;  shell5.w = 16;  shell5.h = 16;
-	shell6.px = 80;  shell6.py = 96;  shell6.w = 16;  shell6.h = 16;
-	shell7.px = 96;  shell7.py = 64;  shell7.w = 16;  shell7.h = 16;
-	shell8.px = 64;  shell8.py = 48;  shell8.w = 16;  shell8.h = 16;
+		// Paredes del lado derecho para j2
+		par5.px = 304; par5.py = 16; par5.w = 16; par5.h = 240;
 
-	// Bloques nivel 2
-	struct P_objeto blq18_PJ1; // declarar arriba en PV también
-	blq18_PJ1.px = 16;  blq18_PJ1.py = 16;  blq18_PJ1.w = 80;  blq18_PJ1.h = 16;
-	// blq19 ya existe como blq16 en el doc2, renombrar o agregar:
-	struct P_objeto blq19_PJ1;
-	blq19_PJ1.px = 32;  blq19_PJ1.py = 16;  blq19_PJ1.w = 80;  blq19_PJ1.h = 16;
+		//Lógica de nivel 2 y 3
+		llaveO.px = 16;  llaveO.py = 192; llaveO.w = 16;  llaveO.h = 16;
+		reja.px = 128;   reja.py = 192;   reja.w = 16;    reja.h = 16;
+		spike1.px = 96;  spike1.py = 16;  spike1.w = 16;  spike1.h = 16;
+		spike2.px = 32;  spike2.py = 64;  spike2.w = 16;  spike2.h = 16;
 
-	struct P_objeto blq20_PJ1;
-	blq20_PJ1.px = 48;  blq20_PJ1.py = 64;  blq20_PJ1.w = 64;  blq20_PJ1.h = 16;
+		mushroom1.px = 128; mushroom1.py = 208; mushroom1.h = 128; mushroom1.w = 128;
 
-	struct P_objeto blq21_PJ1;
-	blq21_PJ1.px = 32;  blq21_PJ1.py = 96;  blq21_PJ1.w = 112; blq21_PJ1.h = 32;
+		shell1.px = 48;  shell1.py = 160; shell1.w = 16;  shell1.h = 16;
+		shell2.px = 80;  shell2.py = 176; shell2.w = 16;  shell2.h = 16;
+		shell3.px = 96;  shell3.py = 144; shell3.w = 16;  shell3.h = 16;
+		shell4.px = 64;  shell4.py = 128; shell4.w = 16;  shell4.h = 16;
+		shell5.px = 48;  shell5.py = 80;  shell5.w = 16;  shell5.h = 16;
+		shell6.px = 80;  shell6.py = 96;  shell6.w = 16;  shell6.h = 16;
+		shell7.px = 96;  shell7.py = 64;  shell7.w = 16;  shell7.h = 16;
+		shell8.px = 64;  shell8.py = 48;  shell8.w = 16;  shell8.h = 16;
 
-	struct P_objeto blq22_PJ1;
-	blq22_PJ1.px = 16;  blq22_PJ1.py = 144; blq22_PJ1.w = 112; blq22_PJ1.h = 16;
+		// Bloques nivel 2
+		struct P_objeto blq18_PJ1; // declarar arriba en PV también
+		blq18_PJ1.px = 16;  blq18_PJ1.py = 16;  blq18_PJ1.w = 80;  blq18_PJ1.h = 16;
+		// blq19 ya existe como blq16 en el doc2, renombrar o agregar:
+		struct P_objeto blq19_PJ1;
+		blq19_PJ1.px = 32;  blq19_PJ1.py = 16;  blq19_PJ1.w = 80;  blq19_PJ1.h = 16;
 
-	struct P_objeto blq23_PJ1;
-	blq23_PJ1.px = 112; blq23_PJ1.py = 192; blq23_PJ1.w = 16;  blq23_PJ1.h = 32;
+		struct P_objeto blq20_PJ1;
+		blq20_PJ1.px = 48;  blq20_PJ1.py = 64;  blq20_PJ1.w = 64;  blq20_PJ1.h = 16;
 
-	// Bloques nivel 3
-	struct P_objeto blq24_PJ1;
-	blq24_PJ1.px = 16;  blq24_PJ1.py = 16;  blq24_PJ1.w = 32;  blq24_PJ1.h = 208;
+		struct P_objeto blq21_PJ1;
+		blq21_PJ1.px = 32;  blq21_PJ1.py = 96;  blq21_PJ1.w = 112; blq21_PJ1.h = 32;
 
-	struct P_objeto blq25_PJ1;
-	blq25_PJ1.px = 112; blq25_PJ1.py = 16;  blq25_PJ1.w = 32;  blq25_PJ1.h = 208;
+		struct P_objeto blq22_PJ1;
+		blq22_PJ1.px = 16;  blq22_PJ1.py = 144; blq22_PJ1.w = 112; blq22_PJ1.h = 16;
 
-	struct P_objeto blq26_PJ1;
-	blq26_PJ1.px = 48;  blq26_PJ1.py = 208; blq26_PJ1.w = 16;  blq26_PJ1.h = 16;
+		struct P_objeto blq23_PJ1;
+		blq23_PJ1.px = 112; blq23_PJ1.py = 192; blq23_PJ1.w = 16;  blq23_PJ1.h = 32;
 
-	struct P_objeto blq27_PJ1;
-	blq27_PJ1.px = 96;  blq27_PJ1.py = 208; blq27_PJ1.w = 16;  blq27_PJ1.h = 16;
+		// Bloques nivel 3
+		struct P_objeto blq24_PJ1;
+		blq24_PJ1.px = 16;  blq24_PJ1.py = 16;  blq24_PJ1.w = 32;  blq24_PJ1.h = 208;
 
-	struct P_objeto blq28_PJ1;
-	blq28_PJ1.px = 64;  blq28_PJ1.py = 144; blq28_PJ1.w = 32;  blq28_PJ1.h = 32;
+		struct P_objeto blq25_PJ1;
+		blq25_PJ1.px = 112; blq25_PJ1.py = 16;  blq25_PJ1.w = 32;  blq25_PJ1.h = 208;
 
-	struct P_objeto blq29_PJ1;
-	blq29_PJ1.px = 64;  blq29_PJ1.py = 64;  blq29_PJ1.w = 32;  blq29_PJ1.h = 32;
+		struct P_objeto blq26_PJ1;
+		blq26_PJ1.px = 48;  blq26_PJ1.py = 208; blq26_PJ1.w = 16;  blq26_PJ1.h = 16;
 
-	struct P_objeto blq30_PJ1;
-	blq30_PJ1.px = 48;  blq30_PJ1.py = 112; blq30_PJ1.w = 16;  blq30_PJ1.h = 16;
+		struct P_objeto blq27_PJ1;
+		blq27_PJ1.px = 96;  blq27_PJ1.py = 208; blq27_PJ1.w = 16;  blq27_PJ1.h = 16;
 
-	struct P_objeto blq31_PJ1;
-	blq31_PJ1.px = 96;  blq31_PJ1.py = 112; blq31_PJ1.w = 16;  blq31_PJ1.h = 16;
+		struct P_objeto blq28_PJ1;
+		blq28_PJ1.px = 64;  blq28_PJ1.py = 144; blq28_PJ1.w = 32;  blq28_PJ1.h = 32;
 
-	struct P_objeto blq32_PJ1;
-	blq32_PJ1.px = 48;  blq32_PJ1.py = 16;  blq32_PJ1.w = 16;  blq32_PJ1.h = 32;
+		struct P_objeto blq29_PJ1;
+		blq29_PJ1.px = 64;  blq29_PJ1.py = 64;  blq29_PJ1.w = 32;  blq29_PJ1.h = 32;
 
-	struct P_objeto blq33_PJ1;
-	blq33_PJ1.px = 96;  blq33_PJ1.py = 16;  blq33_PJ1.w = 16;  blq33_PJ1.h = 32;
+		struct P_objeto blq30_PJ1;
+		blq30_PJ1.px = 48;  blq30_PJ1.py = 112; blq30_PJ1.w = 16;  blq30_PJ1.h = 16;
+
+		struct P_objeto blq31_PJ1;
+		blq31_PJ1.px = 96;  blq31_PJ1.py = 112; blq31_PJ1.w = 16;  blq31_PJ1.h = 16;
+
+		struct P_objeto blq32_PJ1;
+		blq32_PJ1.px = 48;  blq32_PJ1.py = 16;  blq32_PJ1.w = 16;  blq32_PJ1.h = 32;
+
+		struct P_objeto blq33_PJ1;
+		blq33_PJ1.px = 96;  blq33_PJ1.py = 16;  blq33_PJ1.w = 16;  blq33_PJ1.h = 32;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -424,401 +451,846 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART6_UART_Init();
   MX_FATFS_Init();
-
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_IT(&huart2, &rxByte, 1);
   HAL_UART_Receive_IT(&huart1, &rx_char, 1);
   HAL_UART_Receive_IT(&huart6, &rx_char6, 1);
-  Draw_Level_Background(nivelA);
-  /* USER CODE END 2 */
 
+
+
+  LCD_Init();
+
+  transmitSonic(0, 0, 'N', 0);
+
+  Draw_Level_Background(nivelA);  // Mostrar el menu nómas inciar
+  /* USER CODE END 2 */
   //LCD_Init();
  // LCD_Clear(0x0000);
   // Ahora dibujar el fondo desde SD ya leída, o bitmap en flash como fallback
   //LCD_Bitmap(112, 224, 16, 16, zero1);
-  // Valores anteriores para detectar cambios
-  uint8_t lastNivel  = 0;
-  uint8_t lastMove   = 0;
-  char    lastEvent  = 'N';
-  uint8_t moveFlag   = 0;
-  char    eventFlag  = 'N';
+  // Justo antes del while, define esta etiqueta de reset
+  // Al final del bloque de boton B existente, cambia el goto por una llamada
+
+  reset_menu:
+      Score1    = 0;
+      Score2    = 0;
+      llaveGet  = 0;
+      llaveGet2 = 0;
+      counterT  = 0;
+      dir       = 0;
+      GAMEWIN   = 0;
+      moveFlag  = 0;
+      eventFlag = 'N';
+      lastNivel = 0;
+      lastMove  = 0;
+      lastEvent = 'N';
+      sChange_F1 = 0;
+      sChange_F2 = 0;
+      PJ1.px = 128; PJ1.py = 208;
+      PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+      j2.px = 288; j2.py = 208;
+      j2o.px = j2.px; j2o.py = j2.py;
+      spike1.px = 96;  spike1.py = 16;
+      spike2.px = 32;  spike2.py = 64;
+      shell1.px = 48;  shell1.py = 160;
+      shell2.px = 80;  shell2.py = 176;
+      shell3.px = 96;  shell3.py = 144;
+      shell4.px = 64;  shell4.py = 128;
+      shell5.px = 48;  shell5.py = 80;
+      shell6.px = 80;  shell6.py = 96;
+      shell7.px = 96;  shell7.py = 64;
+      shell8.px = 64;  shell8.py = 48;
+      cursor.px  = 112; cursor.py  = 128;
+      cursorO.px = 112; cursorO.py = 128;
+      plyrCount  = 0;
+      nivelA = 0;
+      credit = 0;
+      transmitSonic(0, 0, 'N', '0');
+      Draw_Level_Background(0);
+
+
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  // ============================================================
+	  // CONTROLES
+	  // ============================================================
+	  if (GAMEWIN != 0){
+	        // Esperar boton B de cualquier jugador para volver al menu
+	        if (newDataU6)
+	        {
+	            newDataU6 = 0;
+	            int U, R, L, D, X, A, B, Y;
+	            sscanf(bufferU6, "P1:U%dR%dL%dD%dX%dA%dB%dY%d",
+	                             &U, &R, &L, &D, &X, &A, &B, &Y);
+	            if (B == 1) { GAMEWIN = 0; goto reset_menu; }
+	        }
+	        continue;  // no ejecutar nada mas del while
+	    }
 
 
-	  if (newDataU6) {
-	      newDataU6 = 0;
-	      char dbgU6[30];
-		  sprintf(dbgU6, "U6: %s\r\n", bufferU6);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)dbgU6, strlen(dbgU6), 100);
-	      int U, R, L, D, X, A, B, Y;
-	      sscanf(bufferU6, "P1:U%dR%dL%dD%dX%dA%dB%dY%d",
-	             &U, &R, &L, &D, &X, &A, &B, &Y);
+      if (newDataU6)
+      {
+          newDataU6 = 0;
+          int U, R, L, D, X, A, B, Y;
+          sscanf(bufferU6, "P1:U%dR%dL%dD%dX%dA%dB%dY%d",
+                           &U, &R, &L, &D, &X, &A, &B, &Y);
 
-	      if (nivelA==0 && credit==0){
-	    	  if (D == 1) { cursor.py = cursor.py + 16; }
-			  if (U == 1) { cursor.py = cursor.py - 16; }
+          //Bloque para regresar al menu principal con el control
 
-			  /* Limite superior e inferior del cursor */
+          if (B == 1) { GAMEWIN = 0; goto reset_menu; }
+
+          if (nivelA==0 && credit==0){
+        	  // Mover cursor arriba/abajo
+			  if (D == 1) { cursor.py += 16; }
+			  if (U == 1) { cursor.py -= 16; }
+
+			  // Wrap del cursor entre las 3 opciones (py 128, 144, 160)
 			  if (cursor.py > 160) { cursor.py = 128; }
 			  if (cursor.py < 128) { cursor.py = 160; }
 
+			  // Confirmar seleccion con boton X
 			  if (X == 1) { F_Start = 1; }
+
 			  M1_F = 1;
-	      }
-	      else if (credit==0){
-	    	  // Flechas — movimiento (
-			  if (D == 1) { PJ1.py = PJ1.py + 16; }  // abajo
-			  if (U == 1) { PJ1.py = PJ1.py - 16; }  // arriba
-			  if (L == 1) { PJ1.px = PJ1.px - 16; }  // izquierda
-			  if (R == 1) { PJ1.px = PJ1.px + 16; }  // derecha
-			  btnX = X; btnA = A; btnB = B; btnY = Y;
-	      }
+          }
+          else if (credit == 0 && nivelA != 0)
+		  {
+			  // Movimiento PJ1 en niveles (lo dejaremos aqui para después)
+			  if (D == 1) { PJ1.py += 16; }
+			  if (U == 1) { PJ1.py -= 16; }
+			  if (L == 1) { PJ1.px -= 16; }
+			  if (R == 1) { PJ1.px += 16; }
 
-	  }
+			  // Colisiones y logica de niveles van aqui despues
+			  // ...
 
+			  moveFlag = 1;
+		  }
 
+     }
 
-	  //Nueva lógica de niveles implementadas.
+      // ============================================================
+      // Segundo PLayer
+      // ============================================================
 
-	  if (PJ1o.py != PJ1.py || PJ1o.px != PJ1.px) {
-	      int8_t coli = 1;
-	      uint8_t coliW = 1;
-	      moveFlag=1;
-	      if (nivelA == 1)
-	      {
-	          switch (PJ1.py)
-	          {
-	          case 224: coli &= ColCheck(PJ1, par3); break;
-	          case 208:
-	          case 192: coli &= ColCheck(PJ1, blq1_PJ1); break;
-	          case 176: coli &= ColCheck(PJ1, blq2_PJ1); break;
-	          case 160:
-	              coli &= ColCheck(PJ1, blq3_PJ1);
-	              coli &= ColCheck(PJ1, blq4_PJ1); break;
-	          case 144:
-	              coli &= ColCheck(PJ1, blq4_PJ1);
-	              coli &= ColCheck(PJ1, blq6_PJ1); break;
-	          case 128:
-	              coli &= ColCheck(PJ1, blq4_PJ1);
-	              coli &= ColCheck(PJ1, blq5_PJ1); break;
-	          case 112:
-	              coli &= ColCheck(PJ1, blq7_PJ1);
-	              coli &= ColCheck(PJ1, blq11_PJ1); break;
-	          case 96:
-	              coli &= ColCheck(PJ1, blq9_PJ1);
-	              coli &= ColCheck(PJ1, blq11_PJ1); break;
-	          case 80:
-	              coli &= ColCheck(PJ1, blq9_PJ1);
-	              coli &= ColCheck(PJ1, blq10_PJ1);
-	              coli &= ColCheck(PJ1, blq11_PJ1);
-	              coli &= ColCheck(PJ1, blq12_PJ1); break;
-	          case 64:
-	              coli &= ColCheck(PJ1, blq11_PJ1);
-	              coli &= ColCheck(PJ1, blq13_PJ1); break;
-	          case 48:
-	              coli &= ColCheck(PJ1, blq13_PJ1);
-	              coli &= ColCheck(PJ1, blq15_PJ1); break;
-	          case 32:
-	              coli &= ColCheck(PJ1, blq14_PJ1);
-	              coli &= ColCheck(PJ1, blq17_PJ1); break;
-	          case 16:
-	              coli &= ColCheck(PJ1, blq16_PJ1);
-	              coliW &= ColCheck(PJ1, star1); break;
-	          case 0: coli &= ColCheck(PJ1, par1); break;
-	          }
-	      }
-	      else if (nivelA == 2)
-	      {
-	          uint8_t coliK = 1;
-	          switch (PJ1.py)
-	          {
-	          case 224: coli &= ColCheck(PJ1, par3); break;
-	          case 208:
-	              coli &= ColCheck(PJ1, blq23_PJ1);
-	              coliW &= ColCheck(PJ1, mushroom1);
-	          case 192:
-	              coli &= ColCheck(PJ1, blq23_PJ1);
-	              coliK &= ColCheck(PJ1, llaveO);
-	              if (llaveGet == 0) coli &= ColCheck(PJ1, reja);
-	              break;
-	          case 176:
-	          case 160:
-	          case 144: coli &= ColCheck(PJ1, blq22_PJ1); break;
-	          case 128:
-	          case 112:
-	          case 96:  coli &= ColCheck(PJ1, blq21_PJ1); break;
-	          case 80:  coli &= ColCheck(PJ1, spike2);
-	          case 64:
-	              coli &= ColCheck(PJ1, blq20_PJ1);
-	              coli &= ColCheck(PJ1, spike2); break;
-	          case 48:  coli &= ColCheck(PJ1, blq19_PJ1); break;
-	          case 32:  coli &= ColCheck(PJ1, spike1);
-	          case 16:
-	              coli &= ColCheck(PJ1, blq18_PJ1);
-	              coli &= ColCheck(PJ1, spike1);
-	          case 0:   coli &= ColCheck(PJ1, par1); break;
-	          }
-	          if (coliK == 0) llaveGet = 1;
-	      }
-	      else if (nivelA == 3)
-	      {
-	          uint8_t coliD = 1;
-	          switch (PJ1.py)
-	          {
-	          case 224: coli &= ColCheck(PJ1, par3); break;
-	          case 208:
-	              coli &= ColCheck(PJ1, blq26_PJ1);
-	              coli &= ColCheck(PJ1, blq27_PJ1);
-	          case 192:
-	          case 176:
-	              coliD &= ColCheck(PJ1, shell1); coliD &= ColCheck(PJ1, shell2);
-	              coliD &= ColCheck(PJ1, shell3); coliD &= ColCheck(PJ1, shell4); break;
-	          case 160:
-	          case 144:
-	              coli &= ColCheck(PJ1, blq28_PJ1);
-	              coliD &= ColCheck(PJ1, shell1); coliD &= ColCheck(PJ1, shell2);
-	              coliD &= ColCheck(PJ1, shell3); coliD &= ColCheck(PJ1, shell4); break;
-	          case 128:
-	              coliD &= ColCheck(PJ1, shell1); coliD &= ColCheck(PJ1, shell2);
-	              coliD &= ColCheck(PJ1, shell3); coliD &= ColCheck(PJ1, shell4); break;
-	          case 112:
-	              coli &= ColCheck(PJ1, blq30_PJ1);
-	              coli &= ColCheck(PJ1, blq31_PJ1); break;
-	          case 96:
-	              coliD &= ColCheck(PJ1, shell5); coliD &= ColCheck(PJ1, shell6);
-	              coliD &= ColCheck(PJ1, shell7); coliD &= ColCheck(PJ1, shell8); break;
-	          case 80:
-	              coli &= ColCheck(PJ1, blq29_PJ1);
-	              coliD &= ColCheck(PJ1, shell5); coliD &= ColCheck(PJ1, shell6);
-	              coliD &= ColCheck(PJ1, shell7); coliD &= ColCheck(PJ1, shell8); break;
-	          case 64:
-	              coli &= ColCheck(PJ1, blq29_PJ1);
-	              coliD &= ColCheck(PJ1, shell5); coliD &= ColCheck(PJ1, shell6);
-	              coliD &= ColCheck(PJ1, shell7); coliD &= ColCheck(PJ1, shell8); break;
-	          case 48:
-	              coliD &= ColCheck(PJ1, shell5); coliD &= ColCheck(PJ1, shell6);
-	              coliD &= ColCheck(PJ1, shell7); coliD &= ColCheck(PJ1, shell8); break;
-	          case 32:
-	          case 16:
-	              coli &= ColCheck(PJ1, blq32_PJ1);
-	              coli &= ColCheck(PJ1, blq33_PJ1); break;
-	          case 0: coli &= ColCheck(PJ1, par1); break;
-	          }
-	          coli &= ColCheck(PJ1, blq24_PJ1);
-	          coli &= ColCheck(PJ1, blq25_PJ1);
-	          if (coliD == 0) {
-	              PJ1.px = 64; PJ1.py = 208;
-	              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
-	          }
-	      }
+      if (newDataU1)
+	  {
+              newDataU1 = 0;
 
-	      coli &= ColCheck(PJ1, par2);
-	      coli &= ColCheck(PJ1, par4);
+              int U2, R2, L2, D2, X2, A2, B2, Y2;
+              sscanf(bufferU1, "P2:U%dR%dL%dD%dX%dA%dB%dY%d",
+                               &U2, &R2, &L2, &D2, &X2, &A2, &B2, &Y2);
 
-	      if (coli) { M1_F = 1; }
-	      else { PJ1.px = PJ1o.px; PJ1.py = PJ1o.py; eventFlag = 'K';}
+              if (nivelA != 0 && credit == 0)
+              {
+                  if (D2 == 1) { j2.py += 16; }
+                  if (U2 == 1) { j2.py -= 16; }
+                  if (L2 == 1) { j2.px -= 16; }
+                  if (R2 == 1) { j2.px += 16; }
+              }
 
-	      if (coliW == 0) { sChange_F1 = 1; Score1++; }
-	  }
-    /* USER CODE END WHILE */
+              uint8_t coli2  = 1;
+              uint8_t coliW2 = 1;
+              uint8_t coliK2 = 1;
 
-    /* USER CODE BEGIN 3 */
+              if (nivelA == 1)
+              {
+                  switch (j2.py)
+                  {
+                  case 224: coli2 &= ColCheckj2(j2, par3); break;
+                  case 208:
+                  case 192: coli2 &= ColCheckj2(j2, blq1_PJ1); break;
+                  case 176: coli2 &= ColCheckj2(j2, blq2_PJ1); break;
+                  case 160:
+                      coli2 &= ColCheckj2(j2, blq3_PJ1);
+                      coli2 &= ColCheckj2(j2, blq4_PJ1); break;
+                  case 144:
+                      coli2 &= ColCheckj2(j2, blq4_PJ1);
+                      coli2 &= ColCheckj2(j2, blq6_PJ1); break;
+                  case 128:
+                      coli2 &= ColCheckj2(j2, blq4_PJ1);
+                      coli2 &= ColCheckj2(j2, blq5_PJ1); break;
+                  case 112:
+                      coli2 &= ColCheckj2(j2, blq7_PJ1);
+                      coli2 &= ColCheckj2(j2, blq11_PJ1); break;
+                  case 96:
+                      coli2 &= ColCheckj2(j2, blq9_PJ1);
+                      coli2 &= ColCheckj2(j2, blq11_PJ1); break;
+                  case 80:
+                      coli2 &= ColCheckj2(j2, blq9_PJ1);
+                      coli2 &= ColCheckj2(j2, blq10_PJ1);
+                      coli2 &= ColCheckj2(j2, blq11_PJ1);
+                      coli2 &= ColCheckj2(j2, blq12_PJ1); break;
+                  case 64:
+                      coli2 &= ColCheckj2(j2, blq11_PJ1);
+                      coli2 &= ColCheckj2(j2, blq13_PJ1); break;
+                  case 48:
+                      coli2 &= ColCheckj2(j2, blq13_PJ1);
+                      coli2 &= ColCheckj2(j2, blq15_PJ1); break;
+                  case 32:
+                      coli2 &= ColCheckj2(j2, blq14_PJ1);
+                      coli2 &= ColCheckj2(j2, blq17_PJ1); break;
+                  case 16:
+                      coli2 &= ColCheckj2(j2, blq16_PJ1);
+                      coliW2 &= ColCheckj2(j2, star1); break;
+                  case 0: coli2 &= ColCheckj2(j2, par1); break;
+                  }
+              }
+              else if (nivelA == 2)
+              {
+                  switch (j2.py)
+                  {
+                  case 224: coli2 &= ColCheckj2(j2, par3); break;
+                  case 208:
+                      coli2  &= ColCheckj2(j2, blq23_PJ1);
+                      coliW2 &= ColCheckj2(j2, mushroom1);
+                  case 192:
+                      coli2  &= ColCheckj2(j2, blq23_PJ1);
+                      coliK2 &= ColCheckj2(j2, llaveO);
+                      if (llaveGet2 == 0) coli2 &= ColCheckj2(j2, reja);
+                      break;
+                  case 176:
+                  case 160:
+                  case 144: coli2 &= ColCheckj2(j2, blq22_PJ1); break;
+                  case 128:
+                  case 112:
+                  case 96:  coli2 &= ColCheckj2(j2, blq21_PJ1); break;
+                  case 80:  coli2 &= ColCheckj2(j2, spike2);
+                  case 64:
+                      coli2 &= ColCheckj2(j2, blq20_PJ1);
+                      coli2 &= ColCheckj2(j2, spike2); break;
+                  case 48:  coli2 &= ColCheckj2(j2, blq19_PJ1); break;
+                  case 32:  coli2 &= ColCheckj2(j2, spike1);
+                  case 16:
+                      coli2 &= ColCheckj2(j2, blq18_PJ1);
+                      coli2 &= ColCheckj2(j2, spike1);
+                  case 0:   coli2 &= ColCheckj2(j2, par1); break;
+                  }
+                  if (coliK2 == 0) {llaveGet2 = 1;}
+              }
+              else if (nivelA == 3)
+              {
+                  uint8_t coliD2 = 1;
+                  switch (j2.py)
+                  {
+                  case 224: coli2 &= ColCheckj2(j2, par3); break;
+                  case 208:
+                      coli2 &= ColCheckj2(j2, blq26_PJ1);
+                      coli2 &= ColCheckj2(j2, blq27_PJ1);
+                  case 192:
+                  case 176:
+                      coliD2 &= ColCheckj2(j2, shell1); coliD2 &= ColCheckj2(j2, shell2);
+                      coliD2 &= ColCheckj2(j2, shell3); coliD2 &= ColCheckj2(j2, shell4); break;
+                  case 160:
+                  case 144:
+                      coli2  &= ColCheckj2(j2, blq28_PJ1);
+                      coliD2 &= ColCheckj2(j2, shell1); coliD2 &= ColCheckj2(j2, shell2);
+                      coliD2 &= ColCheckj2(j2, shell3); coliD2 &= ColCheckj2(j2, shell4); break;
+                  case 128:
+                      coliD2 &= ColCheckj2(j2, shell1); coliD2 &= ColCheckj2(j2, shell2);
+                      coliD2 &= ColCheckj2(j2, shell3); coliD2 &= ColCheckj2(j2, shell4); break;
+                  case 112:
+                      coli2 &= ColCheckj2(j2, blq30_PJ1);
+                      coli2 &= ColCheckj2(j2, blq31_PJ1); break;
+                  case 96:
+                      coliD2 &= ColCheckj2(j2, shell5); coliD2 &= ColCheckj2(j2, shell6);
+                      coliD2 &= ColCheckj2(j2, shell7); coliD2 &= ColCheckj2(j2, shell8); break;
+                  case 80:
+                      coli2  &= ColCheckj2(j2, blq29_PJ1);
+                      coliD2 &= ColCheckj2(j2, shell5); coliD2 &= ColCheckj2(j2, shell6);
+                      coliD2 &= ColCheckj2(j2, shell7); coliD2 &= ColCheckj2(j2, shell8); break;
+                  case 64:
+                      coli2  &= ColCheckj2(j2, blq29_PJ1);
+                      coliD2 &= ColCheckj2(j2, shell5); coliD2 &= ColCheckj2(j2, shell6);
+                      coliD2 &= ColCheckj2(j2, shell7); coliD2 &= ColCheckj2(j2, shell8); break;
+                  case 48:
+                      coliD2 &= ColCheckj2(j2, shell5); coliD2 &= ColCheckj2(j2, shell6);
+                      coliD2 &= ColCheckj2(j2, shell7); coliD2 &= ColCheckj2(j2, shell8); break;
+                  case 32:
+                  case 16:
+                      coli2 &= ColCheckj2(j2, blq32_PJ1);
+                      coli2 &= ColCheckj2(j2, blq33_PJ1); break;
+                  case 0: coli2 &= ColCheckj2(j2, par1); break;
+                  }
+                  coli2 &= ColCheckj2(j2, blq24_PJ1);
+                  coli2 &= ColCheckj2(j2, blq25_PJ1);
 
-	  /* USER CODE BEGIN 3 */
+                  if (coliD2 == 0)
+                  {
+                      j2.px = 244; j2.py = 208;
+                      j2o.px = j2.px; j2o.py = j2.py;
+                      moveFlag = 0;
+					  eventFlag = 'K';
+					  transmitSonic(nivelA, moveFlag, eventFlag, '1');
+                  }
+              }
 
-	  /* Render segun estado del juego */
-	  if (nivelA == 0 && credit == 0) {
-	      /* Cursor en menu */
-	      LCD_Bitmap(cursor.px, cursor.py, 16, 16, cursorS);
-	  } else if (credit == 0) {
-	      /* Jugador en nivel activo */
-	      LCD_Sprite(PJ1.px, PJ1.py, 16, 16, slime, 1, 1, 0, 0);
-	  }
+              coli2 &= ColCheck(j2, par5);
+              coli2 &= ColCheck(j2, par4);
 
-	  /* Borrado de posicion anterior */
-	  if (M1_F == 1) {
-	      if (nivelA == 0 && credit == 0) {
-	          /* Borrar cursor anterior */
-	          LCD_Bitmap(cursorO.px, cursorO.py, 16, 16, cursorT);
-	          cursorO.px = cursor.px;
-	          cursorO.py = cursor.py;
-	          M1_F = 0;
-	      } else {
-	          /* Borrar jugador anterior */
-	          LCD_Bitmap(PJ1o.px, PJ1o.py, 16, 16, tile);
-	          PJ1o.px = PJ1.px;
-	          PJ1o.py = PJ1.py;
-	          M1_F = 0;
-	      }
-	  }
+              // Revertir posicion si colisiona
+              if (coli2 == 0)
+              {
+                  j2.px = j2o.px;
+                  j2.py = j2o.py;
+              }
+              else { M2_F = 1; }
 
-	  /* Seleccion en el menu */
-	  if (F_Start == 1) {
-	      if (cursor.py == 128) {
-	          /* Opcion 1 jugador */
-	          plyrCount = 1;
-	          nivelA = 1;
-	          Draw_Level_Background(nivelA);
-	          LCD_Bitmap(112, 224, 16, 16, zero1);
-	          transmitSonic(nivelA, 0, 'S', '0');
-	      } else if (cursor.py == 144) {
-	          /* Opcion 2 jugadores */
-	          plyrCount = 2;
-	          nivelA = 1;
-	          Draw_Level_Background(nivelA);
-	          transmitSonic(nivelA, 0, 'S', '0');
-	      } else {
-	          /* Opcion creditos */
-	          credit = 1;
-	          Draw_Level_Background(4);
-	      }
-	      F_Start = 0;
-	  }
-
-	  /* Contador pantalla de creditos */
-	  if (credit > 0) {
-	      credit++;
-	      if (credit == 255) {
-	          credit = 0;
-	          nivelA = 0;
-	          Draw_Level_Background(0);
-	      }
-	  }
-
-	  /* Cambio de nivel al completar estrella */
-	  if (sChange_F1 == 1) {
-	      switch (Score1) {
-	      case 1:
-	          nivelA = 2;
-	          Draw_Level_Background(nivelA);
-	          LCD_Bitmap(112, 224, 16, 16, uno1);
-	          LCD_Bitmap(llaveO.px, llaveO.py, 16, 16, llave);
-	          LCD_Bitmap(spike1.px, spike1.py, 16, 16, spikeS);
-	          LCD_Bitmap(spike2.px, spike2.py, 16, 16, spikeS);
-	          PJ1.px = 16;  PJ1.py = 32;
-	          PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
-	          llaveGet = 0;
-	          transmitSonic(nivelA, 0, 'S', '0');
-	          moveFlag = 2;
-	          break;
-	      case 2:
-	          nivelA = 3;
-	          Draw_Level_Background(nivelA);
-	          LCD_Bitmap(112, 224, 16, 16, dos1);
-	          PJ1.px = 64;  PJ1.py = 208;
-	          PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
-	          dir = 0;
-	          counterT = 0;
-	          transmitSonic(nivelA, 0, 'S', '0');
-	          moveFlag = 2;
-	          break;
-	      }
-	      sChange_F1 = 0;
-	  }
-
-	  /* Enemigos nivel 2 - spikes */
-	  if (nivelA == 2) {
-	      counterT++;
-	      if (counterT == 150) {
-	          uint8_t coli = 1;
-	          if (spike1.py == 16) {
-	              LCD_Bitmap(spike1.px, spike1.py, 16, 16, tile);
-	              LCD_Bitmap(spike2.px, spike2.py, 16, 16, tile);
-	              spike1.py += 16; spike2.py += 16;
-	          } else {
-	              LCD_Bitmap(spike1.px, spike1.py, 16, 16, tile);
-	              LCD_Bitmap(spike2.px, spike2.py, 16, 16, tile);
-	              spike1.py -= 16; spike2.py -= 16;
-	          }
-	          LCD_Bitmap(spike1.px, spike1.py, 16, 16, spikeS);
-	          LCD_Bitmap(spike2.px, spike2.py, 16, 16, spikeS);
-	          coli &= ColCheck(PJ1, spike1);
-	          coli &= ColCheck(PJ1, spike2);
-	          if (coli == 0) {
-	              PJ1.px = 16; PJ1.py = 32;
-	              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
-	              moveFlag = 2;
-	              transmitSonic(nivelA, 0, 'M', '0');
-	          }
-	          counterT = 0;
-	      }
-	  }
-	  /* Enemigos nivel 3 - shells */
-	  else if (nivelA == 3) {
-	      counterT++;
-	      if (counterT == 250) {
-	          LCD_Bitmap(shell1.px,shell1.py,16,16,tile); LCD_Bitmap(shell2.px,shell2.py,16,16,tile);
-	          LCD_Bitmap(shell3.px,shell3.py,16,16,tile); LCD_Bitmap(shell4.px,shell4.py,16,16,tile);
-	          LCD_Bitmap(shell5.px,shell5.py,16,16,tile); LCD_Bitmap(shell6.px,shell6.py,16,16,tile);
-	          LCD_Bitmap(shell7.px,shell7.py,16,16,tile); LCD_Bitmap(shell8.px,shell8.py,16,16,tile);
-	          switch (dir) {
-	          case 0:
-	              shell1.py-=16; shell2.px-=16; shell3.py+=16; shell4.px+=16;
-	              shell5.py-=16; shell6.px-=16; shell7.py+=16; shell8.px+=16;
-	              if (shell1.py == 128) dir = 1;
-	              break;
-	          case 1:
-	              shell1.px+=16; shell2.py-=16; shell3.px-=16; shell4.py+=16;
-	              shell5.px+=16; shell6.py-=16; shell7.px-=16; shell8.py+=16;
-	              if (shell1.px == 96) dir = 2;
-	              break;
-	          case 2:
-	              shell1.py+=16; shell2.px+=16; shell3.py-=16; shell4.px-=16;
-	              shell5.py+=16; shell6.px+=16; shell7.py-=16; shell8.px-=16;
-	              if (shell1.py == 176) dir = 3;
-	              break;
-	          case 3:
-	              shell1.px-=16; shell2.py+=16; shell3.px+=16; shell4.py-=16;
-	              shell5.px-=16; shell6.py+=16; shell7.px+=16; shell8.py-=16;
-	              if (shell1.px == 48) dir = 0;
-	              break;
-	          }
-	          LCD_Bitmap(shell1.px,shell1.py,16,16,shellS); LCD_Bitmap(shell2.px,shell2.py,16,16,shellS);
-	          LCD_Bitmap(shell3.px,shell3.py,16,16,shellS); LCD_Bitmap(shell4.px,shell4.py,16,16,shellS);
-	          LCD_Bitmap(shell5.px,shell5.py,16,16,shellS); LCD_Bitmap(shell6.px,shell6.py,16,16,shellS);
-	          LCD_Bitmap(shell7.px,shell7.py,16,16,shellS); LCD_Bitmap(shell8.px,shell8.py,16,16,shellS);
-	          uint8_t coliD = 1;
-	          coliD &= ColCheck(PJ1,shell1); coliD &= ColCheck(PJ1,shell2);
-	          coliD &= ColCheck(PJ1,shell3); coliD &= ColCheck(PJ1,shell4);
-	          coliD &= ColCheck(PJ1,shell5); coliD &= ColCheck(PJ1,shell6);
-	          coliD &= ColCheck(PJ1,shell7); coliD &= ColCheck(PJ1,shell8);
-	          if (coliD == 0) {
-	              PJ1.px = 64; PJ1.py = 208;
-	              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
-	              moveFlag = 2;
-	              transmitSonic(nivelA, moveFlag, 'M', '0');
-	          }
-	          counterT = 0;
-	      }
-	  }
-
-	  /* Transmision de estado al modulo Sonic */
-	  if (moveFlag != 2) {
-	      if (nivelA != lastNivel || moveFlag != lastMove || eventFlag != lastEvent) {
-	          transmitSonic(nivelA, moveFlag, eventFlag, '0');
-	          lastNivel  = nivelA;
-	          lastMove   = moveFlag;
-	          lastEvent  = eventFlag;
-	      }
-	      moveFlag  = 0;
-	      eventFlag = 'N';
-	  } else {
-	      /* Evento importante ya transmitido, solo resetear */
-	      moveFlag  = 0;
-	      eventFlag = 'N';
-	      lastEvent = 'N';
-	  }
-
-	}
+              if (coliW2 == 0) { sChange_F2 = 1; Score2++; }
+          }
 
 
-  /* USER CODE END 3 */
+
+      // ============================================================
+      // RENDER MENU
+      // ============================================================
+      if (nivelA == 0 && credit == 0)
+      {
+          // Dibujar cursor en posicion actual
+          LCD_Sprite(cursor.px, cursor.py, 16, 16, slime, 1, 1, 0, 0);
+
+          // Borrar posicion anterior del cursor
+          if (M1_F == 1)
+          {
+              LCD_Bitmap(cursorO.px, cursorO.py, 16, 16, cursorT);
+              cursorO.px = cursor.px;
+              cursorO.py = cursor.py;
+              M1_F = 0;
+          }
+      }
+
+      // ============================================================
+      // SELECCION DE MENU
+      // ============================================================
+      if (F_Start == 1)
+      {
+          F_Start = 0;
+
+          if (cursor.py == 128)
+          {
+              // Opcion 1 — 1 jugador
+              plyrCount = 1;
+
+              nivelA = 1;
+              transmitSonic(0, 0, 'S', '0');
+              Draw_Level_Background(1);
+              LCD_Bitmap(112, 224, 16, 16, zero1);
+              PJ1.px = 128; PJ1.py = 208;
+              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+              transmitSonic(nivelA, 0, 'S', '0');
+
+          }
+          else if (cursor.py == 144)
+          {
+              // Opcion 2 — 2 jugadores
+              plyrCount = 2;
+
+              nivelA = 1;
+              transmitSonic(0, 0, 'S', '0');
+              Draw_Level_Background(1);
+              LCD_Bitmap(112, 224, 16, 16, zero1);
+              LCD_Bitmap(272, 224, 16, 16, zero1);
+              PJ1.px = 128; PJ1.py = 208;
+              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+              transmitSonic(nivelA, 0, 'S', '0');
+          }
+          else if (cursor.py == 160)
+          {
+        	  // Creditos
+        	  credit = 1;
+        	  creditTimer = 0;
+        	  transmitSonic(0, 0, 'S', '0');
+        	  Draw_Level_Background(4);
+          }
+      }
+
+      // ============================================================
+      // TIMER CREDITOS — regresa al menu automaticamente
+      // ============================================================
+      if (credit > 0)
+      {
+          creditTimer++;
+          // Tiempo de espera — ajusta el valor segun la velocidad de tu while
+          if (creditTimer >= 5000)
+          {
+              credit     = 0;
+              creditTimer = 0;
+              nivelA     = 0;
+              cursor.px  = 112; cursor.py  = 128;
+              cursorO.px = 112; cursorO.py = 128;
+              transmitSonic(0, 0, 'S', '0');
+              Draw_Level_Background(0);
+          }
+      }
+
+      // ============================================================
+      // LOGICA DE NIVELES — placeholder hasta que la agreguemos
+      // ============================================================
+      if (nivelA != 0 && credit == 0)
+      {
+    	  // ============================
+    	  // LOGICA DE COLISIONES
+    	  // ============================
+    	  if (PJ1o.py != PJ1.py || PJ1o.px != PJ1.px)
+    	  {
+    	      int8_t coli = 1;
+    	      uint8_t coliW = 1;
+    	      moveFlag = 1;
+
+    	      if (nivelA == 1)
+    	      {
+    	          switch (PJ1.py)
+    	          {
+    	          case 224: coli &= ColCheck(PJ1, par3); break;
+    	          case 208:
+    	          case 192: coli &= ColCheck(PJ1, blq1_PJ1); break;
+    	          case 176: coli &= ColCheck(PJ1, blq2_PJ1); break;
+    	          case 160:
+    	              coli &= ColCheck(PJ1, blq3_PJ1);
+    	              coli &= ColCheck(PJ1, blq4_PJ1); break;
+    	          case 144:
+    	              coli &= ColCheck(PJ1, blq4_PJ1);
+    	              coli &= ColCheck(PJ1, blq6_PJ1); break;
+    	          case 128:
+    	              coli &= ColCheck(PJ1, blq4_PJ1);
+    	              coli &= ColCheck(PJ1, blq5_PJ1); break;
+    	          case 112:
+    	              coli &= ColCheck(PJ1, blq7_PJ1);
+    	              coli &= ColCheck(PJ1, blq11_PJ1); break;
+    	          case 96:
+    	              coli &= ColCheck(PJ1, blq9_PJ1);
+    	              coli &= ColCheck(PJ1, blq11_PJ1); break;
+    	          case 80:
+    	              coli &= ColCheck(PJ1, blq9_PJ1);
+    	              coli &= ColCheck(PJ1, blq10_PJ1);
+    	              coli &= ColCheck(PJ1, blq11_PJ1);
+    	              coli &= ColCheck(PJ1, blq12_PJ1); break;
+    	          case 64:
+    	              coli &= ColCheck(PJ1, blq11_PJ1);
+    	              coli &= ColCheck(PJ1, blq13_PJ1); break;
+    	          case 48:
+    	              coli &= ColCheck(PJ1, blq13_PJ1);
+    	              coli &= ColCheck(PJ1, blq15_PJ1); break;
+    	          case 32:
+    	              coli &= ColCheck(PJ1, blq14_PJ1);
+    	              coli &= ColCheck(PJ1, blq17_PJ1); break;
+    	          case 16:
+    	              coli &= ColCheck(PJ1, blq16_PJ1);
+    	              coliW &= ColCheck(PJ1, star1); break;
+    	          case 0: coli &= ColCheck(PJ1, par1); break;
+    	          }
+    	      }
+    	      else if (nivelA == 2)
+    	      {
+    	          uint8_t coliK = 1;
+    	          switch (PJ1.py)
+    	          {
+    	          case 224: coli &= ColCheck(PJ1, par3); break;
+    	          case 208:
+    	              coli  &= ColCheck(PJ1, blq23_PJ1);
+    	              coliW &= ColCheck(PJ1, mushroom1);
+    	          case 192:
+    	              coli  &= ColCheck(PJ1, blq23_PJ1);
+    	              coliK &= ColCheck(PJ1, llaveO);
+    	              if (llaveGet == 0) coli &= ColCheck(PJ1, reja);
+    	              break;
+    	          case 176:
+    	          case 160:
+    	          case 144: coli &= ColCheck(PJ1, blq22_PJ1); break;
+    	          case 128:
+    	          case 112:
+    	          case 96:  coli &= ColCheck(PJ1, blq21_PJ1); break;
+    	          case 80:  coli &= ColCheck(PJ1, spike2);
+    	          case 64:
+    	              coli &= ColCheck(PJ1, blq20_PJ1);
+    	              coli &= ColCheck(PJ1, spike2); break;
+    	          case 48:  coli &= ColCheck(PJ1, blq19_PJ1); break;
+    	          case 32:  coli &= ColCheck(PJ1, spike1);
+    	          case 16:
+    	              coli &= ColCheck(PJ1, blq18_PJ1);
+    	              coli &= ColCheck(PJ1, spike1);
+    	          case 0:   coli &= ColCheck(PJ1, par1); break;
+    	          }
+    	          if (coliK == 0) llaveGet = 1;
+    	      }
+    	      else if (nivelA == 3)
+    	      {
+    	          uint8_t coliD = 1;
+    	          switch (PJ1.py)
+    	          {
+    	          case 224: coli &= ColCheck(PJ1, par3); break;
+    	          case 208:
+    	              coli &= ColCheck(PJ1, blq26_PJ1);
+    	              coli &= ColCheck(PJ1, blq27_PJ1);
+    	          case 192:
+    	          case 176:
+    	              coliD &= ColCheck(PJ1, shell1); coliD &= ColCheck(PJ1, shell2);
+    	              coliD &= ColCheck(PJ1, shell3); coliD &= ColCheck(PJ1, shell4); break;
+    	          case 160:
+    	          case 144:
+    	              coli  &= ColCheck(PJ1, blq28_PJ1);
+    	              coliD &= ColCheck(PJ1, shell1); coliD &= ColCheck(PJ1, shell2);
+    	              coliD &= ColCheck(PJ1, shell3); coliD &= ColCheck(PJ1, shell4); break;
+    	          case 128:
+    	              coliD &= ColCheck(PJ1, shell1); coliD &= ColCheck(PJ1, shell2);
+    	              coliD &= ColCheck(PJ1, shell3); coliD &= ColCheck(PJ1, shell4); break;
+    	          case 112:
+    	              coli &= ColCheck(PJ1, blq30_PJ1);
+    	              coli &= ColCheck(PJ1, blq31_PJ1); break;
+    	          case 96:
+    	              coliD &= ColCheck(PJ1, shell5); coliD &= ColCheck(PJ1, shell6);
+    	              coliD &= ColCheck(PJ1, shell7); coliD &= ColCheck(PJ1, shell8); break;
+    	          case 80:
+    	              coli  &= ColCheck(PJ1, blq29_PJ1);
+    	              coliD &= ColCheck(PJ1, shell5); coliD &= ColCheck(PJ1, shell6);
+    	              coliD &= ColCheck(PJ1, shell7); coliD &= ColCheck(PJ1, shell8); break;
+    	          case 64:
+    	              coli  &= ColCheck(PJ1, blq29_PJ1);
+    	              coliD &= ColCheck(PJ1, shell5); coliD &= ColCheck(PJ1, shell6);
+    	              coliD &= ColCheck(PJ1, shell7); coliD &= ColCheck(PJ1, shell8); break;
+    	          case 48:
+    	              coliD &= ColCheck(PJ1, shell5); coliD &= ColCheck(PJ1, shell6);
+    	              coliD &= ColCheck(PJ1, shell7); coliD &= ColCheck(PJ1, shell8); break;
+    	          case 32:
+    	          case 16:
+    	              coli &= ColCheck(PJ1, blq32_PJ1);
+    	              coli &= ColCheck(PJ1, blq33_PJ1); break;
+    	          case 0: coli &= ColCheck(PJ1, par1); break;
+    	          }
+    	          coli &= ColCheck(PJ1, blq24_PJ1);
+    	          coli &= ColCheck(PJ1, blq25_PJ1);
+    	          if (coliD == 0)
+    	          {
+    	              PJ1.px = 64; PJ1.py = 208;
+    	              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+    	          }
+    	      }
+
+    	      coli &= ColCheck(PJ1, par2);
+    	      coli &= ColCheck(PJ1, par4);
+
+    	      // Colision — revertir posicion ANTES de dibujar
+    	      if (coli == 0)
+    	      {
+    	          PJ1.px = PJ1o.px;
+    	          PJ1.py = PJ1o.py;
+    	          moveFlag = 0;
+    	          eventFlag = 'K';
+    	      }
+
+    	      if (coliW == 0) { sChange_F1 = 1; Score1++; }
+    	  }
+
+    	  // ============================
+    	  // RENDER — siempre despues de colisiones
+    	  // ============================
+    	  LCD_Sprite(PJ1.px, PJ1.py, 16, 16, slime, 1, 1, 0, 0);
+
+    	  // Limpiar casilla anterior solo si la posicion cambio
+    	  if (PJ1o.px != PJ1.px || PJ1o.py != PJ1.py)
+    	  {
+    	      LCD_Bitmap(PJ1o.px, PJ1o.py, 16, 16, tile);
+    	      PJ1o.px = PJ1.px;
+    	      PJ1o.py = PJ1.py;
+    	      M1_F = 0;
+    	  }
+    	  // ============================================================
+    	  // RENDER JUGADOR 2 — fuera del if(newDataU1)
+    	  // ============================================================
+    	  if (nivelA != 0 && credit == 0 && plyrCount == 2)
+    	  {
+			   LCD_Sprite(j2.px, j2.py, 16, 16, slime2, 1, 1, 0, 0);
+
+			   if (j2o.px != j2.px || j2o.py != j2.py)
+			   {
+				   LCD_Bitmap(j2o.px, j2o.py, 16, 16, tile);
+				   j2o.px = j2.px;
+				   j2o.py = j2.py;
+				   M2_F = 0;
+			   }
+		   }
+			// ============================
+			// CAMBIO DE NIVEL
+			// ============================
+    	  if (sChange_F1 == 1)
+    	  {
+    	      if (plyrCount == 1)
+    	      {
+    	          switch (Score1)
+    	          {
+    	          case 1:
+    	              nivelA = 2;
+    	              transmitSonic(0, 0, 'S', '0');
+    	              Draw_Level_Background(nivelA);
+    	              LCD_Bitmap(112, 224, 16, 16, uno1);
+    	              LCD_Bitmap(llaveO.px, llaveO.py, 16, 16, llave);
+    	              LCD_Bitmap(spike1.px, spike1.py, 16, 16, spikeS);
+    	              LCD_Bitmap(spike2.px, spike2.py, 16, 16, spikeS);
+    	              PJ1.px = 16; PJ1.py = 32;
+    	              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+    	              llaveGet = 0; counterT = 0;
+    	              transmitSonic(nivelA, 0, 'S', '0');
+    	              moveFlag = 2;
+    	              break;
+    	          case 2:
+    	              nivelA = 3;
+    	              transmitSonic(0, 0, 'S', '0');
+    	              Draw_Level_Background(nivelA);
+    	              LCD_Bitmap(112, 224, 16, 16, dos1);
+    	              PJ1.px = 64; PJ1.py = 208;
+    	              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+    	              dir = 0; counterT = 0;
+    	              transmitSonic(nivelA, 0, 'S', '0');
+    	              moveFlag = 2;
+    	              break;
+    	          case 3:
+    	              // Victoria jugador 1
+    	              GAMEWIN = 1;
+    	              transmitSonic(0, 0, 'S', '0');
+    	              Draw_Level_Background(5); // niv5.bin = pantalla ganador j1
+    	              break;
+    	          }
+    	      }
+    	      else if (plyrCount == 2)
+    	      {
+    	          switch (Score1)
+    	          {
+    	          case 1:
+    	              if (Score2 == 0)
+    	              {
+    	                  // Solo j1 termino nivel 1 — ambos pasan a nivel 2
+    	                  nivelA = 2;
+    	                  transmitSonic(0, 0, 'S', '0');
+    	                  Draw_Level_Background(nivelA);
+    	                  LCD_Bitmap(112, 224, 16, 16, uno1);
+    	                  LCD_Bitmap(llaveO.px, llaveO.py, 16, 16, llave);
+    	                  LCD_Bitmap(spike1.px, spike1.py, 16, 16, spikeS);
+    	                  LCD_Bitmap(spike2.px, spike2.py, 16, 16, spikeS);
+    	                  LCD_Bitmap(llaveO.px + 160, llaveO.py, 16, 16, llave);
+    	                  LCD_Bitmap(spike1.px + 160, spike1.py, 16, 16, spikeS);
+    	                  LCD_Bitmap(spike2.px + 160, spike2.py, 16, 16, spikeS);
+    	                  PJ1.px = 16; PJ1.py = 32;
+    	                  PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+    	                  j2.px = 176; j2.py = 32;
+    	                  j2o.px = j2.px; j2o.py = j2.py;
+    	                  llaveGet = 0; llaveGet2 = 0; counterT = 0;
+    	                  transmitSonic(nivelA, 0, 'S', '0');
+    	                  moveFlag = 2;
+    	              }
+    	              else
+    	              {
+    	                  // j2 ya termino nivel 1 antes — j1 llega a nivel 2 junto
+    	                  nivelA = 3;
+    	                  transmitSonic(0, 0, 'S', '0');
+    	                  Draw_Level_Background(nivelA);
+    	                  LCD_Bitmap(112, 224, 16, 16, uno1);
+    	                  PJ1.px = 64; PJ1.py = 208;
+    	                  PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+    	                  j2.px = 244; j2.py = 208;
+    	                  j2o.px = j2.px; j2o.py = j2.py;
+    	                  dir = 0; counterT = 0;
+    	                  transmitSonic(nivelA, 0, 'S', '0');
+    	                  moveFlag = 2;
+    	              }
+    	              break;
+    	          case 2:
+    	              GAMEWIN = 1;
+    	              transmitSonic(0, 0, 'S', '0');
+    	              Draw_Level_Background(5); // niv5.bin = pantalla ganador j1
+    	              break;
+    	          }
+    	      }
+    	      sChange_F1 = 0;
+    	  }
+
+    	  // Cambio de nivel por score jugador 2
+    	  if (sChange_F2 == 1 && plyrCount == 2)
+    	  {
+    	      switch (Score2)
+    	      {
+    	      case 1:
+    	          if (Score1 == 0)
+    	          {
+    	              // Solo j2 termino nivel 1 — ambos pasan a nivel 2
+    	              nivelA = 2;
+    	              transmitSonic(0, 0, 'S', '0');
+    	              Draw_Level_Background(nivelA);
+    	              LCD_Bitmap(272, 224, 16, 16, uno1);
+    	              LCD_Bitmap(llaveO.px, llaveO.py, 16, 16, llave);
+    	              LCD_Bitmap(spike1.px, spike1.py, 16, 16, spikeS);
+    	              LCD_Bitmap(spike2.px, spike2.py, 16, 16, spikeS);
+    	              LCD_Bitmap(llaveO.px + 160, llaveO.py, 16, 16, llave);
+    	              LCD_Bitmap(spike1.px + 160, spike1.py, 16, 16, spikeS);
+    	              LCD_Bitmap(spike2.px + 160, spike2.py, 16, 16, spikeS);
+    	              PJ1.px = 16; PJ1.py = 32;
+    	              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+    	              j2.px = 176; j2.py = 32;
+    	              j2o.px = j2.px; j2o.py = j2.py;
+    	              llaveGet = 0; llaveGet2 = 0; counterT = 0;
+    	              transmitSonic(nivelA, 0, 'S', '0');
+    	              moveFlag = 2;
+    	          }
+    	          else
+    	          {
+    	              // j1 ya termino nivel 1 — j2 llega junto
+    	              nivelA = 3;
+    	              transmitSonic(0, 0, 'S', '0');
+    	              Draw_Level_Background(nivelA);
+    	              LCD_Bitmap(272, 224, 16, 16, uno1);
+    	              PJ1.px = 64; PJ1.py = 208;
+    	              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+    	              j2.px = 244; j2.py = 208;
+    	              j2o.px = j2.px; j2o.py = j2.py;
+    	              dir = 0; counterT = 0;
+    	              transmitSonic(nivelA, 0, 'S', '0');
+    	              moveFlag = 2;
+    	          }
+    	          break;
+    	      case 2:
+    	          GAMEWIN = 2;
+    	          transmitSonic(0, 0, 'S', '0');
+    	          Draw_Level_Background(6); // niv6.bin = pantalla ganador j2
+    	          break;
+    	      }
+    	      sChange_F2 = 0;
+    	  }
+
+    	  if (nivelA == 2)
+    	  {
+    	      counterT++;
+    	      if (counterT == 150)
+    	      {
+    	          LCD_Bitmap(spike1.px, spike1.py, 16, 16, tile);
+    	          LCD_Bitmap(spike2.px, spike2.py, 16, 16, tile);
+    	          if (plyrCount == 2)
+    	          {
+    	              LCD_Bitmap(spike1.px + 160, spike1.py, 16, 16, tile);
+    	              LCD_Bitmap(spike2.px + 160, spike2.py, 16, 16, tile);
+    	          }
+
+    	          if (spike1.py == 16) { spike1.py += 16; spike2.py += 16; }
+    	          else                 { spike1.py -= 16; spike2.py -= 16; }
+
+    	          LCD_Bitmap(spike1.px, spike1.py, 16, 16, spikeS);
+    	          LCD_Bitmap(spike2.px, spike2.py, 16, 16, spikeS);
+    	          if (plyrCount == 2)
+    	          {
+    	              LCD_Bitmap(spike1.px + 160, spike1.py, 16, 16, spikeS);
+    	              LCD_Bitmap(spike2.px + 160, spike2.py, 16, 16, spikeS);
+    	          }
+
+    	          // Colision spikes con PJ1
+    	          uint8_t coli1 = 1;
+    	          coli1 &= ColCheck(PJ1, spike1);
+    	          coli1 &= ColCheck(PJ1, spike2);
+    	          if (coli1 == 0)
+    	          {
+    	              PJ1.px = 16; PJ1.py = 32;
+    	              PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+    	              moveFlag = 2;
+    	              transmitSonic(nivelA, 0, 'M', '0');
+    	          }
+
+    	          // Colision spikes con j2
+    	          if (plyrCount == 2)
+    	          {
+    	              uint8_t coli2 = 1;
+    	              coli2 &= ColCheckj2(j2, spike1);
+    	              coli2 &= ColCheckj2(j2, spike2);
+    	              if (coli2 == 0)
+    	              {
+    	                  j2.px = 176; j2.py = 32;
+    	                  j2o.px = j2.px; j2o.py = j2.py;
+    	              }
+    	          }
+
+    	          counterT = 0;
+    	      }
+    	  }
+			// ============================
+			// ENEMIGOS NIVEL 3 - SHELLS
+			// ============================
+			else if (nivelA == 3) {
+				counterT++;
+				if (counterT == 250) {
+					LCD_Bitmap(shell1.px,shell1.py,16,16,tile); LCD_Bitmap(shell2.px,shell2.py,16,16,tile);
+					LCD_Bitmap(shell3.px,shell3.py,16,16,tile); LCD_Bitmap(shell4.px,shell4.py,16,16,tile);
+					LCD_Bitmap(shell5.px,shell5.py,16,16,tile); LCD_Bitmap(shell6.px,shell6.py,16,16,tile);
+					LCD_Bitmap(shell7.px,shell7.py,16,16,tile); LCD_Bitmap(shell8.px,shell8.py,16,16,tile);
+					switch (dir) {
+					case 0:
+						shell1.py-=16; shell2.px-=16; shell3.py+=16; shell4.px+=16;
+						shell5.py-=16; shell6.px-=16; shell7.py+=16; shell8.px+=16;
+						if (shell1.py == 128) dir = 1;
+						break;
+					case 1:
+						shell1.px+=16; shell2.py-=16; shell3.px-=16; shell4.py+=16;
+						shell5.px+=16; shell6.py-=16; shell7.px-=16; shell8.py+=16;
+						if (shell1.px == 96) dir = 2;
+						break;
+					case 2:
+						shell1.py+=16; shell2.px+=16; shell3.py-=16; shell4.px-=16;
+						shell5.py+=16; shell6.px+=16; shell7.py-=16; shell8.px-=16;
+						if (shell1.py == 176) dir = 3;
+						break;
+					case 3:
+						shell1.px-=16; shell2.py+=16; shell3.px+=16; shell4.py-=16;
+						shell5.px-=16; shell6.py+=16; shell7.px+=16; shell8.py-=16;
+						if (shell1.px == 48) dir = 0;
+						break;
+					}
+					LCD_Bitmap(shell1.px,shell1.py,16,16,shellS); LCD_Bitmap(shell2.px,shell2.py,16,16,shellS);
+					LCD_Bitmap(shell3.px,shell3.py,16,16,shellS); LCD_Bitmap(shell4.px,shell4.py,16,16,shellS);
+					LCD_Bitmap(shell5.px,shell5.py,16,16,shellS); LCD_Bitmap(shell6.px,shell6.py,16,16,shellS);
+					LCD_Bitmap(shell7.px,shell7.py,16,16,shellS); LCD_Bitmap(shell8.px,shell8.py,16,16,shellS);
+					uint8_t coliD = 1;
+					coliD &= ColCheck(PJ1,shell1); coliD &= ColCheck(PJ1,shell2);
+					coliD &= ColCheck(PJ1,shell3); coliD &= ColCheck(PJ1,shell4);
+					coliD &= ColCheck(PJ1,shell5); coliD &= ColCheck(PJ1,shell6);
+					coliD &= ColCheck(PJ1,shell7); coliD &= ColCheck(PJ1,shell8);
+					if (coliD == 0) {
+						// Jugador murio por shell — respawn y notificar
+						PJ1.px = 64; PJ1.py = 208;
+						PJ1o.px = PJ1.px; PJ1o.py = PJ1.py;
+						moveFlag = 2;
+						transmitSonic(nivelA, moveFlag, 'M', '0');  // muerte por shell
+					}
+					counterT = 0;
+				}
+			}
+
+
+      // ============================================================
+      // TRANSMISION DE ESTADO
+      // ============================================================
+      if (nivelA != 0 && credit == 0)
+      {
+          if (moveFlag != 2)
+          {
+              if (nivelA != lastNivel || moveFlag != lastMove || eventFlag != lastEvent)
+              {
+                  transmitSonic(nivelA, moveFlag, eventFlag, '0');
+                  lastNivel = nivelA;
+                  lastMove  = moveFlag;
+                  lastEvent = eventFlag;
+              }
+              moveFlag  = 0;
+              eventFlag = 'N';
+          }
+          else
+          {
+              moveFlag  = 0;
+              eventFlag = 'N';
+              lastEvent = 'N';
+          }
+      }
+    }
+
+  } // fin while
 }
-
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -1082,7 +1554,15 @@ uint8_t ColCheck(struct P_objeto o1, struct P_objeto o2)
 		return 1;
 	}
 }
-
+uint8_t ColCheckj2(struct P_objeto o1, struct P_objeto o2)
+{
+    uint16_t ajuste = o2.px + 160;
+    if ((o1.px + o1.w - 1 >= ajuste) && (ajuste + o2.w - 1 >= o1.px) &&
+        (o1.py + o1.h - 1 >= o2.py) && (o2.py + o2.h - 1 >= o1.py))
+        return 0;
+    else
+        return 1;
+}
 /* USER CODE BEGIN 4 */
 
 /**
@@ -1090,36 +1570,58 @@ uint8_t ColCheck(struct P_objeto o1, struct P_objeto o2)
  * @param nivel: número de nivel (1, 2, 3, ...)
  *               Busca archivos: niv1.bin, niv2.bin, niv3.bin, etc.
  */
+/*
+void Draw_Level_Background(uint8_t nivel)
+{
+    switch(nivel)
+    {
+        case 1:
+            LCD_Bitmap(0, 0, 320, 240, niv1);
+            break;
+        case 2:
+            LCD_Bitmap(0, 0, 320, 240, niv2);
+            break;
+        case 3:
+            LCD_Bitmap(0, 0, 320, 240, niv3);
+            break;
+        default:
+            LCD_Clear(0x0000);
+            break;
+    }
+}
+*/
+
+
 void Draw_Level_Background(uint8_t nivel)
 {
     char dbg[80];
     char filename[20];
 
     if (nivel==4){
-    	sprintf(filename, "creditos.bin");
+    	sprintf(filename, "creditos.bin" );
+    }
+    else if (nivel==5){
+    	sprintf(filename, "HS.bin" );
     }
     else {
-    	// Construir nombre de archivo según el nivel
-		sprintf(filename, "niv%d.bin", nivel);
+    	sprintf(filename, "niv%d.bin", nivel);
     }
-
-
     // ============================
     // 1. SPI LENTO - INIT SD
     // ============================
     HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-    HAL_Delay(100);
+    HAL_Delay(500);
 
-    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
+    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
     HAL_SPI_Init(&hspi1);
-    HAL_Delay(100);
+    //HAL_Delay(100);
 
     // ============================
     // 2. MONTAR SD
     // ============================
     FATFS fs_lvl;
-    FRESULT res = f_mount(&fs_lvl, "", 1);
+    FRESULT res = f_mount(&fs_lvl, "/", 0);
     sprintf(dbg, "Mount: %d\r\n", res);
     HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
 
@@ -1148,80 +1650,56 @@ void Draw_Level_Background(uint8_t nivel)
         return;
     }
 
-    // ============================
-    // 4. INIT LCD
-    // ============================
-    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
+    // Buffer de una fila
+        static uint16_t rowBuf[320];
 
-    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-    HAL_SPI_Init(&hspi1);
+        for (int row = 0; row < 240; row++)
+        {
+            // Leer fila a prescaler 8 con SD activa
+            HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_RESET);
 
-    LCD_Init();
-    LCD_Clear(0x0000);
+            UINT bytesRead = 0;
+            f_read(&imgFile, rowBuf, 640, &bytesRead);
 
-    // ============================
-    // 5. DIBUJAR FILA POR FILA
-    // ============================
-    static uint16_t rowBuf[320];
+            // SD inactiva antes de tocar LCD
+            HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
 
-    for (int row = 0; row < 240; row++)
-    {
-        // --- LEER FILA DESDE SD ---
-        HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_RESET);
+            // Cambiar a prescaler 2 para LCD
+            hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+            HAL_SPI_Init(&hspi1);
 
-        hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
-        HAL_SPI_Init(&hspi1);
+            // Dibujar fila
+            SetWindows(0, row, 319, row);
+            HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(LCD_DC_GPIO_Port, LCD_DC_Pin, GPIO_PIN_SET);
 
-        UINT bytesRead;
-        f_read(&imgFile, rowBuf, 320 * 2, &bytesRead);
+            for (int i = 0; i < 320; i++) {
+            	uint8_t lo = rowBuf[i] & 0xFF;
+                uint8_t hi = rowBuf[i] >> 8;
+                HAL_SPI_Transmit(&hspi1, &lo, 1, 1);
+                HAL_SPI_Transmit(&hspi1, &hi, 1, 1);
 
-        if (bytesRead != 640) {
-            sprintf(dbg, "Error fila %d: %d bytes\r\n", row, bytesRead);
-            HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
-            break;
+            }
+            HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
+
+            // Volver a prescaler 8 para SD
+            hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+            HAL_SPI_Init(&hspi1);
         }
 
-        // --- DIBUJAR FILA EN LCD ---
+        // Cerrar SD
+        f_close(&imgFile);
+        f_mount(NULL, "/", 0);
         HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
 
+        sprintf(dbg, "Nivel %d OK\r\n", nivel);
+        HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
+
+        // Dejar SPI a velocidad pantalla
         hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
         HAL_SPI_Init(&hspi1);
-
-        SetWindows(0, row, 319, row);
-
         HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
-        HAL_GPIO_WritePin(LCD_DC_GPIO_Port, LCD_DC_Pin, GPIO_PIN_SET);
-
-        for (int i = 0; i < 320; i++) {
-            uint8_t lo = rowBuf[i] & 0xFF;
-            uint8_t hi = rowBuf[i] >> 8;
-            HAL_SPI_Transmit(&hspi1, &lo, 1, 1);
-            HAL_SPI_Transmit(&hspi1, &hi, 1, 1);
-        }
-
-        HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
-    }
-
-    // ============================
-    // 6. CERRAR SD
-    // ============================
-    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_RESET);
-    HAL_Delay(5);
-    imgFile.obj.fs = 0;
-    f_mount(NULL, "", 0);
-    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-
-    sprintf(dbg, "Nivel %d dibujado OK\r\n", nivel);
-    HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
-
-    // ============================
-    // 7. LCD LISTA PARA EL JUEGO
-    // ============================
-    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-    HAL_SPI_Init(&hspi1);
 }
 
 /* USER CODE END 4 */

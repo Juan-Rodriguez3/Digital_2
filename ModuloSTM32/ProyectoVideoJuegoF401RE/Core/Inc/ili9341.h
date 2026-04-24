@@ -14,6 +14,16 @@
 #include "main.h"
 #include "ff.h"
 
+#define LCD_DC_PORT    GPIOA
+#define LCD_DC_PIN     GPIO_PIN_4
+#define LCD_DC_L()     (LCD_DC_PORT->BSRR = (LCD_DC_PIN<<16))
+#define LCD_DC_H()     (LCD_DC_PORT->BSRR =  LCD_DC_PIN)
+
+#define LCD_CS_PORT    GPIOB
+#define LCD_CS_PIN     GPIO_PIN_0
+#define LCD_CS_L()     (LCD_CS_PORT->BSRR = (LCD_CS_PIN<<16))
+#define LCD_CS_H()     (LCD_CS_PORT->BSRR =  LCD_CS_PIN)
+
 void LCD_Init(void);
 void LCD_CMD(uint8_t cmd);
 void LCD_DATA(uint8_t data);
