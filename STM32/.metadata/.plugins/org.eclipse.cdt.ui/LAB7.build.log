@@ -1,10 +1,10 @@
-05:27:51 **** Incremental Build of configuration Debug for project LAB7 ****
+23:05:45 **** Incremental Build of configuration Debug for project LAB7 ****
 make -j12 all 
 arm-none-eabi-size  LAB7.elf 
    text	   data	    bss	    dec	    hex	filename
-  38508	   4360	   3888	  46756	   b6a4	LAB7.elf
+  37332	   4360	   3888	  45580	   b20c	LAB7.elf
 Finished building: default.size.stdout
  
 
-05:27:52 Build Finished. 0 errors, 0 warnings. (took 290ms)
+23:05:45 Build Finished. 0 errors, 0 warnings. (took 257ms)
 

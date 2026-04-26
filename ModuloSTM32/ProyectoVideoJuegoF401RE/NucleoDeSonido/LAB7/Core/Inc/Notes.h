@@ -1,0 +1,511 @@
+/*
+ * Notes.h
+ *
+ *  Created on: Apr 1, 2026
+ *      Author: juan
+ */
+
+#ifndef INC_NOTAS_MUSICALES_H_
+#define INC_NOTAS_MUSICALES_H_
+
+#include <stdint.h>
+
+
+//Notas
+#define NoteDo0 50861
+#define NoteDo1 25430
+#define NoteDo2 12715
+#define NoteDo3 6357
+#define NoteDo4 3178
+#define NoteDo5 1588
+#define NoteDo6 794
+#define NoteDo7 396
+#define NoteDo8 198
+#define NoteDo9 98
+
+#define NoteDoSReb0 48007
+#define NoteDoSReb1 24003
+#define NoteDoSReb2 12001
+#define NoteDoSReb3 6000
+#define NoteDoSReb4 2999
+#define NoteDoSReb5 1499
+#define NoteDoSReb6 749
+#define NoteDoSReb7 374
+#define NoteDoSReb8 187
+#define NoteDoSReb9 93
+
+#define NoteRe0 45312
+#define NoteRe1 22656
+#define NoteRe2 11327
+#define NoteRe3 5663
+#define NoteRe4 2831
+#define NoteRe5 1415
+#define NoteRe6 707
+#define NoteRe7 353
+#define NoteRe8 176
+#define NoteRe9 88
+
+#define NoteReSMib0 42769
+#define NoteReSMib1 21384
+#define NoteReSMib2 10692
+#define NoteReSMib3 5345
+#define NoteReSMib4 2672
+#define NoteReSMib5 1336
+#define NoteReSMib6 667
+#define NoteReSMib7 333
+#define NoteReSMib8 166
+#define NoteReSMib9 83
+
+#define NoteMi0 40369
+#define NoteMi1 20184
+#define NoteMi2 10091
+#define NoteMi3 5045
+#define NoteMi4 2522
+#define NoteMi5 1261
+#define NoteMi6 630
+#define NoteMi7 314
+#define NoteMi8 157
+#define NoteMi9 78
+
+#define NoteFa0 38103
+#define NoteFa1 19051
+#define NoteFa2 9525
+#define NoteFa3 4762
+#define NoteFa4 2380
+#define NoteFa5 1190
+#define NoteFa6 594
+#define NoteFa7 297
+#define NoteFa8 148
+#define NoteFa9 73
+
+#define NoteFaSSolb0 35964
+#define NoteFaSSolb1 17982
+#define NoteFaSSolb2 8990
+#define NoteFaSSolb3 4495
+#define NoteFaSSolb4 2247
+#define NoteFaSSolb5 1123
+#define NoteFaSSolb6 561
+#define NoteFaSSolb7 280
+#define NoteFaSSolb8 139
+#define NoteFaSSolb9 69
+
+#define NoteSol0 33946
+#define NoteSol1 16972
+#define NoteSol2 8486
+#define NoteSol3 4242
+#define NoteSol4 2121
+#define NoteSol5 1060
+#define NoteSol6 529
+#define NoteSol7 264
+#define NoteSol8 132
+#define NoteSol9 65
+
+#define NoteSolSLab0 32040
+#define NoteSolSLab1 16020
+#define NoteSolSLab2 8009
+#define NoteSolSLab3 4004
+#define NoteSolSLab4 2002
+#define NoteSolSLab5 1000
+#define NoteSolSLab6 500
+#define NoteSolSLab7 249
+#define NoteSolSLab8 124
+#define NoteSolSLab9 62
+
+#define NoteLa0 30242
+#define NoteLa1 15121
+#define NoteLa2 7560
+#define NoteLa3 3779
+#define NoteLa4 1889
+#define NoteLa5 944
+#define NoteLa6 472
+#define NoteLa7 235
+#define NoteLa8 117
+#define NoteLa9 58
+
+#define NoteLaSSib0 28545
+#define NoteLaSSib1 14272
+#define NoteLaSSib2 7135
+#define NoteLaSSib3 3567
+#define NoteLaSSib4 1783
+#define NoteLaSSib5 891
+#define NoteLaSSib6 445
+#define NoteLaSSib7 222
+#define NoteLaSSib8 111
+#define NoteLaSSib9 55
+
+#define NoteSi0 26942
+#define NoteSi1 13471
+#define NoteSi2 6735
+#define NoteSi3 3367
+#define NoteSi4 1683
+#define NoteSi5 841
+#define NoteSi6 420
+#define NoteSi7 209
+#define NoteSi8 104
+#define NoteSi9 52
+// ============================================================
+// Parámetros del sistema
+// f_TIM6 = 84 MHz | PSC = 0 | Muestras = 128
+// ARR = (84000000 / 128 / f_nota) - 1
+// ============================================================
+
+
+// --- Octava 0 ---
+#define ARR_Do0              40137
+#define ARR_DoSReb0          37889
+#define ARR_Re0              35762
+#define ARR_ReSMib0          33739
+#define ARR_Mi0              31856
+#define ARR_Fa0              30061
+#define ARR_FaSSolb0         28384
+#define ARR_Sol0             26785
+#define ARR_SolSLab0         25278
+#define ARR_La0              23863
+#define ARR_LaSSib0          22520
+#define ARR_Si0              21258
+
+// --- Octava 1 ---
+#define ARR_Do1              20068
+#define ARR_DoSReb1          18938
+#define ARR_Re1              17876
+#define ARR_ReSMib1          16874
+#define ARR_Mi1              15927
+#define ARR_Fa1              15033
+#define ARR_FaSSolb1         14188
+#define ARR_Sol1             13392
+#define ARR_SolSLab1         12641
+#define ARR_La1              11931
+#define ARR_LaSSib1          11261
+#define ARR_Si1              10628
+
+// --- Octava 2 ---
+#define ARR_Do2              10032
+#define ARR_DoSReb2          9469
+#define ARR_Re2              8937
+#define ARR_ReSMib2          8436
+#define ARR_Mi2              7962
+#define ARR_Fa2              7515
+#define ARR_FaSSolb2         7094
+#define ARR_Sol2             6695
+#define ARR_SolSLab2         6319
+#define ARR_La2              5965
+#define ARR_LaSSib2          5630
+#define ARR_Si2              5314
+
+// --- Octava 3 ---
+#define ARR_Do3              5016
+#define ARR_DoSReb3          4734
+#define ARR_Re3              4468
+#define ARR_ReSMib3          4218
+#define ARR_Mi3              3981
+#define ARR_Fa3              3757
+#define ARR_FaSSolb3         3546
+#define ARR_Sol3             3347
+#define ARR_SolSLab3         3159
+#define ARR_La3              2982
+#define ARR_LaSSib3          2815
+#define ARR_Si3              2657
+
+// --- Octava 4 ---
+#define ARR_Do4              2507
+#define ARR_DoSReb4          2367
+#define ARR_Re4              2234
+#define ARR_ReSMib4          2108
+#define ARR_Mi4              1990
+#define ARR_Fa4              1878
+#define ARR_FaSSolb4         1773
+#define ARR_Sol4             1673
+#define ARR_SolSLab4         1579
+#define ARR_La4              1490
+#define ARR_LaSSib4          1407
+#define ARR_Si4              1328
+
+// --- Octava 5 ---
+#define ARR_Do5              1253
+#define ARR_DoSReb5          1183
+#define ARR_Re5              1116
+#define ARR_ReSMib5          1054
+#define ARR_Mi5              994
+#define ARR_Fa5              939
+#define ARR_FaSSolb5         886
+#define ARR_Sol5             836
+#define ARR_SolSLab5         789
+#define ARR_La5              745
+#define ARR_LaSSib5          703
+#define ARR_Si5              663
+
+// --- Octava 6 ---
+#define ARR_Do6              626
+#define ARR_DoSReb6          591
+#define ARR_Re6              558
+#define ARR_ReSMib6          526
+#define ARR_Mi6              497
+#define ARR_Fa6              469
+#define ARR_FaSSolb6         442
+#define ARR_Sol6             418
+#define ARR_SolSLab6         394
+#define ARR_La6              372
+#define ARR_LaSSib6          351
+#define ARR_Si6              331
+
+// --- Octava 7 ---
+#define ARR_Do7              313
+#define ARR_DoSReb7          295
+#define ARR_Re7              278
+#define ARR_ReSMib7          263
+#define ARR_Mi7              248
+#define ARR_Fa7              234
+#define ARR_FaSSolb7         221
+#define ARR_Sol7             208
+#define ARR_SolSLab7         197
+#define ARR_La7              185
+#define ARR_LaSSib7          175
+#define ARR_Si7              165
+
+// --- Octava 8 ---
+#define ARR_Do8              156
+#define ARR_DoSReb8          147
+#define ARR_Re8              139
+#define ARR_ReSMib8          131
+#define ARR_Mi8              123
+#define ARR_Fa8              116
+#define ARR_FaSSolb8         110
+#define ARR_Sol8             104
+#define ARR_SolSLab8         98
+#define ARR_La8              92
+#define ARR_LaSSib8          87
+#define ARR_Si8              82
+
+// --- Octava 9 ---
+#define ARR_Do9              77
+#define ARR_DoSReb9          73
+#define ARR_Re9              69
+#define ARR_ReSMib9          65
+#define ARR_Mi9              61
+#define ARR_Fa9              58
+#define ARR_FaSSolb9         54
+#define ARR_Sol9             51
+#define ARR_SolSLab9         48
+#define ARR_La9              46
+#define ARR_LaSSib9          43
+#define ARR_Si9              41
+
+// Silencio
+#define SILENCIO             0
+#define NEGRA        400
+#define CORCHEA      (NEGRA/2)
+#define BLANCA       (NEGRA*2)
+#define SEMICORCHEA  (NEGRA/4)
+
+#define NEGRA_P      (NEGRA + CORCHEA)      // 1.5
+#define CORCHEA_P    (CORCHEA + SEMICORCHEA)
+
+
+extern uint32_t starwars_notes[];
+extern uint16_t starwars_duration[];
+extern uint16_t starwars_size;
+
+extern uint32_t mario_notes[];
+extern uint16_t mario_duration[];
+extern uint16_t mario_size;
+
+extern uint32_t paciente_notes[];
+extern uint16_t paciente_duration[];
+extern uint16_t paciente_size;
+
+extern uint32_t game_over_notes[];
+extern uint16_t game_over_duration[];
+extern uint16_t game_over_size;
+
+extern uint32_t labrynth_crystal_notes[];
+extern uint16_t labrynth_crystal_duration[];
+extern uint16_t labrynth_crystal_size;
+
+extern uint32_t game_over_remix_notes[];
+extern uint16_t game_over_remix_duration[];
+extern uint16_t game_over_remix_size;
+
+extern uint32_t Ganyu_notes[];
+extern uint16_t Ganyu_duration[];
+extern uint16_t Ganyu_size;
+
+extern uint32_t LOTR_notes[];
+extern uint16_t LOTR_duration[];
+extern uint16_t LOTR_size;
+
+extern uint32_t Jurassic_notes[];
+extern uint16_t Jurassic_duration[];
+extern uint16_t Jurassic_size;
+
+extern uint32_t Start_notes[];
+extern uint16_t Start_duration[];
+extern uint16_t Start_size;
+
+extern uint32_t Final_Battle_2_notes[];
+extern uint16_t Final_Battle_2_duration[];
+extern uint16_t Final_Battle_2_size;
+
+extern uint32_t Overworld_1_notes[];
+extern uint16_t Overworld_1_duration[];
+extern uint16_t Overworld_1_size;
+
+extern uint32_t Fantasmic_notes[];
+extern uint16_t Fantasmic_duration[];
+extern uint16_t Fantasmic_size;
+
+extern uint32_t Electrical_notes[];
+extern uint16_t Electrical_duration[];
+extern uint16_t Electrical_size;
+
+extern uint32_t DuelFates_notes[];
+extern uint16_t DuelFates_duration[];
+extern uint16_t DuelFates_size;
+
+// ================================================
+// FOOTSTEP SLIME — Movimiento estilo arcade
+// Sweep descendente + silencio entre pasos
+// ================================================
+static uint32_t footstep_notes[] = {
+    // Impacto: burbuja que baja de tono (slime)
+    ARR_Re5,  ARR_Do5,
+    ARR_La4,  ARR_Sol4,
+    ARR_Mi4,  ARR_Re4,
+    ARR_Do4,  ARR_Si3,
+    ARR_La3,
+    // Burbujeo final (efecto jelly)
+    ARR_Do4, ARR_Si3, ARR_Do4,
+    0                        // silencio entre pasos
+};
+static uint16_t footstep_duration[] = {
+    // Impacto descendente
+    18, 18,
+    20, 20,
+    22, 22,
+    25, 25,
+    30,
+    // Burbujeo
+    15, 15, 20,
+    220                      // pausa entre pasos
+};
+static uint16_t footstep_size = sizeof(footstep_notes) / sizeof(footstep_notes[0]);
+
+
+// ================================================
+// LOADING — Sonido de carga progresiva
+// Simula: tics acelerados que suben de tono
+// ================================================
+static uint32_t loading_notes[] = {
+    // Grupo de tics: nota corta + silencio, acelerando
+    1200, 0, 1210, 0, 1220, 0, 1230, 0, 1240, 0,
+    1250, 0, 1260, 0, 1270, 0, 1280, 0, 1290, 0,
+    1300, 0, 1320, 0, 1340, 0, 1360, 0, 1380, 0,
+    1400, 0, 1430, 0, 1460, 0, 1490, 0, 1520, 0,
+    // Tono final de completado
+    800, 600, 0
+};
+static uint16_t loading_duration[] = {
+    // Nota 10ms, silencios van de 120ms bajando a 10ms
+    10, 120,  10, 117,  10, 114,  10, 111,  10, 108,
+    10, 105,  10, 100,  10,  90,  10,  80,  10,  70,
+    10,  60,  10,  50,  10,  45,  10,  40,  10,  35,
+    10,  30,  10,  25,  10,  20,  10,  15,  10,  10,
+    // Final
+    100, 150, 50
+};
+static uint16_t loading_size = sizeof(loading_notes) / sizeof(loading_notes[0]);
+
+
+// ================================================
+// LLAVE — Sonido al agarrar la llave
+// Simula: dos tings metálicos ascendentes
+// ================================================
+static uint32_t llave_notes[] = {
+    // Primer ting
+    ARR_Sol5, ARR_La5, ARR_Si5, ARR_Do6, 0,
+    // Segundo ting más agudo
+    ARR_Do6, ARR_Re6, ARR_Mi6, ARR_Sol6, ARR_La6, 0,
+    // Resonancia que se apaga
+    ARR_La6, ARR_La6, ARR_La6, 0
+};
+static uint16_t llave_duration[] = {
+    // Primer ting
+    30, 30, 30, 60, 40,
+    // Segundo ting
+    25, 25, 25, 25, 80, 30,
+    // Resonancia
+    60, 80, 100, 50
+};
+static uint16_t llave_size = sizeof(llave_notes) / sizeof(llave_notes[0]);
+
+
+// ================================================
+// STAR POWER — Agarrar estrella / ganar nivel
+// Simula: impacto + cuerpo + brillo final
+// ================================================
+static uint32_t starpower_notes[] = {
+    // Impacto ascendente
+    500, 520, 540, 560, 580, 600, 620, 640, 660, 680, 700, 720, 740, 760, 780, 800,
+    // Cuerpo bajando
+    775, 750, 725, 700, 675, 650, 625, 600, 575, 550, 500, 450, 400, 350, 300, 250, 200,
+    // Brillo: arpeggio ascendente
+    ARR_Do5, ARR_Mi5, ARR_Sol5, ARR_Do6, ARR_Mi6, ARR_Sol6,
+    0
+};
+static uint16_t starpower_duration[] = {
+    // Impacto
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    // Cuerpo
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+    // Brillo
+    60, 60, 60, 80, 80, 120,
+    50
+};
+static uint16_t starpower_size = sizeof(starpower_notes) / sizeof(starpower_notes[0]);
+
+
+// ================================================
+// GAME OVER / MUERTE — Evento M
+// Simula: caída dramática de tono
+// ================================================
+static uint32_t muerte_notes[] = {
+    // Caída rápida
+    ARR_Sol4, ARR_Fa4, ARR_Mi4, ARR_Re4, ARR_Do4,
+    ARR_Si3,  ARR_La3, ARR_Sol3,ARR_Fa3, ARR_Mi3,
+    ARR_Re3,  ARR_Do3,
+    0,
+    // Golpe final
+    ARR_Do2, ARR_Si1, ARR_La1,
+    0
+};
+static uint16_t muerte_duration[] = {
+    // Caída
+    80, 80, 80, 100, 100,
+    120, 120, 150, 150, 180,
+    200, 250,
+    100,
+    // Golpe final
+    150, 200, 300,
+    200
+};
+static uint16_t muerte_size = sizeof(muerte_notes) / sizeof(muerte_notes[0]);
+
+
+// ================================================
+// ENTER — Inicio de nivel / entrada
+// Simula: fanfarria corta ascendente
+// ================================================
+static uint32_t enter_notes[] = {
+    ARR_Do4, ARR_Mi4, ARR_Sol4,
+    0,
+    ARR_Do5, ARR_Mi5, ARR_Sol5, ARR_Do6,
+    0
+};
+static uint16_t enter_duration[] = {
+    80, 80, 80,
+    40,
+    80, 80, 80, 200,
+    100
+};
+static uint16_t enter_size = sizeof(enter_notes) / sizeof(enter_notes[0]);
+
+#endif /* INC_NOTAS_MUSICALES_H_ */

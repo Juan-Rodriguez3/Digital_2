@@ -84,6 +84,7 @@ uint8_t sChange_F1 = 0;
 uint8_t sChange_F2 = 0;
 uint8_t Score1 = 0;
 uint8_t Score2 = 0;
+uint8_t moveFlag2=0;
 //Variables de SD
 uint8_t nivelA=0;
 uint8_t countAAA=0;
@@ -558,16 +559,20 @@ int main(void)
           }
           else if (credit == 0 && nivelA != 0)
 		  {
-			  // Movimiento PJ1 en niveles (lo dejaremos aqui para después)
-			  if (D == 1) { PJ1.py += 16; }
-			  if (U == 1) { PJ1.py -= 16; }
-			  if (L == 1) { PJ1.px -= 16; }
-			  if (R == 1) { PJ1.px += 16; }
+        	  /* moveFlag solo si hubo input real del jugador */
+			  if (D == 1 || U == 1 || L == 1 || R == 1)
+			  {
+				  if (D == 1) { PJ1.py += 16; }
+				  if (U == 1) { PJ1.py -= 16; }
+				  if (L == 1) { PJ1.px -= 16; }
+				  if (R == 1) { PJ1.px += 16; }
+				  moveFlag = 1;
+			  }
 
 			  // Colisiones y logica de niveles van aqui despues
 			  // ...
 
-			  moveFlag = 1;
+
 		  }
 
      }
@@ -586,10 +591,15 @@ int main(void)
 
               if (nivelA != 0 && credit == 0)
               {
-                  if (D2 == 1) { j2.py += 16; }
-                  if (U2 == 1) { j2.py -= 16; }
-                  if (L2 == 1) { j2.px -= 16; }
-                  if (R2 == 1) { j2.px += 16; }
+            	  /* moveFlag solo si hubo input real del jugador */
+				  if (D2 == 1 || U2 == 1 || L2 == 1 || R2 == 1)
+				  {
+					  if (D2 == 1) { j2.py += 16; }
+					  if (U2 == 1) { j2.py -= 16; }
+					  if (L2 == 1) { j2.px -= 16; }
+					  if (R2 == 1) { j2.px += 16; }
+					  moveFlag2=1;
+				  }
               }
 
               uint8_t coli2  = 1;
@@ -723,8 +733,9 @@ int main(void)
                       j2.px = 244; j2.py = 208;
                       j2o.px = j2.px; j2o.py = j2.py;
                       moveFlag = 0;
-					  eventFlag = 'K';
-					  transmitSonic(nivelA, moveFlag, eventFlag, '1');
+                          /* Muerte j2 por shell — notificar con '1' */
+                          eventFlag = 'K';
+                          transmitSonic(nivelA, moveFlag, eventFlag, '1');
                   }
               }
 
@@ -736,6 +747,7 @@ int main(void)
               {
                   j2.px = j2o.px;
                   j2.py = j2o.py;
+                  transmitSonic(nivelA, 0, 'M', '1');
               }
               else { M2_F = 1; }
 
@@ -838,7 +850,7 @@ int main(void)
     	  {
     	      int8_t coli = 1;
     	      uint8_t coliW = 1;
-    	      moveFlag = 1;
+
 
     	      if (nivelA == 1)
     	      {
@@ -1010,6 +1022,9 @@ int main(void)
 				   j2o.px = j2.px;
 				   j2o.py = j2.py;
 				   M2_F = 0;
+				   /* Movimiento real j2 — transmitir con '1' */
+				   transmitSonic(nivelA, moveFlag2, 'N', '1');
+				   moveFlag2 = 0;
 			   }
 		   }
 			// ============================
