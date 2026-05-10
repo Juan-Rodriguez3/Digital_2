@@ -51,21 +51,18 @@ DMA_HandleTypeDef hdma_tim1_ch1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-//Variables de Neopixeles
 float brillo_led;
 volatile uint8_t flagSensor=0;
+
+int count=0;
+uint8_t aTxBuffer[TXbuffersize];
+uint8_t aRxBuffer[RXbuffersize];
+
+
 uint8_t RGB1[3];
 uint8_t RGB2[3];
 uint8_t RGB3[3];
 uint8_t RGB4[3];
-
-//Variables de I2C
-int count=0;
-uint8_t aTxBuffer[TXbuffersize];
-uint8_t aRxBuffer[RXbuffersize];
-//Variables de watchdog timmer para reiniciar comunicacion I2C
-volatile uint32_t i2c_last_activity = 0;
-#define I2C_TIMEOUT_MS 5000
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -181,18 +178,6 @@ int main(void)
 		update_neopixels();
 		flagSensor=0;
 	  }
-
-	  // Watchdog I2C Segunda contramedida para revivir comunicacion I2C
-	  if ((HAL_GetTick() - i2c_last_activity) > I2C_TIMEOUT_MS){
-		  HAL_UART_Transmit(&huart2, (uint8_t*)"Watchdog I2C activado\r\n", 23, 100);
-		  i2c_last_activity = HAL_GetTick();
-		  // Reiniciar el I2C si lleva más de 5s sin actividad
-		  HAL_I2C_DeInit(&hi2c1);
-		  HAL_Delay(10);
-		  HAL_I2C_Init(&hi2c1);
-		  HAL_I2C_EnableListen_IT(&hi2c1);
-	  }
-
 	  HAL_Delay(10);
     /* USER CODE END WHILE */
 
@@ -261,37 +246,8 @@ static void MX_I2C1_Init(void)
   /* USER CODE END I2C1_Init 0 */
 
   /* USER CODE BEGIN I2C1_Init 1 */
-  //Tercera contramedida para el SDA Y SCL low
-	// Recuperación del bus: generar hasta 9 pulsos de SCL si SDA está en LOW
-	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-	// Configurar PB8 (SCL) y PB9 (SDA) como GPIO output temporalmente
-	GPIO_InitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_9;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;  // Open-drain igual que I2C
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);  // SCL high
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);  // SDA high
-
-	// Si SDA está en LOW, generar pulsos de SCL
-	if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9) == GPIO_PIN_RESET){
-		for (int i = 0; i < 9; i++){
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
-			HAL_Delay(1);
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
-			HAL_Delay(1);
-		}
-	}
-
-	// Generar condición STOP manual
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
-	HAL_Delay(1);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
-	HAL_Delay(1);
   /* USER CODE END I2C1_Init 1 */
-
   hi2c1.Instance = I2C1;
   hi2c1.Init.ClockSpeed = 100000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
@@ -568,7 +524,6 @@ void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, ui
 }
 
 void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *I2cHandle){
-	i2c_last_activity = HAL_GetTick(); //Actualizar timestamp
 	if (aRxBuffer[0]==83) //ASCII 83='S'
 	{
 		HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin);
@@ -584,56 +539,24 @@ void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *I2cHandle){
 }
 
 void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle){
-	uint32_t error = HAL_I2C_GetError(I2cHandle);
-
-
+	RGB1[2]=255;
+	RGB2[2]=255;
+	RGB3[2]=255;
+	RGB4[2]=255;
+	RGB4[0]=0;
+	RGB4[0]=0;
+	RGB4[0]=0;
+	RGB4[0]=0;
+	RGB4[1]=0;
+	RGB4[1]=0;
+	RGB4[1]=0;
+	RGB4[1]=0;
 	update_neopixels();
-
-
 	if (HAL_I2C_GetError(I2cHandle) == HAL_I2C_ERROR_AF){
 		// Error normal, re-habilitar escucha
 		HAL_I2C_EnableListen_IT(I2cHandle);
 	} else {
-
-		//Primera contramedida para revivir el bus de I2C
-
-		// 1. Resetear el periférico I2C
-		HAL_I2C_DeInit(I2cHandle);
-		HAL_Delay(10);
-		HAL_I2C_Init(I2cHandle);
-
-		// 2. Re-habilitar escucha
-		HAL_I2C_EnableListen_IT(I2cHandle);
-
-		// 3. Señal visual de que hubo error pero se recuperó
-		RGB1[2]=255;
-		RGB2[2]=255;
-		RGB3[2]=255;
-		RGB4[2]=255;
-		RGB4[0]=0;
-		RGB4[0]=0;
-		RGB4[0]=0;
-		RGB4[0]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		update_neopixels();
-		HAL_Delay(500);
-		// Apagar el azul después
-		RGB1[0]=255;
-		RGB2[0]=255;
-		RGB3[0]=255;
-		RGB4[0]=255;
-		RGB4[2]=0;
-		RGB4[2]=0;
-		RGB4[2]=0;
-		RGB4[2]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		update_neopixels();
+		Error_Handler();
 	}
 }
 /* USER CODE END 4 */

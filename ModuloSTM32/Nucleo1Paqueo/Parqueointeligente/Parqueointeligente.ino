@@ -17,7 +17,7 @@ void setup() {
 }
 
 void loop() {
-  delay(1000);
+  delay(200);
 
   uint8_t sensor= 'S';
   Wire.beginTransmission(addressSlave1);

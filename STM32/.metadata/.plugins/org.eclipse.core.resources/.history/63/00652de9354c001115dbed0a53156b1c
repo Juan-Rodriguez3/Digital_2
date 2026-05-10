@@ -64,7 +64,7 @@ int count=0;
 uint8_t aTxBuffer[TXbuffersize];
 uint8_t aRxBuffer[RXbuffersize];
 //Variables de watchdog timmer para reiniciar comunicacion I2C
-volatile uint32_t i2c_last_activity = 0;
+volatile uint32_Ct i2c_last_activity = 0;
 #define I2C_TIMEOUT_MS 5000
 /* USER CODE END PV */
 
@@ -184,7 +184,6 @@ int main(void)
 
 	  // Watchdog I2C Segunda contramedida para revivir comunicacion I2C
 	  if ((HAL_GetTick() - i2c_last_activity) > I2C_TIMEOUT_MS){
-		  HAL_UART_Transmit(&huart2, (uint8_t*)"Watchdog I2C activado\r\n", 23, 100);
 		  i2c_last_activity = HAL_GetTick();
 		  // Reiniciar el I2C si lleva más de 5s sin actividad
 		  HAL_I2C_DeInit(&hi2c1);
@@ -594,9 +593,7 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle){
 		// Error normal, re-habilitar escucha
 		HAL_I2C_EnableListen_IT(I2cHandle);
 	} else {
-
-		//Primera contramedida para revivir el bus de I2C
-
+		// Error grave — intentar recuperar el bus
 		// 1. Resetear el periférico I2C
 		HAL_I2C_DeInit(I2cHandle);
 		HAL_Delay(10);
