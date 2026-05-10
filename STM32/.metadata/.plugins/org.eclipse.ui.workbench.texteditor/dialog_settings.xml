@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<item key="replaceBarOpen" value="true"/>
+	<list key="searchhistory">
+		<item value="brillo_led"/>
+		<item value="LED_Data"/>
+		<item value="I2C3"/>
+		<item value="coliD2==0"/>
+		<item value="DMA"/>
+	</list>
+	<list key="replacehistory">
+		<item value="led_data"/>
+		<item value="I2C1"/>
+	</list>
+</section>

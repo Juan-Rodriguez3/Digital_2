@@ -630,14 +630,14 @@ int main(void)
   HAL_UART_Transmit(&huart2, (uint8_t*)"UART1 OK\r\n", 10, 1000);
 
   /* Loading ANTES de TIM2 para evitar interferencia */
-  loading_tick_complete();
+  //loading_tick_complete();
   HAL_UART_Transmit(&huart2, (uint8_t*)"LOADING OK\r\n", 12, 1000);
 
   /* TIM2 arranca despues del loading */
   HAL_TIM_Base_Start_IT(&htim2);
   HAL_UART_Transmit(&huart2, (uint8_t*)"TIM2 OK\r\n", 9, 1000);
 
-  Song_Start(mario_notes, mario_duration, mario_size);
+  //Song_Start(mario_notes, mario_duration, mario_size);
   HAL_UART_Transmit(&huart2, (uint8_t*)"SONG OK\r\n", 9, 1000);
   /* USER CODE END 2 */
 

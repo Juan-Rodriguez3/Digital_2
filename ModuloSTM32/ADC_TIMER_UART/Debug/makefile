@@ -60,8 +60,8 @@ all: main-build
 main-build: ADC_TIMER_UART.elf secondary-outputs
 
 # Tool invocations
-ADC_TIMER_UART.elf ADC_TIMER_UART.map: $(OBJS) $(USER_OBJS) C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\UVG\7moSemestre\digitalII\ModuloSTM32\Laboratorios\Lab9Señales\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+ADC_TIMER_UART.elf ADC_TIMER_UART.map: $(OBJS) $(USER_OBJS) C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\ADC_TIMER_UART\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "ADC_TIMER_UART.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\ADC_TIMER_UART\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADC_TIMER_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

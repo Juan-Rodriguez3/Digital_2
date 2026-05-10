@@ -9,6 +9,10 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo"/>
+			<item value="C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\ParqueoInteligente"/>
+			<item value="C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\ADC_TIMER_UART"/>
+			<item value="C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\ProyectoVideoJuegoF401RE"/>
 			<item value="C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\LAB7"/>
 		</list>
 		<section name="SmartImportWizard.dialogBounds">

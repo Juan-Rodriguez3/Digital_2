@@ -1,0 +1,35 @@
+/*
+ * NeoPixel.h
+ *
+ *  Created on: May 3, 2026
+ *      Author: juana
+ */
+
+#ifndef INC_NEOPIXEL_H_
+#define INC_NEOPIXEL_H_
+
+#include "main.h"
+#include <math.h>
+//Numero de led
+#define Npixels 4
+//Valores de CCRx para generar un pulso de 0 y 1 logico
+#define Logic1 67
+#define Logic0 34
+
+extern TIM_HandleTypeDef htim1;
+#define neoPixel_timer htim1
+#define neoPixel_canal TIM_CHANNEL_1
+
+//Funcion de correcion de brillo
+#define GAMMA_Correction 2.2f
+#define GAMMA 2.2f
+#define MAX_BRIGHTNESS 255
+
+uint8_t Gamma_correccion(uint8_t color, float brillo);
+
+void setPixelColor(uint16_t pixel, uint8_t red, uint8_t green, uint8_t blue);
+void setBrightness(uint8_t brillo);
+void pixelShow(void);
+void pixelClear(void);
+
+#endif /* INC_NEOPIXEL_H_ */

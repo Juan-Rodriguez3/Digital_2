@@ -1095,31 +1095,25 @@ void Draw_Level_Background(uint8_t nivel)
     char dbg[80];
     char filename[20];
 
-    if (nivel==4){
-    	sprintf(filename, "creditos.bin");
-    }
-    else {
-    	// Construir nombre de archivo según el nivel
-		sprintf(filename, "niv%d.bin", nivel);
-    }
-
+    // Construir nombre de archivo según el nivel
+    sprintf(filename, "niv%d.bin", nivel);
 
     // ============================
     // 1. SPI LENTO - INIT SD
     // ============================
     HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-    HAL_Delay(100);
+    HAL_Delay(500);
 
-    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
+    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
     HAL_SPI_Init(&hspi1);
-    HAL_Delay(100);
+    //HAL_Delay(100);
 
     // ============================
     // 2. MONTAR SD
     // ============================
     FATFS fs_lvl;
-    FRESULT res = f_mount(&fs_lvl, "", 1);
+    FRESULT res = f_mount(&fs_lvl, "/", 0);
     sprintf(dbg, "Mount: %d\r\n", res);
     HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
 
@@ -1148,80 +1142,56 @@ void Draw_Level_Background(uint8_t nivel)
         return;
     }
 
-    // ============================
-    // 4. INIT LCD
-    // ============================
-    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
+    // Buffer de una fila
+        static uint16_t rowBuf[320];
 
-    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-    HAL_SPI_Init(&hspi1);
+        for (int row = 0; row < 240; row++)
+        {
+            // Leer fila a prescaler 8 con SD activa
+            HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_RESET);
 
-    LCD_Init();
-    LCD_Clear(0x0000);
+            UINT bytesRead = 0;
+            f_read(&imgFile, rowBuf, 640, &bytesRead);
 
-    // ============================
-    // 5. DIBUJAR FILA POR FILA
-    // ============================
-    static uint16_t rowBuf[320];
+            // SD inactiva antes de tocar LCD
+            HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
 
-    for (int row = 0; row < 240; row++)
-    {
-        // --- LEER FILA DESDE SD ---
-        HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_RESET);
+            // Cambiar a prescaler 2 para LCD
+            hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+            HAL_SPI_Init(&hspi1);
 
-        hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
-        HAL_SPI_Init(&hspi1);
+            // Dibujar fila
+            SetWindows(0, row, 319, row);
+            HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(LCD_DC_GPIO_Port, LCD_DC_Pin, GPIO_PIN_SET);
 
-        UINT bytesRead;
-        f_read(&imgFile, rowBuf, 320 * 2, &bytesRead);
+            for (int i = 0; i < 320; i++) {
+            	uint8_t lo = rowBuf[i] & 0xFF;
+                uint8_t hi = rowBuf[i] >> 8;
+                HAL_SPI_Transmit(&hspi1, &lo, 1, 1);
+                HAL_SPI_Transmit(&hspi1, &hi, 1, 1);
 
-        if (bytesRead != 640) {
-            sprintf(dbg, "Error fila %d: %d bytes\r\n", row, bytesRead);
-            HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
-            break;
+            }
+            HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
+
+            // Volver a prescaler 8 para SD
+            hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+            HAL_SPI_Init(&hspi1);
         }
 
-        // --- DIBUJAR FILA EN LCD ---
+        // Cerrar SD
+        f_close(&imgFile);
+        f_mount(NULL, "/", 0);
         HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
 
+        sprintf(dbg, "Nivel %d OK\r\n", nivel);
+        HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
+
+        // Dejar SPI a velocidad pantalla
         hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
         HAL_SPI_Init(&hspi1);
-
-        SetWindows(0, row, 319, row);
-
         HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_RESET);
-        HAL_GPIO_WritePin(LCD_DC_GPIO_Port, LCD_DC_Pin, GPIO_PIN_SET);
-
-        for (int i = 0; i < 320; i++) {
-            uint8_t lo = rowBuf[i] & 0xFF;
-            uint8_t hi = rowBuf[i] >> 8;
-            HAL_SPI_Transmit(&hspi1, &lo, 1, 1);
-            HAL_SPI_Transmit(&hspi1, &hi, 1, 1);
-        }
-
-        HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
-    }
-
-    // ============================
-    // 6. CERRAR SD
-    // ============================
-    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_RESET);
-    HAL_Delay(5);
-    imgFile.obj.fs = 0;
-    f_mount(NULL, "", 0);
-    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-
-    sprintf(dbg, "Nivel %d dibujado OK\r\n", nivel);
-    HAL_UART_Transmit(&huart2, (uint8_t*)dbg, strlen(dbg), 200);
-
-    // ============================
-    // 7. LCD LISTA PARA EL JUEGO
-    // ============================
-    HAL_GPIO_WritePin(SD_SS_GPIO_Port, SD_SS_Pin, GPIO_PIN_SET);
-    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-    HAL_SPI_Init(&hspi1);
 }
 
 /* USER CODE END 4 */

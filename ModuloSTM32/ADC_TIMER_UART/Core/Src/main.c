@@ -40,7 +40,7 @@
 //Contienen funciones para enviar mensajes por puerto COM
 #include <stdio.h>
 #include <string.h>
-
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -77,10 +77,20 @@ char msg[30]; //Buffer para el mensaje a enviar por UART (debe ser del tamaño a
 //FRECUENCIA DE MUESTREO
 //OJO: LA CONFIGURACIÓN ACTUAL PERMITE UNA Fs MÁXIMA DE 10kHz.
 //SI SE DESEA UNA FRECUENCIA MÁS ALTA SE DEBE CAMBIAR LA CONFIGURACIÓN
-uint16_t Fs = 1000; //En Hz
+uint16_t Fs = 0; //En Hz
 uint32_t timer_clk;
 uint32_t pclk;
-uint8_t N=0;
+uint16_t N=0; //muestras
+uint16_t countN=0;
+uint8_t filter=2;
+uint8_t flagFilter=0;
+
+// Buffer UART para recibir el comando de Matlab
+char     rx_buf[32];
+uint8_t  rx_byte   = 0;
+uint8_t  rx_index  = 0;
+uint8_t  cmd_ready = 0;   // Flag: comando completo recibido
+
 //float y[256];
 float y_n;
 float y_n1=0;
@@ -103,30 +113,109 @@ static void MX_DAC_Init(void);
 /* USER CODE BEGIN 0 */
 
 //Callback para la interrupción de TIM10
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance != TIM10) return;  // ✅ Verificar que es TIM10
+    if (!flagFilter) return;               // ✅ Si no hay captura, salir inmediatamente
+
+    HAL_ADC_Start(&hadc1);
+    HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+    x_n = HAL_ADC_GetValue(&hadc1);
+
+    switch (filter) {
+        case 0:
+            y_n = 0.9f * y_n1 + 0.9f * x_n - 0.9f * x_n1;
+            break;
+        case 1:
+            y_n = 0.1f * x_n + 0.9f * y_n1;
+            break;
+        default:
+            y_n = (float)x_n;   // ✅ bypass explícito en default
+            break;
+    }
+
+    x_n1 = x_n;
+    if (y_n > 4095.0f) y_n = 4095.0f;
+    else if (y_n < 0.0f) y_n = 0.0f;
+    y_n1 = y_n;
+
+    HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, (uint16_t)y_n);
+
+    // Enviar por UART
+    char msg[20];
+    int  len = snprintf(msg, sizeof(msg), "%u,%u\n", x_n, (uint16_t)y_n);
+    HAL_UART_Transmit(&huart2, (uint8_t*)msg, len, HAL_MAX_DELAY);
+
+    countN++;
+    if (countN >= N) {       // ✅ >= N para enviar exactamente N muestras
+        flagFilter = 0;
+        countN = 0;
+    }
+}
+
+void parsear_comando(void)
+{
+    uint16_t nuevo_Fs    = Fs;
+    uint8_t  nuevo_filt  = filter;
 
 
-	HAL_ADC_Start(&hadc1);  //Inicializa la conversión ADC1
-	HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY); //Se espera a que se complete la conversión
-	x_n = HAL_ADC_GetValue(&hadc1); //Se asigna el valor en la variable correspondiente
+    // Extraer Fs
+    char *p = strstr(rx_buf, "FS:");
+    if (p) {
+        nuevo_Fs = (uint16_t)atoi(p + 3);
+    }
 
-	//y_n = 0.9f *y_n1 + 0.9f *x_n - 0.9f *x_n1;
-	y_n=0.1f*x_n+0.9f*y_n1;
+    // Extraer número de filtro
+    p = strstr(rx_buf, "F:");
+    if (p) {
+        nuevo_filt = (uint8_t)atoi(p + 2);
+    }
 
-	x_n1=x_n;
+    // Extraer N (número de muestras)
+    p = strstr(rx_buf, "N:");
+    if (p) {
+    	N = (uint16_t)atoi(p + 2);
+    	countN=0;
+    }
 
-	if (y_n>4095.0) y_n=4095.0;
-	else if (y_n<0.0) y_n=0;
-	y_n1=y_n;
+    // Validar y aplicar Fs
+    if (nuevo_Fs >= 10 && nuevo_Fs <= 10000) {
+        Fs = nuevo_Fs;
+        uint32_t nuevo_period = (timer_clk / (htim10.Init.Prescaler + 1)) / Fs - 1;
+        __HAL_TIM_SET_AUTORELOAD(&htim10, nuevo_period);
+        __HAL_TIM_SET_COUNTER(&htim10, 0);
+    }
 
-	//sprintf(msg, "%f\n", y_n);
-	//HAL_UART_Transmit(&huart2,(uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-	//Se envía un valor de 12 bits alineado a la derecha
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, (uint16_t)y_n);
-	// Resetear el contador después de VALOR_MAX
-	//cont = (cont + 1) % (VALOR_MAX + 1);
+    // Validar y aplicar filtro
+    if (nuevo_filt <= 2) {
+        filter = nuevo_filt;
+        y_n1 = 0.0f;   // Resetear estado interno del filtro
+        x_n1 = 0;
+    }
 
-	//N++;
+    flagFilter=1;
+    /*
+    // Enviar a Matlab: "xn,yn\n"
+    	char msg[20];
+    	int  len = snprintf(msg, sizeof(msg), "%u,%u\n", (uin	t16_t)nuevo_Fs, nuevo_filt);
+    	HAL_UART_Transmit(&huart2, (uint8_t*)msg, len, HAL_MAX_DELAY);
+	*/
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+	if (huart->Instance != USART2) return;
+
+	    if (rx_byte == '\n') {
+	        // Fin de línea — marcar comando listo
+	        rx_buf[rx_index] = '\0';
+	        rx_index  = 0;
+	        cmd_ready = 1;
+	    } else if (rx_index < sizeof(rx_buf) - 1) {
+	        rx_buf[rx_index++] = rx_byte;
+	    }
+
+	    // Re-armar interrupción para el siguiente byte
+	    HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
 }
 
 /* USER CODE END 0 */
@@ -167,12 +256,18 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_DAC_Start(&hdac, DAC_CHANNEL_1); //Inicializa el Canal 1 del DAC
   HAL_TIM_Base_Start_IT(&htim10); //Esto inicializa el TIM10 y habilita la interrupción
+  HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if (cmd_ready) {
+	          cmd_ready = 0;
+	          parsear_comando();
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -352,7 +447,7 @@ static void MX_TIM10_Init(void)
   htim10.Instance = TIM10;
   htim10.Init.Prescaler = 8399;
   htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
-  //htim10.Init.Period = 65535;
+  htim10.Init.Period = 65535;
   htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim10.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim10) != HAL_OK)

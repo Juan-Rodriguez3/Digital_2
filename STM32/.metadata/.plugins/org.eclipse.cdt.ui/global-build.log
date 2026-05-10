@@ -1,24 +1,273 @@
-23:26:18 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
+16:53:25 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
 make -j12 all 
-arm-none-eabi-gcc "C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../../Core/Inc -I../../Drivers/STM32F4xx_HAL_Driver/Inc -I../../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../../Drivers/CMSIS/Include -I../../FATFS/Target -I../../FATFS/App -I../../Middlewares/Third_Party/FatFs/src -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Application/User/Core/main.d" -MT"Application/User/Core/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Application/User/Core/main.o"
-In file included from C:/Users/juana/OneDrive/Documentos/GitHub/Digital_2/ModuloSTM32/ProyectoVideoJuegoF401RE/Core/Src/main.c:26:
-../../Core/Inc/bitmaps.h:733:1: warning: "/*" within comment [-Wcomment]
-  733 | /*
-arm-none-eabi-gcc -o "ProyectoVideoJuegoF401RE.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\ProyectoVideoJuegoF401RE\STM32CubeIDE\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ProyectoVideoJuegoF401RE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ProyectoVideoJuegoF401RE.elf
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
  
-arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
-arm-none-eabi-objdump -h -S ProyectoVideoJuegoF401RE.elf  > "ProyectoVideoJuegoF401RE.list"
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
    text	   data	    bss	    dec	    hex	filename
-  57184	    116	   3836	  61136	   eed0	ProyectoVideoJuegoF401RE.elf
+  33188	     92	   2564	  35844	   8c04	Nucleo1Paqueo.elf
 Finished building: default.size.stdout
  
-Finished building: ProyectoVideoJuegoF401RE.list
+Finished building: Nucleo1Paqueo.list
  
-23:26:21 **** Incremental Build of configuration Debug for project ProyectoVideoJuegoF401RE ****
+16:53:29 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
 make -j12 all 
-arm-none-eabi-size  ProyectoVideoJuegoF401RE.elf 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
    text	   data	    bss	    dec	    hex	filename
-  57184	    116	   3836	  61136	   eed0	ProyectoVideoJuegoF401RE.elf
+  33188	     92	   2564	  35844	   8c04	Nucleo1Paqueo.elf
 Finished building: default.size.stdout
+ 
+16:53:57 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+   text	   data	    bss	    dec	    hex	filename
+  33188	     92	   2564	  35844	   8c04	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+16:55:09 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33068	     92	   2564	  35724	   8b8c	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+16:59:07 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33100	     92	   2564	  35756	   8bac	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+16:59:56 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  32892	     92	   2564	  35548	   8adc	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+17:00:31 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33100	     92	   2564	  35756	   8bac	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+17:04:02 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33100	     92	   2564	  35756	   8bac	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+17:36:42 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33260	     92	   2564	  35916	   8c4c	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+17:38:56 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33956	     92	   2564	  36612	   8f04	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+17:41:43 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+   text	   data	    bss	    dec	    hex	filename
+  33956	     92	   2564	  36612	   8f04	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+17:42:06 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33956	     92	   2564	  36612	   8f04	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+17:42:24 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33956	     92	   2564	  36612	   8f04	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+21:39:31 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33996	     92	   2564	  36652	   8f2c	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+21:44:48 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  34044	     92	   2564	  36700	   8f5c	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+21:49:43 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33972	     92	   2564	  36628	   8f14	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+22:38:11 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33996	     92	   2564	  36652	   8f2c	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+22:40:17 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33996	     92	   2564	  36652	   8f2c	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+22:48:59 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  33996	     92	   2564	  36652	   8f2c	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+22:53:31 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  34004	     92	   2564	  36660	   8f34	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
+ 
+23:00:14 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
+arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
+   text	   data	    bss	    dec	    hex	filename
+  34028	     92	   2564	  36684	   8f4c	Nucleo1Paqueo.elf
+Finished building: default.size.stdout
+ 
+Finished building: Nucleo1Paqueo.list
  
