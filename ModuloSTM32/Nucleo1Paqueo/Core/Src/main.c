@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "NeoPixel.h"
 #include <string.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,6 +45,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
+
+IWDG_HandleTypeDef hiwdg;
 
 TIM_HandleTypeDef htim1;
 DMA_HandleTypeDef hdma_tim1_ch1;
@@ -75,6 +78,7 @@ static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_TIM1_Init(void);
+static void MX_IWDG_Init(void);
 /* USER CODE BEGIN PFP */
 void update_neopixels();
 void update_colors(uint8_t flagSensor, uint8_t RGB[2],uint8_t compare);
@@ -149,7 +153,14 @@ int main(void)
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   MX_TIM1_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
+  // Detectar si el reset fue causado por el IWDG
+  if (__HAL_RCC_GET_FLAG(RCC_FLAG_IWDGRST)){
+      __HAL_RCC_CLEAR_RESET_FLAGS();
+      HAL_UART_Transmit(&huart2,
+          (uint8_t*)"Reset por IWDG - I2C recuperado\r\n", 33, 100);
+  }
   aTxBuffer[0]=1;
   aTxBuffer[1]=2;
   aTxBuffer[2]=3;
@@ -176,6 +187,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+	  // Alimentar el IWDG — si el programa se congela,
+	  // esto deja de ejecutarse y el IWDG resetea la Nucleo
+	  HAL_IWDG_Refresh(&hiwdg);
+
 	  update_park(flagSensor);
 	  if (flagSensor != 0){
 		update_neopixels();
@@ -183,7 +199,8 @@ int main(void)
 	  }
 
 	  // Watchdog I2C Segunda contramedida para revivir comunicacion I2C
-	  if ((HAL_GetTick() - i2c_last_activity) > I2C_TIMEOUT_MS){
+	  if (i2c_last_activity != 0 &&
+	     (HAL_GetTick() - i2c_last_activity) > I2C_TIMEOUT_MS){
 		  HAL_UART_Transmit(&huart2, (uint8_t*)"Watchdog I2C activado\r\n", 23, 100);
 		  i2c_last_activity = HAL_GetTick();
 		  // Reiniciar el I2C si lleva más de 5s sin actividad
@@ -218,9 +235,10 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = 8;
@@ -291,7 +309,6 @@ static void MX_I2C1_Init(void)
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
 	HAL_Delay(1);
   /* USER CODE END I2C1_Init 1 */
-
   hi2c1.Instance = I2C1;
   hi2c1.Init.ClockSpeed = 100000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
@@ -308,6 +325,34 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief IWDG Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_IWDG_Init(void)
+{
+
+  /* USER CODE BEGIN IWDG_Init 0 */
+
+  /* USER CODE END IWDG_Init 0 */
+
+  /* USER CODE BEGIN IWDG_Init 1 */
+
+  /* USER CODE END IWDG_Init 1 */
+  hiwdg.Instance = IWDG;
+  hiwdg.Init.Prescaler = IWDG_PRESCALER_64;
+  hiwdg.Init.Reload = 4095;
+  if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN IWDG_Init 2 */
+
+  /* USER CODE END IWDG_Init 2 */
 
 }
 

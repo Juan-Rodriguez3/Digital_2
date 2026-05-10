@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;Nucleo1Paqueo/Core/Src/i2c_slave.c&apos;" deleteContents="false" description="Delete resource &apos;Nucleo1Paqueo/Core/Src/i2c_slave.c&apos;" element1="/Nucleo1Paqueo/Core/Src/i2c_slave.c" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1778394362427"/>&#x0A;<refactoring comment="Delete resource &apos;Nucleo1Paqueo/Core/Inc/i2c_slave.h&apos;" deleteContents="false" description="Delete resource &apos;Nucleo1Paqueo/Core/Inc/i2c_slave.h&apos;" element1="/Nucleo1Paqueo/Core/Inc/i2c_slave.h" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1778394367634"/>
+</session>

@@ -1,10 +1,10 @@
-00:06:57 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+00:33:21 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
 make -j12 all 
 arm-none-eabi-size  Nucleo1Paqueo.elf 
    text	   data	    bss	    dec	    hex	filename
-  35204	     92	   2572	  37868	   93ec	Nucleo1Paqueo.elf
+  35532	     92	   2580	  38204	   953c	Nucleo1Paqueo.elf
 Finished building: default.size.stdout
  
 
-00:06:57 Build Finished. 0 errors, 0 warnings. (took 329ms)
+00:33:21 Build Finished. 0 errors, 0 warnings. (took 337ms)
 
