@@ -1737,8 +1737,8 @@ void update_neopixels(){
  80012bc:	789b      	ldrb	r3, [r3, #2]
  80012be:	2003      	movs	r0, #3
  80012c0:	f7ff fdf4 	bl	8000eac <setPixelColor>
-	setBrightness(100);
- 80012c4:	2064      	movs	r0, #100	@ 0x64
+	setBrightness(70);
+ 80012c4:	2046      	movs	r0, #70	@ 0x46
  80012c6:	f7ff fe1f 	bl	8000f08 <setBrightness>
 	pixelShow();
  80012ca:	f7ff fe6d 	bl	8000fa8 <pixelShow>
@@ -1753,6 +1753,7 @@ void update_neopixels(){
 
 080012e4 <update_colors>:
 
+//Esta funcion es para facilitar el cambio de color en base a flags
 void update_colors(uint8_t flagSensor, uint8_t RGB[2],uint8_t compare){
  80012e4:	b480      	push	{r7}
  80012e6:	b083      	sub	sp, #12
@@ -1981,6 +1982,7 @@ int main(void)
  8001428:	4856      	ldr	r0, [pc, #344]	@ (8001584 <main+0x1f4>)
  800142a:	f003 fec0 	bl	80051ae <HAL_IWDG_Refresh>
 
+	  // Si hay un error en el i2c reinciara y se ejecutara esta instrucción.
 	  if (i2c_error_flag){
  800142e:	4b56      	ldr	r3, [pc, #344]	@ (8001588 <main+0x1f8>)
  8001430:	781b      	ldrb	r3, [r3, #0]
@@ -1991,7 +1993,6 @@ int main(void)
  8001438:	4b53      	ldr	r3, [pc, #332]	@ (8001588 <main+0x1f8>)
  800143a:	2200      	movs	r2, #0
  800143c:	701a      	strb	r2, [r3, #0]
-
 		  // Azul = error detectado
 		  RGB1[2]=255; RGB1[0]=0; RGB1[1]=0;
  800143e:	4b4b      	ldr	r3, [pc, #300]	@ (800156c <main+0x1dc>)
@@ -2035,10 +2036,9 @@ int main(void)
  8001484:	705a      	strb	r2, [r3, #1]
 		  update_neopixels();
  8001486:	f7ff fef5 	bl	8001274 <update_neopixels>
-		  HAL_Delay(500);  // Aquí SÍ es seguro
+		  HAL_Delay(500);
  800148a:	f44f 70fa 	mov.w	r0, #500	@ 0x1f4
  800148e:	f000 fee5 	bl	800225c <HAL_Delay>
-
 		  // Volver a verde
 		  RGB1[2]=0; RGB1[1]=255; RGB1[0]=0;
  8001492:	4b36      	ldr	r3, [pc, #216]	@ (800156c <main+0x1dc>)
@@ -2082,7 +2082,6 @@ int main(void)
  80014d8:	701a      	strb	r2, [r3, #0]
 		  update_neopixels();
  80014da:	f7ff fecb 	bl	8001274 <update_neopixels>
-
 		  HAL_UART_Transmit(&huart2,
  80014de:	2364      	movs	r3, #100	@ 0x64
  80014e0:	2216      	movs	r2, #22
@@ -2092,6 +2091,7 @@ int main(void)
 				(uint8_t*)"I2C Error recuperado\r\n", 22, 100);
 		}
 
+	  //Actualizar los colores de los neopixeles.
 	  update_park(flagSensor);
  80014ea:	4b29      	ldr	r3, [pc, #164]	@ (8001590 <main+0x200>)
  80014ec:	781b      	ldrb	r3, [r3, #0]

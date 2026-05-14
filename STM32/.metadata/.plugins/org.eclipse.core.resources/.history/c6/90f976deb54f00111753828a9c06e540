@@ -1,0 +1,117 @@
+/*
+ * Neopixel.c
+ *
+ *  Created on: May 12, 2026
+ *      Author: Dell
+ */
+#include "neopixel.h"
+#include <main.h>
+#include <math.h>
+
+uint8_t led_data[Npixels][4];
+uint8_t led_brillo[Npixels][4];
+
+//Tamaño del buffer para almacenar los PWMs
+uint16_t pwm_data[(24*Npixels)+50];
+
+volatile uint8_t datasentflag=0;
+
+extern float brillo_led;
+
+
+void setPixelColor(uint16_t pixel, uint8_t red, uint8_t green, uint8_t blue){
+	led_data[pixel][0]=		pixel;
+	led_data[pixel][1]=		red;
+	led_data[pixel][2]=		green;
+	led_data[pixel][3]=		blue;
+}
+
+void setBrightness(uint8_t brillo){
+	if (brillo>100)brillo=100;
+	brillo_led=brillo;
+	for (int i=0; i<Npixels; i++){
+		led_brillo[i][0]=led_data[i][0];
+		for (uint8_t j=1; j<4; j++){
+			uint8_t brill = Gamma_correccion(led_data[i][j],brillo_led);
+			led_brillo[i][j]=brill;
+		}
+	}
+}
+
+void pixelShow(void){
+    uint32_t RGB = 0;
+    uint32_t indx = 0;
+
+    for (int i = 0; i < Npixels; i++){
+        led_brillo[i][0] = led_data[i][0];
+        for (uint8_t j = 1; j < 4; j++){
+            led_brillo[i][j] = Gamma_correccion(led_data[i][j], brillo_led);
+        }
+
+        // ✅ Cast a uint32_t antes del shift
+        RGB = (((uint32_t)led_brillo[i][2] << 16) |   // G
+               ((uint32_t)led_brillo[i][1] <<  8) |   // R
+               ((uint32_t)led_brillo[i][3]));          // B
+
+        for (int k = 23; k >= 0; k--){
+            pwm_data[indx++] = (RGB & (1UL << k)) ? Logic1 : Logic0;
+        }
+    }
+
+    for (int i = 0; i < 50; i++){
+        pwm_data[indx++] = 0;
+    }
+
+    datasentflag = 0;
+    HAL_TIM_PWM_Start_DMA(&neoPixel_timer, neoPixel_canal,
+                           (uint32_t*)pwm_data, indx);
+    while (!datasentflag);
+}
+
+void pixelClear(void){
+	for (uint8_t i=0; i<Npixels; i++){
+		led_data[i][0]=		i;
+		led_data[i][1]=		0;
+		led_data[i][2]=		0;
+		led_data[i][3]=		0;
+	}
+}
+
+uint8_t Gamma_correccion(uint8_t c, float b) {
+    // Limitar el valor de brillo a un rango de 0 a 100
+    if (b > 100.0f)
+        b = 100.0f;
+    if (b < 0.0f)
+        b = 0.0f;
+
+    // Normalizo el brillo al rango de 0.0 a 1.0
+    float brillo_Factor = b / 100.0f;
+
+    // aplica el factor
+    float adjustedColor = c * brillo_Factor;
+
+    // formula de escalamiento gamma
+    float gammaCorrectedColor = pow((adjustedColor / 255.0f), GAMMA) * 255.0f;
+
+    // analiza que este dentro los limites
+    if (gammaCorrectedColor > 255.0f)
+        gammaCorrectedColor = 255.0f;
+    if (gammaCorrectedColor < 0.0f)
+        gammaCorrectedColor = 0.0f;
+
+    // lo regresa como 8 bit escalado
+    return (uint8_t) gammaCorrectedColor;
+}
+/*
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
+	if (htim->Instance == TIM1){
+	        HAL_TIM_PWM_Stop_DMA(&neoPixel_timer, neoPixel_canal);
+	        datasentflag = 1;
+	    }
+}
+*/
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+{
+    HAL_TIM_PWM_Stop_DMA(htim, neoPixel_canal);
+    datasentflag = 1;
+}
