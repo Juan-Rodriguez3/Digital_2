@@ -13,6 +13,7 @@ uint8_t led_brillo[Npixels][4];
 
 //Tamaño del buffer para almacenar los PWMs
 uint16_t pwm_data[(24*Npixels)+50];
+
 volatile uint8_t datasentflag=0;
 
 extern float brillo_led;

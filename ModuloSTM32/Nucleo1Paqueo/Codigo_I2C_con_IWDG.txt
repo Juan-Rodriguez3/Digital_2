@@ -57,6 +57,7 @@ UART_HandleTypeDef huart2;
 //Variables de Neopixeles
 float brillo_led;
 volatile uint8_t flagSensor=0;
+volatile uint8_t flagSensor_ESP32=0;
 uint8_t RGB1[3];
 uint8_t RGB2[3];
 uint8_t RGB3[3];
@@ -68,6 +69,7 @@ uint8_t aTxBuffer[TXbuffersize];
 uint8_t aRxBuffer[RXbuffersize];
 //Variables de watchdog timmer para reiniciar comunicacion I2C
 volatile uint32_t i2c_last_activity = 0;
+volatile uint8_t i2c_error_flag = 0;
 #define I2C_TIMEOUT_MS 5000
 /* USER CODE END PV */
 
@@ -116,7 +118,6 @@ void update_park(uint8_t flagSensor){
 	update_colors(flagSensor, RGB3,0x04);
 	update_colors(flagSensor, RGB4,0x08);
 }
-
 /* USER CODE END 0 */
 
 /**
@@ -192,6 +193,28 @@ int main(void)
 	  // esto deja de ejecutarse y el IWDG resetea la Nucleo
 	  HAL_IWDG_Refresh(&hiwdg);
 
+	  if (i2c_error_flag){
+		  i2c_error_flag = 0;
+
+		  // Azul = error detectado
+		  RGB1[2]=255; RGB1[0]=0; RGB1[1]=0;
+		  RGB2[2]=255; RGB2[0]=0; RGB2[1]=0;
+		  RGB3[2]=255; RGB3[0]=0; RGB3[1]=0;
+		  RGB4[2]=255; RGB4[0]=0; RGB4[1]=0;
+		  update_neopixels();
+		  HAL_Delay(500);  // Aquí SÍ es seguro
+
+		  // Volver a verde
+		  RGB1[2]=0; RGB1[1]=255; RGB1[0]=0;
+		  RGB2[2]=0; RGB2[1]=255; RGB2[0]=0;
+		  RGB3[2]=0; RGB3[1]=255; RGB3[0]=0;
+		  RGB4[2]=0; RGB4[1]=255; RGB4[0]=0;
+		  update_neopixels();
+
+		  HAL_UART_Transmit(&huart2,
+				(uint8_t*)"I2C Error recuperado\r\n", 22, 100);
+		}
+
 	  update_park(flagSensor);
 	  if (flagSensor != 0){
 		update_neopixels();
@@ -209,6 +232,7 @@ int main(void)
 		  HAL_I2C_Init(&hi2c1);
 		  HAL_I2C_EnableListen_IT(&hi2c1);
 	  }
+
 
 	  HAL_Delay(10);
     /* USER CODE END WHILE */
@@ -589,6 +613,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 				 flagSensor|= 0x20;
 			}
 		}
+	flagSensor_ESP32 |= (flagSensor & 0x0F);
+	flagSensor_ESP32 &= ~(flagSensor>>4);
 }
 
 void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c){
@@ -598,14 +624,14 @@ void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c){
 void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, uint16_t AddrMatchCode){
 	//Cuando el maestro quiere transmitir y el slave recibe
 	if (TransferDirection == I2C_DIRECTION_TRANSMIT){
-		if (HAL_I2C_Slave_Seq_Receive_IT(&hi2c1, (uint8_t*) aRxBuffer,1, I2C_FIRST_AND_LAST_FRAME) != HAL_OK )
+		if (HAL_I2C_Slave_Seq_Receive_IT(&hi2c1, (uint8_t*) aRxBuffer,4, I2C_FIRST_AND_LAST_FRAME) != HAL_OK )
 		{
 			Error_Handler();
 		}
 	}
 	//Cuando el maestro quiere recebir y el slave transmite
 	else if(TransferDirection == I2C_DIRECTION_RECEIVE) {
-		if (HAL_I2C_Slave_Seq_Transmit_IT(&hi2c1, (uint8_t*) aTxBuffer,4, I2C_FIRST_AND_LAST_FRAME) != HAL_OK )
+		if (HAL_I2C_Slave_Seq_Transmit_IT(&hi2c1, &aTxBuffer[0],1, I2C_FIRST_AND_LAST_FRAME) != HAL_OK )
 			{
 				Error_Handler();
 			}
@@ -614,25 +640,21 @@ void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, ui
 
 void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *I2cHandle){
 	i2c_last_activity = HAL_GetTick(); //Actualizar timestamp
+
 	if (aRxBuffer[0]==83) //ASCII 83='S'
 	{
 		HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin);
+
 	}
 	aRxBuffer[0]=0x00;
 }
 
 void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *I2cHandle){
-	aTxBuffer[0]++;
-	aTxBuffer[1]++;
-	aTxBuffer[2]++;
-	aTxBuffer[3]++;
+	 i2c_last_activity = HAL_GetTick();  // actualizar timestamp también aquí
+	 aTxBuffer[0] = flagSensor_ESP32;
 }
 
 void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle){
-	uint32_t error = HAL_I2C_GetError(I2cHandle);
-
-
-	update_neopixels();
 
 
 	if (HAL_I2C_GetError(I2cHandle) == HAL_I2C_ERROR_AF){
@@ -641,45 +663,15 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle){
 	} else {
 
 		//Primera contramedida para revivir el bus de I2C
-
-		// 1. Resetear el periférico I2C
+		// Error grave — resetear el periférico SIN delays
 		HAL_I2C_DeInit(I2cHandle);
-		HAL_Delay(10);
 		HAL_I2C_Init(I2cHandle);
-
 		// 2. Re-habilitar escucha
 		HAL_I2C_EnableListen_IT(I2cHandle);
-
+		 i2c_error_flag = 1;
 		// 3. Señal visual de que hubo error pero se recuperó
-		RGB1[2]=255;
-		RGB2[2]=255;
-		RGB3[2]=255;
-		RGB4[2]=255;
-		RGB4[0]=0;
-		RGB4[0]=0;
-		RGB4[0]=0;
-		RGB4[0]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		update_neopixels();
-		HAL_Delay(500);
-		// Apagar el azul después
-		RGB1[0]=255;
-		RGB2[0]=255;
-		RGB3[0]=255;
-		RGB4[0]=255;
-		RGB4[2]=0;
-		RGB4[2]=0;
-		RGB4[2]=0;
-		RGB4[2]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		RGB4[1]=0;
-		update_neopixels();
 	}
+
 }
 /* USER CODE END 4 */
 

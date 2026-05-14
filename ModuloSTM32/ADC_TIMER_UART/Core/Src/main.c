@@ -77,7 +77,7 @@ char msg[30]; //Buffer para el mensaje a enviar por UART (debe ser del tamaño a
 //FRECUENCIA DE MUESTREO
 //OJO: LA CONFIGURACIÓN ACTUAL PERMITE UNA Fs MÁXIMA DE 10kHz.
 //SI SE DESEA UNA FRECUENCIA MÁS ALTA SE DEBE CAMBIAR LA CONFIGURACIÓN
-uint16_t Fs = 0; //En Hz
+uint16_t Fs = 1000; //En Hz
 uint32_t timer_clk;
 uint32_t pclk;
 uint16_t N=0; //muestras
@@ -445,9 +445,9 @@ static void MX_TIM10_Init(void)
 
   /* USER CODE END TIM10_Init 1 */
   htim10.Instance = TIM10;
-  htim10.Init.Prescaler = 8399;
+ // htim10.Init.Prescaler = 8399;
   htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim10.Init.Period = 65535;
+  //htim10.Init.Period = 65535;
   htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim10.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
@@ -476,7 +476,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
+  huart2.Init.BaudRate = 921600;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
