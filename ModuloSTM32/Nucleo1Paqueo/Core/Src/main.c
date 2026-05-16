@@ -163,10 +163,6 @@ int main(void)
       HAL_UART_Transmit(&huart2,
           (uint8_t*)"Reset por IWDG - I2C recuperado\r\n", 33, 100);
   }
-  aTxBuffer[0]=1;
-  aTxBuffer[1]=2;
-  aTxBuffer[2]=3;
-  aTxBuffer[3]=4;
 
   RGB1[1]=255;
   RGB2[1]=255;
