@@ -1,0 +1,710 @@
+#include <Wire.h>
+#include <WiFi.h>
+#include <WebServer.h>
+
+#define addressSlave1 0x18
+#define addressSlave2 0x27
+
+//SSID & Password
+const char* ssid     = "Parqueo_ESP32";
+const char* password = "12345678";
+
+WebServer server(80);
+bool espacios[8] = {0,0,0,0,0,0,0,0};
+unsigned long ultimaActualizacion = 0;
+const long intervalo = 500;
+
+#define SDA 21
+#define SCL 22
+
+uint8_t error=0;
+const char HTML_PAGE[] PROGMEM = R"rawliteral(
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parqueo ESP32</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    :root {
+      --sand:          #e8b84b;
+      --sand-dk:       #c89a2a;
+      --path-bg:       #f0d090;
+      --panel-bg:      #f5e0a0;
+      --panel-sh:      #a07010;
+      --block-bg:      #e8c060;
+      --block-top:     #f5d888;
+      --block-sh:      #8a6010;
+      --libre:         #58c858;
+      --libre-dk:      #2a8a2a;
+      --ocupado:       #e83030;
+      --ocupado-dk:    #9a1010;
+      --coin:          #f8d000;
+      --text:          #5a3a00;
+      --pipe-green:    #3aab3a;
+      --pipe-green-lt: #5cce5c;
+      --pipe-green-dk: #1e6e1e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; image-rendering: pixelated; }
+
+    body {
+      font-family: 'Press Start 2P', monospace;
+      background-color: var(--sand);
+      background-image:
+        linear-gradient(rgba(160,112,0,.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(160,112,0,.18) 1px, transparent 1px),
+        radial-gradient(ellipse 80px 40px at 15% 20%, rgba(180,130,20,.25) 100%),
+        radial-gradient(ellipse 60px 30px at 70% 15%, rgba(180,130,20,.2)  100%),
+        radial-gradient(ellipse 100px 50px at 85% 60%, rgba(180,130,20,.2) 100%),
+        radial-gradient(ellipse 70px 35px at 30% 75%, rgba(180,130,20,.22) 100%);
+      background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 1rem 3rem;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--libre-dk) 0%, var(--libre-dk) 100%),
+        linear-gradient(var(--libre-dk) 0%, var(--libre-dk) 100%),
+        linear-gradient(var(--libre-dk) 0%, var(--libre-dk) 100%),
+        linear-gradient(var(--libre-dk) 0%, var(--libre-dk) 100%);
+      background-size: 6px 30px, 12px 8px, 6px 28px, 12px 6px;
+      background-position: 30px 70%, 24px 58%, calc(100% - 30px) 65%, calc(100% - 36px) 53%;
+      background-repeat: no-repeat;
+      pointer-events: none;
+      opacity: .55;
+    }
+
+    header {
+      background: var(--panel-bg);
+      border: 4px solid var(--panel-sh);
+      border-bottom: 6px solid var(--panel-sh);
+      border-radius: 8px;
+      padding: 1rem 2.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 6px 0 var(--panel-sh), 4px 10px 0 rgba(0,0,0,.2);
+    }
+    header::before, header::after {
+      content: '●'; color: var(--panel-sh); font-size: .5rem;
+      position: absolute; top: .5rem;
+    }
+    header::before { left: .6rem; }
+    header::after  { right: .6rem; }
+    header h1 {
+      font-size: .85rem; color: var(--text);
+      text-shadow: 2px 2px 0 rgba(255,255,255,.5);
+      letter-spacing: 2px; line-height: 1.8;
+    }
+    header p { font-size: .38rem; color: var(--panel-sh); margin-top: .5rem; letter-spacing: 1px; }
+
+    .path-wrapper {
+      background: var(--path-bg);
+      border: 4px solid #fff;
+      border-radius: 20px;
+      outline: 3px solid var(--sand-dk);
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      max-width: 560px;
+      box-shadow: 0 4px 0 var(--panel-sh);
+    }
+
+    .summary { display: flex; gap: 1rem; }
+    .summary-item {
+      background: var(--panel-bg);
+      border: 3px solid var(--panel-sh);
+      border-bottom: 5px solid var(--panel-sh);
+      border-radius: 6px;
+      padding: .5rem 1.2rem;
+      text-align: center;
+      box-shadow: 2px 4px 0 rgba(0,0,0,.15);
+    }
+    .summary-item span { display: block; font-size: 1.3rem; margin-bottom: .3rem; }
+    .summary-item label { font-size: .35rem; color: var(--panel-sh); letter-spacing: 1px; }
+    .num-libre   { color: var(--libre-dk); }
+    .num-ocupado { color: var(--ocupado-dk); }
+
+    .btn-refresh {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .48rem; color: var(--text);
+      letter-spacing: 1px; cursor: pointer;
+      background-color: var(--block-bg);
+      border: 3px solid var(--panel-sh);
+      border-radius: 4px; padding: .6rem 1.4rem;
+      display: flex; align-items: center; gap: .5rem;
+      box-shadow:
+        inset 0 3px 0 var(--block-top),
+        inset 3px 0 0 rgba(255,255,255,.3),
+        0 5px 0 var(--block-sh),
+        3px 7px 0 rgba(0,0,0,.2);
+      background-image:
+        linear-gradient(rgba(160,112,0,.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(160,112,0,.1) 1px, transparent 1px);
+      background-size: 8px 8px;
+      transition: transform .08s, box-shadow .08s;
+    }
+    .btn-refresh:hover { filter: brightness(1.05); }
+    .btn-refresh:active {
+      transform: translateY(5px);
+      box-shadow: inset 0 3px 0 var(--block-top), 0 0 0 var(--block-sh);
+    }
+    .btn-refresh.loading { opacity: .65; pointer-events: none; }
+    .btn-refresh.loading .ico { animation: spin .5s steps(4) infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .ico { display: inline-block; font-size: .75rem; }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .8rem;
+      width: 100%;
+    }
+
+    /* ── Espacio ── */
+    .espacio {
+      aspect-ratio: 1;
+      background: #d4a535;
+      border: 3px solid var(--panel-sh);
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 0 var(--panel-sh), 2px 6px 0 rgba(0,0,0,.15);
+    }
+
+    /* Cuadrícula interior */
+    .espacio::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(160,112,0,.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(160,112,0,.15) 1px, transparent 1px);
+      background-size: 11.1% 11.1%;
+      z-index: 1; pointer-events: none;
+    }
+
+    .libre   {
+      background: #d4b84a;
+      box-shadow: 0 4px 0 var(--panel-sh), 2px 6px 0 rgba(0,0,0,.15),
+                  inset 0 0 0 3px rgba(88,200,88,.6);
+    }
+    .ocupado {
+      background: #c8a030;
+      box-shadow: 0 4px 0 var(--panel-sh), 2px 6px 0 rgba(0,0,0,.15),
+                  inset 0 0 0 3px rgba(232,48,48,.7);
+    }
+
+    /* Badge */
+    .badge {
+      position: absolute; top: 3px; left: 4px; right: 4px;
+      font-size: .22rem; text-align: center;
+      padding: 2px 3px; border-radius: 4px;
+      z-index: 10; border: 1px solid rgba(0,0,0,.25); letter-spacing: .5px;
+    }
+    .libre   .badge { background: var(--libre);   color: #fff; text-shadow: 1px 1px 0 var(--libre-dk); }
+    .ocupado .badge { background: var(--ocupado); color: #fff; text-shadow: 1px 1px 0 var(--ocupado-dk);
+                      animation: parpadea 1s steps(1) infinite; }
+    @keyframes parpadea { 0%,100%{opacity:1;} 50%{opacity:.35;} }
+
+    .num {
+      position: absolute; bottom: 3px; right: 4px;
+      font-size: .22rem; color: rgba(90,58,0,.6); z-index: 10;
+    }
+
+    /* ══════════════════════════════════════════
+       TUBO DE MARIO
+       Empieza FUERA (bottom: -70%), sube, luego baja de vuelta
+    ══════════════════════════════════════════ */
+    .pipe-wrapper {
+      position: absolute;
+      bottom: -70%;          /* oculto abajo por defecto */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 62%;
+      z-index: 8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pipe-rim {
+      width: 112%;
+      height: 20px;
+      background: var(--pipe-green);
+      border: 2px solid var(--pipe-green-dk);
+      border-radius: 3px 3px 0 0;
+      box-shadow: inset 3px 0 0 var(--pipe-green-lt), inset -2px 0 0 var(--pipe-green-dk);
+      position: relative;
+    }
+    .pipe-rim::after {
+      content: '';
+      position: absolute; top: 3px; left: 4px; right: 4px; bottom: 3px;
+      background: linear-gradient(90deg, var(--pipe-green-lt) 0%, transparent 40%, var(--pipe-green-dk) 100%);
+      opacity: .5;
+    }
+
+    .pipe-body {
+      width: 84%;
+      height: 40px;
+      background: var(--pipe-green);
+      border-left: 2px solid var(--pipe-green-dk);
+      border-right: 2px solid var(--pipe-green-dk);
+      box-shadow: inset 3px 0 0 var(--pipe-green-lt), inset -2px 0 0 var(--pipe-green-dk);
+      position: relative;
+    }
+    .pipe-body::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, var(--pipe-green-lt) 0%, transparent 40%, var(--pipe-green-dk) 100%);
+      opacity: .35;
+    }
+
+    /* ══════════════════════════════════════════
+       CARRO  — empieza oculto abajo, sale, retrocede a posición final
+    ══════════════════════════════════════════ */
+    /* Carro oculto por defecto (libre) */
+    .carro-wrap {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 58%;
+    z-index: 9;
+    bottom: -120%;   /* <-- suficientemente abajo para no verse nunca en libre */
+    }
+
+    /* ── Secuencia OCUPADO ── */
+    /*
+      Tiempos (duración total ≈ 1.35 s antes del idle):
+        0.00 – 0.40 s  tubo sube         (pipe-sube)
+        0.40 – 0.80 s  carro sale arriba (carro-sale)
+        0.80 – 1.10 s  tubo baja         (pipe-baja)
+        0.90 – 1.35 s  carro retrocede   (carro-retrocede)
+        1.35 s+        carro idle
+    */
+
+    .ocupado .pipe-wrapper {
+      animation: pipe-sube  0.4s steps(8) 0.0s forwards,
+                 pipe-baja  0.3s steps(6) 0.8s forwards;
+    }
+
+    /* Secuencia ocupado */
+    .ocupado .carro-wrap {
+      animation: carro-sale      0.4s steps(8) 0.4s forwards,
+      carro-retrocede 0.45s steps(6) 0.9s forwards,
+      carro-idle      1.6s  steps(2) 1.35s infinite;
+    }
+
+    /* Tubo sube: de bottom:-70% a bottom:0% */
+    @keyframes pipe-sube {
+      0%   { bottom: -70%; }
+      100% { bottom: 0%; }
+    }
+
+    /* Tubo baja: de bottom:0% a bottom:-70% */
+    @keyframes pipe-baja {
+      0%   { bottom: 0%; }
+      100% { bottom: -70%; }
+    }
+
+    /* Carro sale del tubo hacia arriba */
+      @keyframes carro-sale {
+        0%   { bottom: -120%;}
+      100%    { bottom: 80%; }
+    }
+
+    /* Carro retrocede hacia el centro del espacio */
+    @keyframes carro-retrocede {
+      0%   { bottom: 80%; }
+      100% { bottom: -5%; }
+    }
+
+    /* Carro idle (parpadeo sutil) */
+    @keyframes carro-idle {
+      0%,100% { filter: brightness(1); }
+      50%      { filter: brightness(1.12); }
+    }
+
+    /* Humo al salir del tubo */
+    .humo {
+      position: absolute;
+      bottom: 65%; left: 50%;
+      transform: translateX(-50%);
+      width: 8px; height: 8px;
+      background: rgba(255,255,255,.8);
+      border-radius: 50%;
+      z-index: 7; opacity: 0; pointer-events: none;
+    }
+    .ocupado .humo {
+      animation: humo-sube .7s steps(6) 0.75s 1 forwards;
+    }
+    @keyframes humo-sube {
+      0%   { bottom: 55%; opacity: .9; width: 7px;  height: 7px;  }
+      100% { bottom: 90%; opacity: 0;  width: 18px; height: 18px; }
+    }
+
+    footer {
+      margin-top: 1.2rem;
+      background: var(--panel-bg);
+      border: 3px solid var(--panel-sh);
+      border-bottom: 5px solid var(--panel-sh);
+      border-radius: 6px;
+      padding: .5rem 1.2rem;
+      font-size: .32rem; color: var(--panel-sh);
+      text-align: center; letter-spacing: 1px;
+      box-shadow: 0 4px 0 rgba(0,0,0,.15);
+      line-height: 2.2;
+    }
+    footer span { color: var(--text); font-size: .35rem; }
+
+    .moneda {
+      position: fixed; width: 12px; height: 12px;
+      background: var(--coin); border: 2px solid var(--panel-sh);
+      border-radius: 50%; animation: flotar 2.5s ease-in-out infinite;
+      pointer-events: none; opacity: .7;
+    }
+    .moneda:nth-child(1) { left: 18px;  top: 30%; animation-delay: 0s; }
+    .moneda:nth-child(2) { left: 40px;  top: 50%; animation-delay: .6s; }
+    .moneda:nth-child(3) { right: 18px; top: 35%; animation-delay: .3s; }
+    .moneda:nth-child(4) { right: 40px; top: 55%; animation-delay: .9s; }
+    @keyframes flotar { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+
+    @media (max-width: 480px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      header h1 { font-size: .62rem; }
+      .path-wrapper { padding: .8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="moneda"></div>
+  <div class="moneda"></div>
+  <div class="moneda"></div>
+  <div class="moneda"></div>
+
+  <header>
+    <h1>&#x1F17F; PARQUEO<br>ESP32</h1>
+    <p>DESERT AREA PARKING &mdash; 192.168.4.1</p>
+  </header>
+
+  <div class="path-wrapper">
+    <div class="summary">
+      <div class="summary-item">
+        <span class="num-libre" id="num-libre">8</span>
+        <label>LIBRES</label>
+      </div>
+      <div class="summary-item">
+        <span class="num-ocupado" id="num-ocupado">0</span>
+        <label>OCUPADOS</label>
+      </div>
+    </div>
+
+    <button class="btn-refresh" id="btnRefresh" onclick="actualizar()">
+      <span class="ico">&#x1F504;</span> ACTUALIZAR
+    </button>
+
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <footer>
+    ULTIMA ACT: <span id="last-update">--:--:--</span><br>
+    RED: <span>PARQUEO_ESP32</span>
+  </footer>
+
+  <script>
+    const nombres      = ["A1","A2","A3","A4","B1","B2","B3","B4"];
+    const coloresCarro = ["#e83030","#3070e8","#e89030","#30c850",
+                          "#c030e8","#20b8b8","#e8d820","#e86820"];
+    // ── 2. SONIDO ── 
+    
+    let _audioCtx = null;
+
+    function getAudioCtx() {
+      if (!_audioCtx) {
+        _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      // En móvil el contexto puede quedar "suspended", esto lo reactiva
+      if (_audioCtx.state === 'suspended') _audioCtx.resume();
+      return _audioCtx;
+    }
+
+    function tonoMario() {
+      const ctx = getAudioCtx();
+      const notas = [
+        [523, 0.10],
+        [659, 0.10],
+        [784, 0.10],
+        [1047,0.20],
+      ];
+      let tiempo = ctx.currentTime;
+      notas.forEach(([freq, dur]) => {
+        const osc  = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(freq, tiempo);
+        gain.gain.setValueAtTime(0.3, tiempo);
+        gain.gain.exponentialRampToValueAtTime(0.001, tiempo + dur);
+        osc.start(tiempo);
+        osc.stop(tiempo + dur);
+        tiempo += dur;
+      });
+    }
+    
+    function lighten(hex) {
+      const n = parseInt(hex.slice(1), 16);
+      return `rgb(${Math.min(255,((n>>16)&255)+55)},${Math.min(255,((n>>8)&255)+55)},${Math.min(255,(n&255)+55)})`;
+    }
+    function darken(hex) {
+      const n = parseInt(hex.slice(1), 16);
+      return `rgb(${Math.max(0,((n>>16)&255)-40)},${Math.max(0,((n>>8)&255)-40)},${Math.max(0,(n&255)-40)})`;
+    }
+
+    function svgCarro(color) {
+      const lt = lighten(color), dk = darken(color);
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 24" width="100%" style="image-rendering:pixelated">
+        <rect x="2"  y="4"  width="12" height="16" fill="${color}"/>
+        <rect x="4"  y="6"  width="8"  height="10" fill="${lt}"/>
+        <rect x="4"  y="6"  width="8"  height="3"  fill="#c8e8ff" opacity=".9"/>
+        <rect x="4"  y="15" width="8"  height="3"  fill="#c8e8ff" opacity=".6"/>
+        <rect x="0"  y="5"  width="3"  height="5"  fill="#1a1a1a"/>
+        <rect x="13" y="5"  width="3"  height="5"  fill="#1a1a1a"/>
+        <rect x="0"  y="14" width="3"  height="5"  fill="#1a1a1a"/>
+        <rect x="13" y="14" width="3"  height="5"  fill="#1a1a1a"/>
+        <rect x="3"  y="4"  width="2"  height="2"  fill="#ffffaa"/>
+        <rect x="11" y="4"  width="2"  height="2"  fill="#ffffaa"/>
+        <rect x="3"  y="18" width="2"  height="2"  fill="#ff5555"/>
+        <rect x="11" y="18" width="2"  height="2"  fill="#ff5555"/>
+        <rect x="7"  y="7"  width="2"  height="8"  fill="${dk}" opacity=".35"/>
+        <rect x="2"  y="4"  width="12" height="16" fill="none" stroke="#000" stroke-width="1"/>
+      </svg>`;
+    }
+
+    function crearEspacio(i, ocupado) {
+      const div = document.createElement('div');
+      div.className = 'espacio ' + (ocupado ? 'ocupado' : 'libre');
+      div.id = 'esp-' + i;
+      div.innerHTML = `
+        <div class="badge">${ocupado ? '&#x1F534; OCUPADO' : '&#x1F7E2; LIBRE'}</div>
+        <div class="humo"></div>
+        <div class="carro-wrap">${svgCarro(coloresCarro[i])}</div>
+        <div class="pipe-wrapper">
+          <div class="pipe-rim"></div>
+          <div class="pipe-body"></div>
+        </div>
+        <div class="num">${nombres[i]}</div>
+      `;
+      return div;
+    }
+
+    function replayAnimaciones(div) {
+      /* Fuerza re-trigger de todas las animaciones CSS */
+      ['.carro-wrap', '.pipe-wrapper', '.humo'].forEach(sel => {
+        const el = div.querySelector(sel);
+        el.style.animation = 'none';
+        void el.offsetWidth;   // reflow
+        el.style.animation = '';
+      });
+    }
+
+    function renderGrid(estados) {
+      const grid   = document.getElementById('grid');
+      const esNuevo = grid.querySelectorAll('.espacio').length === 0;
+      let libres = 0, ocupados = 0;
+
+      estados.forEach((ocupado, i) => {
+        ocupado ? ocupados++ : libres++;
+
+        if (esNuevo) {
+          grid.appendChild(crearEspacio(i, ocupado));
+        } else {
+          const div        = document.getElementById('esp-' + i);
+          const eraOcupado = div.classList.contains('ocupado');
+
+          if (eraOcupado !== ocupado) {
+            tonoMario();
+            div.className = 'espacio ' + (ocupado ? 'ocupado' : 'libre');
+            div.querySelector('.badge').innerHTML =
+              ocupado ? '&#x1F534; OCUPADO' : '&#x1F7E2; LIBRE';
+            replayAnimaciones(div);
+          }
+        }
+      });
+
+      document.getElementById('num-libre').textContent   = libres;
+      document.getElementById('num-ocupado').textContent = ocupados;
+      document.getElementById('last-update').textContent =
+        new Date().toLocaleTimeString('es-GT');
+    }
+
+    function actualizar() {
+
+      if (!window._audioDesbloqueado) {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        ctx.resume();
+        window._audioDesbloqueado = true;
+      }
+      const btn = document.getElementById('btnRefresh');
+      btn.classList.add('loading');
+      fetch('/status')
+        .then(r => r.json())
+        .then(d => renderGrid(d.espacios))
+        .catch(() => location.reload())
+        .finally(() => btn.classList.remove('loading'));
+    }
+
+    renderGrid(%ESTADOS%);
+  </script>
+</body>
+</html>
+)rawliteral";
+
+String getEstadosJSON() {
+  String json = "[";
+  for (int i = 0; i < 8; i++) {
+    json += (espacios[i] ? "true" : "false");
+    if (i < 7) json += ",";
+  }
+  json += "]";
+  return json;
+}
+
+void handleRoot() {
+  String html = HTML_PAGE;
+  html.replace("%ESTADOS%", getEstadosJSON());
+  server.send(200, "text/html", html);
+}
+
+void handleStatus() {
+  String json = "{\"espacios\":" + getEstadosJSON() + "}";
+  server.send(200, "application/json", json);
+} 
+
+void i2cScanner(){
+  byte error, address;
+  int nDevices;
+  Serial.println("Scanning.....");
+  nDevices=0;
+  for (address =1;address<127;address++){
+    Wire.beginTransmission(address);
+    error= Wire.endTransmission();
+    if (error == 0){
+      Serial.print("I2C device found at address 0x");
+      if (address<16){
+        Serial.print("0");
+      }
+      Serial.println(address, HEX);
+      nDevices++;
+    }
+    else if (error==4){
+      Serial.print("Unknow error at address 0x");
+      if (address<16){
+        Serial.print("0");
+      }
+      Serial.println(address, HEX);
+    }
+  }
+
+  if (nDevices==0){
+    Serial.print("no I2C devices found\n");
+  }
+  else {
+    Serial.print("Done\n");
+  }
+}
+
+
+void setup() {
+  Serial.begin(115200);
+  //webServer
+  WiFi.softAP(ssid, password);
+  IPAddress ip = WiFi.softAPIP();
+  Serial.print("AP IP: "); Serial.println(ip);
+  server.on("/",       handleRoot);
+  server.on("/status", handleStatus);
+  server.begin();
+  Serial.println("Servidor iniciado.");
+  //Conexion de I2C
+  Wire.begin(SDA,SCL);
+  i2cScanner();
+
+}
+
+void loop() {
+  unsigned long ahora = millis();
+
+  server.handleClient();
+
+  if (ahora - ultimaActualizacion >= intervalo) {
+    ultimaActualizacion = ahora;
+    
+    uint8_t sensor= 'S';
+    Wire.beginTransmission(addressSlave1);
+    Wire.write(sensor);
+    Serial.println(sensor);
+
+    error= Wire.endTransmission(true);  
+    Serial.print(" endTransmission ");
+    Serial.println(error);
+
+     
+
+    // 2. Pedir 1 byte de respuesta (flagSensor)
+    uint8_t estado = 0;
+    uint8_t bytesReceived = Wire.requestFrom(addressSlave1, 1);
+    if (bytesReceived > 0){
+      estado = Wire.read();
+      Serial.print("flagSensor: 0x");
+      Serial.println(estado, HEX);
+
+      // Interpretar cada bit
+      Serial.print("Parqueo 0: "); Serial.println((estado & 0x01) ? "Ocupado" : "Libre");
+      Serial.print("Parqueo 1: "); Serial.println((estado & 0x02) ? "Ocupado" : "Libre");
+      Serial.print("Parqueo 2: "); Serial.println((estado & 0x04) ? "Ocupado" : "Libre");
+      Serial.print("Parqueo 3: "); Serial.println((estado & 0x08) ? "Ocupado" : "Libre");
+    } 
+    else {
+      Serial.println("No data received");
+    }
+    /*
+    // ── Slave 2 (espacios 4-7) ──
+    Wire.beginTransmission(addressSlave2);
+    Wire.write(sensor);
+    error = Wire.endTransmission(true);
+    Serial.print("Slave2 endTransmission: "); Serial.println(error);
+
+    uint8_t bytesReceived2 = Wire.requestFrom(addressSlave2, 1);
+    if (bytesReceived2 > 0) {
+      estado2 = Wire.read();
+      Serial.print("Slave2 flagSensor: 0x"); Serial.println(estado2, HEX);
+    } else {
+      Serial.println("Slave2: No data received");
+    }
+    */
+
+      for (int i = 0; i < 8; i++) espacios[i] = (estado & (0x01<<i));
+      Serial.print("Espacios: ");
+
+      //for (int i = 0; i < 4; i++) espacios[i+4] = (estado2 >> i) & 0x01;
+
+      for (int i = 0; i < 8; i++) Serial.print(espacios[i] ? "[OCP]" : "[LIB]");
+      Serial.println();
+  }
+}
+

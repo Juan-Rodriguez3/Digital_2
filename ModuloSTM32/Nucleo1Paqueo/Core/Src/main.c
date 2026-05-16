@@ -35,7 +35,7 @@
 /* USER CODE BEGIN PD */
 #define TXbuffersize 4
 #define RXbuffersize 4
-
+#define I2C_TIMEOUT_MS 5000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -70,7 +70,7 @@ uint8_t aRxBuffer[RXbuffersize];
 //Variables de watchdog timmer para reiniciar comunicacion I2C
 volatile uint32_t i2c_last_activity = 0;
 volatile uint8_t i2c_error_flag = 0;
-#define I2C_TIMEOUT_MS 5000
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
