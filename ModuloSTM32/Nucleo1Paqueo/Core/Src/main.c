@@ -84,6 +84,7 @@ static void MX_IWDG_Init(void);
 /* USER CODE BEGIN PFP */
 void update_neopixels();
 void update_colors(uint8_t flagSensor, uint8_t RGB[2],uint8_t compare);
+void update_park(uint8_t flagSensor);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -102,7 +103,7 @@ void update_neopixels(){
 }
 
 //Esta funcion es para facilitar el cambio de color en base a flags
-void update_colors(uint8_t flagSensor, uint8_t RGB[2],uint8_t compare){
+void update_colors(uint8_t flagSensor, uint8_t RGB[3],uint8_t compare){
 	if ((flagSensor & compare) == compare){
 		  RGB[1]=0;
 		  RGB[0]=255;
@@ -620,7 +621,7 @@ void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c){
 void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, uint16_t AddrMatchCode){
 	//Cuando el maestro quiere transmitir y el slave recibe
 	if (TransferDirection == I2C_DIRECTION_TRANSMIT){
-		if (HAL_I2C_Slave_Seq_Receive_IT(&hi2c1, (uint8_t*) aRxBuffer,4, I2C_FIRST_AND_LAST_FRAME) != HAL_OK )
+		if (HAL_I2C_Slave_Seq_Receive_IT(&hi2c1, (uint8_t*) aRxBuffer,1, I2C_FIRST_AND_LAST_FRAME) != HAL_OK )
 		{
 			Error_Handler();
 		}

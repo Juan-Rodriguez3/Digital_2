@@ -1,0 +1,6 @@
+../Core/Src/NeoPixel.c:22:6:setPixelColor	1
+../Core/Src/NeoPixel.c:29:6:setBrightness	4
+../Core/Src/NeoPixel.c:41:6:pixelShow	7
+../Core/Src/NeoPixel.c:71:6:pixelClear	2
+../Core/Src/NeoPixel.c:80:9:Gamma_correccion	5
+../Core/Src/NeoPixel.c:106:6:HAL_TIM_PWM_PulseFinishedCallback	2
