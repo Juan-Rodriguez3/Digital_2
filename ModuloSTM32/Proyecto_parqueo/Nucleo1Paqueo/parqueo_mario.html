@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parqueo ESP32</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    /* ── Tokens ── */
+    :root {
+      --sky:       #5c94fc;
+      --grass:     #48b845;
+      --grass-dk:  #2d8a2a;
+      --dirt:      #c8a468;
+      --dirt-dk:   #9c7040;
+      --brick:     #c84c0c;
+      --coin:      #f8b800;
+      --white:     #f8f8f8;
+      --shadow:    #000;
+      --libre:     #48d848;
+      --libre-dk:  #189818;
+      --libre-glow:#00ff88;
+      --ocupado:   #e83030;
+      --ocupado-dk:#a01010;
+      --ocupado-glow:#ff4444;
+      --panel-bg:  #1a1a2e;
+      --panel-br:  #c84c0c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; image-rendering: pixelated; }
+
+    /* ── Fondo estilo mapa Mario Party ── */
+    body {
+      font-family: 'Press Start 2P', monospace;
+      background-color: var(--sky);
+      background-image:
+        /* Nubes pixel */
+        radial-gradient(ellipse 60px 30px at 10% 12%, rgba(255,255,255,.85) 98%, transparent 100%),
+        radial-gradient(ellipse 40px 22px at 13% 10%, rgba(255,255,255,.85) 98%, transparent 100%),
+        radial-gradient(ellipse 50px 26px at 8%  15%, rgba(255,255,255,.85) 98%, transparent 100%),
+        radial-gradient(ellipse 70px 32px at 55% 8%,  rgba(255,255,255,.85) 98%, transparent 100%),
+        radial-gradient(ellipse 45px 22px at 58%  6%,  rgba(255,255,255,.85) 98%, transparent 100%),
+        radial-gradient(ellipse 55px 28px at 52% 11%,  rgba(255,255,255,.85) 98%, transparent 100%),
+        radial-gradient(ellipse 60px 30px at 85% 14%, rgba(255,255,255,.85) 98%, transparent 100%),
+        radial-gradient(ellipse 40px 20px at 88% 11%, rgba(255,255,255,.85) 98%, transparent 100%),
+        /* Suelo hierba */
+        linear-gradient(to bottom, transparent 75%, var(--grass) 75%, var(--grass) 83%, var(--grass-dk) 83%, var(--grass-dk) 86%, var(--dirt) 86%, var(--dirt) 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 1rem 3rem;
+      overflow-x: hidden;
+    }
+
+    /* ── Estrellas de monedas decorativas ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle 3px at 20% 40%, var(--coin) 100%, transparent),
+        radial-gradient(circle 3px at 35% 60%, var(--coin) 100%, transparent),
+        radial-gradient(circle 3px at 70% 35%, var(--coin) 100%, transparent),
+        radial-gradient(circle 3px at 80% 55%, var(--coin) 100%, transparent),
+        radial-gradient(circle 3px at 45% 75%, var(--coin) 100%, transparent),
+        radial-gradient(circle 3px at 92% 30%, var(--coin) 100%, transparent);
+      pointer-events: none;
+      animation: monedas 3s ease-in-out infinite alternate;
+      opacity: .4;
+    }
+
+    @keyframes monedas {
+      from { opacity: .2; }
+      to   { opacity: .6; }
+    }
+
+    /* ── Header estilo cartel Mario ── */
+    header {
+      background: var(--panel-bg);
+      border: 4px solid var(--coin);
+      outline: 4px solid var(--shadow);
+      padding: 1rem 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      text-align: center;
+      box-shadow: 6px 6px 0 var(--shadow);
+      animation: titulo-entrada .5s steps(1) both;
+    }
+
+    @keyframes titulo-entrada {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    header::before, header::after {
+      content: '★';
+      color: var(--coin);
+      font-size: 1rem;
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+    }
+    header::before { left: .6rem; }
+    header::after  { right: .6rem; }
+
+    header h1 {
+      font-size: .9rem;
+      color: var(--coin);
+      text-shadow: 3px 3px 0 var(--shadow);
+      letter-spacing: 2px;
+      line-height: 1.6;
+    }
+
+    header p {
+      font-size: .45rem;
+      color: #aaa;
+      margin-top: .5rem;
+      letter-spacing: 1px;
+    }
+
+    /* ── Panel resumen ── */
+    .summary {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-item {
+      background: var(--panel-bg);
+      border: 3px solid var(--shadow);
+      outline: 3px solid var(--coin);
+      padding: .6rem 1.2rem;
+      text-align: center;
+      box-shadow: 4px 4px 0 var(--shadow);
+    }
+
+    .summary-item span {
+      display: block;
+      font-size: 1.4rem;
+      margin-bottom: .3rem;
+    }
+
+    .summary-item label {
+      font-size: .38rem;
+      letter-spacing: 1px;
+      color: #ccc;
+    }
+
+    .num-libre   { color: var(--libre-glow);   text-shadow: 0 0 8px var(--libre-glow); }
+    .num-ocupado { color: var(--ocupado-glow);  text-shadow: 0 0 8px var(--ocupado-glow); }
+
+    /* ── Botón refresh estilo bloque Mario ── */
+    .btn-refresh {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: 'Press Start 2P', monospace;
+      font-size: .5rem;
+      background: var(--brick);
+      color: var(--white);
+      border: 3px solid var(--shadow);
+      outline: 3px solid rgba(255,255,255,.3);
+      padding: .7rem 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #7a2a00, 4px 4px 0 var(--shadow);
+      margin-bottom: 1.8rem;
+      letter-spacing: 1px;
+      transition: transform .05s, box-shadow .05s;
+    }
+
+    .btn-refresh:hover { background: #e05a0c; }
+
+    .btn-refresh:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 #7a2a00, 0 0 0 var(--shadow);
+    }
+
+    .btn-refresh.loading { opacity: .6; pointer-events: none; }
+    .btn-refresh.loading .ico { animation: spin .5s steps(4) infinite; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .ico { display: inline-block; font-size: .8rem; }
+
+    /* ── Grid de 8 espacios ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    /* ── Cada espacio de parqueo ── */
+    .espacio {
+      width: 100%;
+      aspect-ratio: 1;
+      /* Forzamos exactamente 9 "tiles" de ancho; el CSS lo ajusta vía aspect-ratio */
+      background: var(--dirt);
+      border: 4px solid var(--shadow);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      overflow: hidden;
+      box-shadow: 4px 4px 0 var(--shadow);
+      transition: box-shadow .1s;
+    }
+
+    /* Pavimento pixelado dentro del espacio */
+    .espacio::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(90deg, rgba(0,0,0,.08) 1px, transparent 1px),
+        linear-gradient(rgba(0,0,0,.08) 1px, transparent 1px);
+      background-size: 11.11% 11.11%;   /* 9 divisiones */
+    }
+
+    /* Líneas de estacionamiento (blanco) */
+    .espacio::after {
+      content: '';
+      position: absolute;
+      left: 8%; right: 8%; top: 18%; bottom: 8%;
+      border: 2px solid rgba(255,255,255,.55);
+      border-radius: 0;
+    }
+
+    /* ── Estado: LIBRE ── */
+    .espacio.libre {
+      background: #6a7a30;
+      box-shadow: 4px 4px 0 var(--shadow), inset 0 0 0 3px var(--libre);
+    }
+
+    /* ── Estado: OCUPADO ── */
+    .espacio.ocupado {
+      background: #5a3020;
+      box-shadow: 4px 4px 0 var(--shadow), inset 0 0 0 3px var(--ocupado);
+    }
+
+    /* ── Badge de estado (arriba) ── */
+    .badge {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      font-size: .3rem;
+      text-align: center;
+      padding: 2px 0;
+      letter-spacing: 1px;
+      z-index: 10;
+      border-bottom: 2px solid var(--shadow);
+    }
+
+    .libre   .badge { background: var(--libre-dk);  color: #fff; }
+    .ocupado .badge { background: var(--ocupado-dk); color: #fff; animation: badge-parpadea 1s steps(1) infinite; }
+
+    @keyframes badge-parpadea {
+      0%,100% { opacity: 1; }
+      50%      { opacity: .4; }
+    }
+
+    /* ── Número del espacio ── */
+    .num {
+      position: absolute;
+      bottom: 4px; right: 5px;
+      font-size: .3rem;
+      color: rgba(255,255,255,.6);
+      z-index: 5;
+    }
+
+    /* ── Carro pixel art (SVG inline vía background) ── */
+    /* Vista superior de un carro simple en pixel art */
+    .carro {
+      position: absolute;
+      /* centrado en el espacio */
+      left: 50%; top: 54%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 70%;
+      z-index: 8;
+      transition: transform .3s steps(6);
+      image-rendering: pixelated;
+    }
+
+    .ocupado .carro {
+      transform: translate(-50%, -50%) scale(1);
+      animation: carro-entra .4s steps(6) forwards, carro-idle 1.2s steps(2) 0.4s infinite;
+    }
+
+    .libre .carro {
+      transform: translate(-50%, -50%) scale(0);
+    }
+
+    @keyframes carro-entra {
+      0%   { transform: translate(-50%, 120%) scale(1); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    @keyframes carro-idle {
+      0%,100% { filter: brightness(1); }
+      50%      { filter: brightness(1.15); }
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 2rem;
+      background: var(--panel-bg);
+      border: 3px solid var(--shadow);
+      outline: 3px solid var(--coin);
+      padding: .5rem 1rem;
+      font-size: .35rem;
+      color: #aaa;
+      text-align: center;
+      letter-spacing: 1px;
+      box-shadow: 4px 4px 0 var(--shadow);
+      line-height: 2;
+    }
+
+    footer span { color: var(--coin); }
+
+    /* Decoración: bloques de monedas en esquinas */
+    .bloque {
+      position: fixed;
+      width: 28px; height: 28px;
+      background: var(--coin);
+      border: 3px solid var(--shadow);
+      font-size: .6rem;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--shadow);
+      font-family: 'Press Start 2P', monospace;
+      box-shadow: 3px 3px 0 var(--shadow);
+      animation: bloque-golpe 2s steps(2) infinite;
+      z-index: 0;
+    }
+
+    .bloque:nth-child(1) { top: 12px; left: 12px; }
+    .bloque:nth-child(2) { top: 12px; right: 12px; animation-delay: .5s; }
+    .bloque:nth-child(3) { bottom: 80px; left: 12px; animation-delay: 1s; }
+    .bloque:nth-child(4) { bottom: 80px; right: 12px; animation-delay: 1.5s; }
+
+    @keyframes bloque-golpe {
+      0%,80%,100% { transform: translateY(0); }
+      90%          { transform: translateY(-4px); }
+    }
+
+    @media (max-width: 480px) {
+      .grid { grid-template-columns: repeat(2, 1fr); max-width: 320px; }
+      header h1 { font-size: .65rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bloques decorativos -->
+  <div class="bloque">?</div>
+  <div class="bloque">?</div>
+  <div class="bloque">?</div>
+  <div class="bloque">?</div>
+
+  <header>
+    <h1>🅿 PARQUEO<br>ESP32</h1>
+    <p>SHROOM CITY PARKING &mdash; 192.168.4.1</p>
+  </header>
+
+  <div class="summary">
+    <div class="summary-item">
+      <span class="num-libre" id="num-libre">8</span>
+      <label>LIBRES</label>
+    </div>
+    <div class="summary-item">
+      <span class="num-ocupado" id="num-ocupado">0</span>
+      <label>OCUPADOS</label>
+    </div>
+  </div>
+
+  <button class="btn-refresh" id="btnRefresh" onclick="actualizar()">
+    <span class="ico">🔄</span> ACTUALIZAR
+  </button>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    ULTIMA ACT: <span id="last-update">--:--:--</span><br>
+    CONECTADO A: <span>PARQUEO_ESP32</span>
+  </footer>
+
+  <script>
+    const nombres = ["A1","A2","A3","A4","B1","B2","B3","B4"];
+
+    // Carro pixel art SVG (vista superior, colores aleatorios por espacio)
+    const coloresCarro = ["#e83030","#3070e8","#e8a030","#30c830","#e030e8","#30e8e8","#e8e830","#ff8800"];
+
+    function svgCarro(color) {
+      // Pixel art top-view car (16x24 grid)
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 24" width="100%" style="image-rendering:pixelated">
+        <!-- Carrocería principal -->
+        <rect x="2" y="4"  width="12" height="16" fill="${color}"/>
+        <!-- Techo -->
+        <rect x="4" y="6"  width="8"  height="10" fill="${lighten(color)}"/>
+        <!-- Parabrisas delantero -->
+        <rect x="4" y="6"  width="8"  height="3"  fill="#aaddff" opacity=".85"/>
+        <!-- Parabrisas trasero -->
+        <rect x="4" y="15" width="8"  height="3"  fill="#aaddff" opacity=".6"/>
+        <!-- Ruedas -->
+        <rect x="0" y="5"  width="3"  height="5"  fill="#222"/>
+        <rect x="13" y="5" width="3"  height="5"  fill="#222"/>
+        <rect x="0" y="14" width="3"  height="5"  fill="#222"/>
+        <rect x="13" y="14" width="3" height="5"  fill="#222"/>
+        <!-- Luces delanteras -->
+        <rect x="3" y="4"  width="2"  height="2"  fill="#ffffaa"/>
+        <rect x="11" y="4" width="2"  height="2"  fill="#ffffaa"/>
+        <!-- Luces traseras -->
+        <rect x="3" y="18" width="2"  height="2"  fill="#ff4444"/>
+        <rect x="11" y="18" width="2" height="2"  fill="#ff4444"/>
+        <!-- Línea central -->
+        <rect x="7" y="7"  width="2"  height="8"  fill="${darken(color)}" opacity=".4"/>
+        <!-- Contorno pixel -->
+        <rect x="2" y="4"  width="12" height="16" fill="none" stroke="#000" stroke-width="1"/>
+      </svg>`;
+    }
+
+    function lighten(hex) {
+      const n = parseInt(hex.slice(1), 16);
+      const r = Math.min(255, ((n >> 16) & 0xff) + 60);
+      const g = Math.min(255, ((n >>  8) & 0xff) + 60);
+      const b = Math.min(255, ((n      ) & 0xff) + 60);
+      return `rgb(${r},${g},${b})`;
+    }
+
+    function darken(hex) {
+      const n = parseInt(hex.slice(1), 16);
+      const r = Math.max(0, ((n >> 16) & 0xff) - 40);
+      const g = Math.max(0, ((n >>  8) & 0xff) - 40);
+      const b = Math.max(0, ((n      ) & 0xff) - 40);
+      return `rgb(${r},${g},${b})`;
+    }
+
+    // Estados iniciales embebidos por la ESP32
+    let estadosActuales = %ESTADOS%;
+
+    function renderGrid(estados) {
+      const grid = document.getElementById('grid');
+
+      // Para animar solo los que cambiaron, comparamos con el estado anterior
+      const celdas = grid.querySelectorAll('.espacio');
+      const esNuevo = celdas.length === 0;
+
+      let libres = 0, ocupados = 0;
+      estados.forEach((ocupado, i) => {
+        ocupado ? ocupados++ : libres++;
+
+        if (esNuevo) {
+          // Primera vez: crear todas las celdas
+          const div = document.createElement('div');
+          div.className = 'espacio ' + (ocupado ? 'ocupado' : 'libre');
+          div.id = 'esp-' + i;
+          div.innerHTML = `
+            <div class="badge">${ocupado ? '🔴 OCUPADO' : '🟢 LIBRE'}</div>
+            <div class="carro">${svgCarro(coloresCarro[i])}</div>
+            <div class="num">${nombres[i]}</div>
+          `;
+          grid.appendChild(div);
+        } else {
+          // Actualización: solo cambiar clase si el estado cambió
+          const div = document.getElementById('esp-' + i);
+          const eraOcupado = div.classList.contains('ocupado');
+          if (eraOcupado !== ocupado) {
+            div.className = 'espacio ' + (ocupado ? 'ocupado' : 'libre');
+            div.querySelector('.badge').textContent = ocupado ? '🔴 OCUPADO' : '🟢 LIBRE';
+            // Re-trigger animación del carro
+            const carro = div.querySelector('.carro');
+            carro.style.animation = 'none';
+            void carro.offsetWidth; // reflow
+            carro.style.animation = '';
+          }
+        }
+      });
+
+      document.getElementById('num-libre').textContent   = libres;
+      document.getElementById('num-ocupado').textContent = ocupados;
+      const now = new Date();
+      document.getElementById('last-update').textContent = now.toLocaleTimeString('es-GT');
+    }
+
+    function actualizar() {
+      const btn = document.getElementById('btnRefresh');
+      btn.classList.add('loading');
+      fetch('/status')
+        .then(r => r.json())
+        .then(data => { renderGrid(data.espacios); })
+        .catch(() => { location.reload(); })
+        .finally(() => { btn.classList.remove('loading'); });
+    }
+
+    // Render inicial
+    renderGrid(estadosActuales);
+  </script>
+</body>
+</html>

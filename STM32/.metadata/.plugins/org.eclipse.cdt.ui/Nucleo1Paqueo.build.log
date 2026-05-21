@@ -1,10 +1,23 @@
-11:27:20 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
+15:40:55 **** Incremental Build of configuration Debug for project Nucleo1Paqueo ****
 make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:106:48: warning: argument 2 of type 'uint8_t[3]' {aka 'unsigned char[3]'} with mismatched bound [-Warray-parameter=]
+  106 | void update_colors(uint8_t flagSensor, uint8_t RGB[3],uint8_t compare){
+      |                                        ~~~~~~~~^~~~~~
+../Core/Src/main.c:86:48: note: previously declared as 'uint8_t[2]' {aka 'unsigned char[2]'}
+   86 | void update_colors(uint8_t flagSensor, uint8_t RGB[2],uint8_t compare);
+      |                                        ~~~~~~~~^~~~~~
+arm-none-eabi-gcc -o "Nucleo1Paqueo.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\juana\OneDrive\Documentos\GitHub\Digital_2\ModuloSTM32\Nucleo1Paqueo\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Nucleo1Paqueo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Nucleo1Paqueo.elf
+ 
 arm-none-eabi-size  Nucleo1Paqueo.elf 
+arm-none-eabi-objdump -h -S Nucleo1Paqueo.elf  > "Nucleo1Paqueo.list"
    text	   data	    bss	    dec	    hex	filename
-  35612	     92	   2588	  38292	   9594	Nucleo1Paqueo.elf
+  35580	     92	   2588	  38260	   9574	Nucleo1Paqueo.elf
 Finished building: default.size.stdout
  
+Finished building: Nucleo1Paqueo.list
+ 
 
-11:27:21 Build Finished. 0 errors, 0 warnings. (took 428ms)
+15:41:00 Build Finished. 0 errors, 1 warnings. (took 4s.206ms)
 
